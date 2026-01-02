@@ -1,0 +1,72 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bookGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="codeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded background -->
+  <rect width="512" height="512" rx="115" fill="url(#bgGradient)"/>
+
+  <!-- Shadow effect -->
+  <g opacity="0.3">
+    <rect x="140" y="260" width="232" height="16" rx="8" fill="#000000"/>
+  </g>
+
+  <!-- Book -->
+  <g transform="translate(256, 256)">
+    <!-- Book spine -->
+    <path d="M -80 -100 L -80 100 L -60 110 L -60 -90 Z" fill="#4f46e5" opacity="0.8"/>
+
+    <!-- Left page -->
+    <path d="M -80 -100 L -60 -90 L 0 -85 L 0 105 L -60 110 L -80 100 Z" fill="url(#bookGradient)"/>
+
+    <!-- Right page -->
+    <path d="M 0 -85 L 60 -90 L 80 -100 L 80 100 L 60 110 L 0 105 Z" fill="url(#bookGradient)"/>
+
+    <!-- Code lines on left page -->
+    <g opacity="0.6">
+      <rect x="-70" y="-60" width="50" height="4" rx="2" fill="#6366f1"/>
+      <rect x="-70" y="-45" width="35" height="4" rx="2" fill="#8b5cf6"/>
+      <rect x="-70" y="-30" width="45" height="4" rx="2" fill="#6366f1"/>
+      <rect x="-70" y="-15" width="30" height="4" rx="2" fill="#8b5cf6"/>
+
+      <rect x="-70" y="10" width="50" height="4" rx="2" fill="#6366f1"/>
+      <rect x="-70" y="25" width="40" height="4" rx="2" fill="#8b5cf6"/>
+      <rect x="-70" y="40" width="35" height="4" rx="2" fill="#6366f1"/>
+    </g>
+
+    <!-- Code lines on right page -->
+    <g opacity="0.6">
+      <rect x="20" y="-60" width="50" height="4" rx="2" fill="#6366f1"/>
+      <rect x="20" y="-45" width="40" height="4" rx="2" fill="#8b5cf6"/>
+      <rect x="20" y="-30" width="45" height="4" rx="2" fill="#6366f1"/>
+      <rect x="20" y="-15" width="35" height="4" rx="2" fill="#8b5cf6"/>
+
+      <rect x="20" y="10" width="50" height="4" rx="2" fill="#6366f1"/>
+      <rect x="20" y="25" width="30" height="4" rx="2" fill="#8b5cf6"/>
+      <rect x="20" y="40" width="45" height="4" rx="2" fill="#6366f1"/>
+    </g>
+
+    <!-- Code bracket symbol -->
+    <g transform="translate(0, -15)">
+      <path d="M -15 -30 L -20 -30 Q -25 -30 -25 -25 L -25 -5 Q -25 0 -30 0 Q -25 0 -25 5 L -25 25 Q -25 30 -20 30 L -15 30"
+            stroke="url(#codeGradient)" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M 15 -30 L 20 -30 Q 25 -30 25 -25 L 25 -5 Q 25 0 30 0 Q 25 0 25 5 L 25 25 Q 25 30 20 30 L 15 30"
+            stroke="url(#codeGradient)" stroke-width="6" fill="none" stroke-linecap="round"/>
+    </g>
+
+    <!-- Highlight effect -->
+    <ellipse cx="0" cy="-95" rx="40" ry="8" fill="#ffffff" opacity="0.4"/>
+  </g>
+</svg>

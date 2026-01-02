@@ -195,31 +195,46 @@
 
       <!-- Section 6 -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title" data-section="examples" tabindex="0" role="button" aria-expanded="false">
-          <span><span class="sidebar-section-icon">💻</span>6. 실전 예시</span>
+        <div class="sidebar-section-title" data-section="hook-branching" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🔀</span>6. 실전 Hook 분기 패턴</span>
           <span class="sidebar-section-arrow">▸</span>
         </div>
         <div class="sidebar-items">
-          <a href="#example-basic" class="sidebar-item">6.1 기본: 단일 검증</a>
-          <a href="#example-intermediate" class="sidebar-item">6.2 중급: 회고 루프</a>
-          <a href="#example-advanced" class="sidebar-item">6.3 고급: 풀 파이프라인</a>
-          <a href="#project-structure" class="sidebar-item">6.4 프로젝트 구조</a>
-          <a href="#agent-definition" class="sidebar-item">6.5 Agent 정의 파일</a>
-          <a href="#utils" class="sidebar-item">6.6 공통 유틸리티</a>
-          <a href="#skill-tools" class="sidebar-item">6.7 Skill 도구 목록</a>
+          <a href="#hook-branching-concept" class="sidebar-item">6.1 Hook 분기 핵심 개념</a>
+          <a href="#exit-code-control" class="sidebar-item">6.2 Exit Code 제어</a>
+          <a href="#transcript-parsing" class="sidebar-item">6.3 Transcript 파싱 분기</a>
+          <a href="#workflow-example" class="sidebar-item">6.4 실전 워크플로우 예시</a>
+          <a href="#parallel-orchestration" class="sidebar-item">6.5 병렬 Agent 오케스트레이션</a>
         </div>
       </div>
 
       <!-- Section 7 -->
       <div class="sidebar-section">
-        <div class="sidebar-section-title" data-section="limitations" tabindex="0" role="button" aria-expanded="false">
-          <span><span class="sidebar-section-icon">🚀</span>7. 한계점 및 확장</span>
+        <div class="sidebar-section-title" data-section="examples" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">💻</span>7. 실전 예시</span>
           <span class="sidebar-section-arrow">▸</span>
         </div>
         <div class="sidebar-items">
-          <a href="#cli-limits" class="sidebar-item">7.1 Claude Code CLI 한계</a>
-          <a href="#agent-sdk" class="sidebar-item">7.2 Agent SDK로 전환 시점</a>
-          <a href="#mcp-extension" class="sidebar-item">7.3 MCP로 확장</a>
+          <a href="#example-basic" class="sidebar-item">7.1 기본: 단일 검증</a>
+          <a href="#example-intermediate" class="sidebar-item">7.2 중급: 회고 루프</a>
+          <a href="#example-advanced" class="sidebar-item">7.3 고급: 풀 파이프라인</a>
+          <a href="#project-structure" class="sidebar-item">7.4 프로젝트 구조</a>
+          <a href="#agent-definition" class="sidebar-item">7.5 Agent 정의 파일</a>
+          <a href="#utils" class="sidebar-item">7.6 공통 유틸리티</a>
+          <a href="#skill-tools" class="sidebar-item">7.7 Skill 도구 목록</a>
+        </div>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="limitations" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🚀</span>8. 한계점 및 확장</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#cli-limits" class="sidebar-item">8.1 Claude Code CLI 한계</a>
+          <a href="#agent-sdk" class="sidebar-item">8.2 Agent SDK로 전환 시점</a>
+          <a href="#mcp-extension" class="sidebar-item">8.3 MCP로 확장</a>
         </div>
       </div>
     </nav>
@@ -665,6 +680,10 @@ if (isValid) {
 console.error("검증 실패 이유");
 process.exit(1);  // 작업 중단</code></pre>
 
+        <div class="card-tip">
+          <p><strong>💡 더 알아보기:</strong> exit code를 활용한 실전 분기 패턴과 Transcript 파싱 방법은 <a href="#hook-branching">6. 실전 Hook 분기 패턴</a>에서 자세히 다룹니다.</p>
+        </div>
+
         <h3 id="hook-system-level">4.5 시스템 레벨 발동 원리</h3>
 
         <div class="diagram-wrapper">
@@ -938,11 +957,285 @@ flowchart TB
         </div>
       </section>
 
-      <!-- Section 6: 실전 예시 -->
-      <section id="examples">
-        <h2>6. 실전 예시</h2>
+      <!-- Section 6: 실전 Hook 분기 패턴 -->
+      <section id="hook-branching">
+        <h2>6. 실전 Hook 분기 패턴</h2>
 
-        <h3 id="example-basic">6.1 기본: 단일 검증 (Skill + Hook)</h3>
+        <p>Hook을 활용한 워크플로우 분기 제어는 Claude Code의 가장 강력한 기능 중 하나입니다. 이 섹션에서는 실전에서 바로 활용할 수 있는 Hook 분기 패턴을 다룹니다.</p>
+
+        <h3 id="hook-branching-concept">6.1 Hook 분기 핵심 개념</h3>
+
+        <div class="card-highlight">
+          <h4>🔑 핵심 원리</h4>
+          <ul>
+            <li><strong>Hook은 모델이 아닌 시스템(Runtime)이 발동</strong> - Claude가 우회할 수 없음</li>
+            <li><strong>Exit code로 실행 제어</strong> - <code>exit(0)</code>은 허용, <code>exit(1)</code>은 차단</li>
+            <li><strong>Transcript 파싱으로 조건 검사</strong> - 실행된 Agent 이력을 읽어 분기</li>
+            <li><strong>메타데이터 기반 제어</strong> - Prompt에 태그를 넣어 Hook이 감지</li>
+          </ul>
+        </div>
+
+        <h3 id="exit-code-control">6.2 Exit Code 제어</h3>
+
+        <p>Hook 스크립트는 exit code로 워크플로우를 제어합니다.</p>
+
+        <pre><code class="language-javascript">// .claude/hooks/workflow-control.mjs
+
+// ✅ 허용 (계속 진행)
+if (shouldContinue) {
+  console.log(JSON.stringify({
+    decision: "approve",
+    reason: "검증 완료, 계속 진행"
+  }));
+  process.exit(0);
+}
+
+// ❌ 차단 (실행 중단)
+if (shouldBlock) {
+  console.log(JSON.stringify({
+    decision: "block",
+    reason: "추가 작업 필요: content-auditor 호출"
+  }));
+  process.exit(0);  // 주의: exit(1)이 아닌 exit(0)으로 Hook 자체는 성공
+}</code></pre>
+
+        <div class="card-note">
+          <p><strong>중요:</strong> <code>decision: "block"</code>을 반환하면서도 <code>process.exit(0)</code>을 사용합니다. <code>exit(1)</code>은 Hook 스크립트 자체의 에러를 의미하므로, 정상적인 분기 로직에서는 항상 <code>exit(0)</code>을 사용해야 합니다.</p>
+        </div>
+
+        <h3 id="transcript-parsing">6.3 Transcript 파싱 분기</h3>
+
+        <p>Transcript를 파싱하여 실행된 Agent 이력을 확인하고 조건부로 분기합니다.</p>
+
+        <pre><code class="language-javascript">// .claude/hooks/check-workflow-completion.mjs
+import fs from 'fs';
+
+function parseAgentCalls(transcript) {
+  const agentPattern = /Task\(subagent_type=['"]([^'"]+)['"]/g;
+  const agents = [];
+  let match;
+
+  while ((match = agentPattern.exec(transcript)) !== null) {
+    agents.push(match[1]);
+  }
+
+  return agents;
+}
+
+// Transcript 읽기
+const transcriptPath = process.env.TRANSCRIPT_PATH;
+const transcript = fs.readFileSync(transcriptPath, 'utf-8');
+
+// Agent 이력 파싱
+const agents = parseAgentCalls(transcript);
+// 예: ['content-creator', 'content-auditor']
+
+// 분기 로직
+if (agents.includes('content-creator') && !agents.includes('content-auditor')) {
+  console.log(JSON.stringify({
+    decision: "block",
+    reason: "content-creator 완료. 다음: Task(content-auditor) 호출 필요"
+  }));
+  process.exit(0);
+}
+
+if (agents.includes('content-auditor') && !agents.includes('content-reviewer')) {
+  console.log(JSON.stringify({
+    decision: "block",
+    reason: "content-auditor 완료. 다음: Task(content-reviewer) 호출 필요"
+  }));
+  process.exit(0);
+}
+
+// 모든 단계 완료
+if (agents.includes('content-creator') &&
+    agents.includes('content-auditor') &&
+    agents.includes('content-reviewer')) {
+  console.log(JSON.stringify({
+    decision: "approve",
+    reason: "✅ 3중 검증 완료!"
+  }));
+  process.exit(0);
+}</code></pre>
+
+        <h3 id="workflow-example">6.4 실전 워크플로우 예시</h3>
+
+        <p>퀴즈 생성 워크플로우를 예시로 Hook 분기가 어떻게 작동하는지 살펴봅니다.</p>
+
+        <h4>시나리오: "고양이 퀴즈 10개 만들어줘"</h4>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">🔄 Hook 분기 워크플로우</div>
+          <div class="mermaid">
+flowchart TB
+    User["사용자: 고양이 퀴즈 10개 만들어줘"]
+
+    User --> Creator["content-creator Agent 실행"]
+    Creator --> Quiz["퀴즈 10개 생성 완료"]
+
+    Quiz --> Hook1["SubagentStop Hook #1 발동"]
+    Hook1 --> Check1{"Transcript 확인:\ncreator만 있음?"}
+
+    Check1 -->|Yes| Block1["decision: block\nreason: auditor 호출 필요"]
+    Block1 --> Claude1["Claude: auditor 호출"]
+
+    Claude1 --> Auditor["content-auditor Agent 실행"]
+    Auditor --> Validate["검증 완료"]
+
+    Validate --> Hook2["SubagentStop Hook #2 발동"]
+    Hook2 --> Check2{"경고 있음?"}
+
+    Check2 -->|Yes| Block2["decision: block\nreason: 수정 후 재검증"]
+    Block2 --> Fix["Claude: 수정 후 auditor 재실행"]
+
+    Check2 -->|No| Block3["decision: block\nreason: reviewer 호출"]
+    Block3 --> Claude2["Claude: reviewer 호출"]
+
+    Claude2 --> Reviewer["content-reviewer Agent 실행"]
+    Reviewer --> Review["리뷰 완료"]
+
+    Review --> Hook3["SubagentStop Hook #3 발동"]
+    Hook3 --> Check3{"모든 Agent 완료?"}
+
+    Check3 -->|Yes| Approve["decision: approve\n✅ 3중 검증 완료"]
+    Approve --> Done["Claude: 사용자에게 완료 보고"]
+          </div>
+        </div>
+
+        <h4>실제 대화 흐름</h4>
+
+        <pre><code class="language-text">👤 사용자: "고양이 퀴즈 5개 만들어줘"
+
+🤖 Claude: "content-creator를 호출하겠습니다."
+         [Task(content-creator) 실행]
+         → 퀴즈 5개 생성 완료
+
+🪝 Hook #1: decision: "block"
+          reason: "content-auditor 호출 필요"
+
+🤖 Claude: "content-auditor를 호출하겠습니다."
+         [Task(content-auditor) 실행]
+         → 검증 완료, 경고 0개
+
+🪝 Hook #2: decision: "block"
+          reason: "content-reviewer 호출 필요"
+
+🤖 Claude: "content-reviewer를 호출하겠습니다."
+         [Task(content-reviewer) 실행]
+         → 리뷰 통과
+
+🪝 Hook #3: decision: "approve"
+          reason: "✅ 3중 검증 완료"
+
+🤖 Claude: "✅ 고양이 퀴즈 5개 생성 완료!
+
+         검증 결과:
+         - 1차 (content-creator): 통과
+         - 2차 (content-auditor): 통과
+         - 3차 (content-reviewer): 통과"</code></pre>
+
+        <h4>에러 발견 시 분기</h4>
+
+        <pre><code class="language-javascript">// Hook에서 에러 감지
+function checkWarnings(transcript) {
+  const lines = transcript.split('\n');
+  return lines.filter(line =>
+    line.includes('⚠️') ||
+    line.includes('경고') ||
+    line.includes('warning')
+  );
+}
+
+const warnings = checkWarnings(transcript);
+
+if (warnings.length > 0 && lastAgent === 'content-auditor') {
+  console.log(JSON.stringify({
+    decision: "block",
+    reason: `content-auditor에서 ${warnings.length}개 경고 발견.\n수정 후 재검증 필요:\n${warnings.join('\n')}`
+  }));
+  process.exit(0);
+}</code></pre>
+
+        <h3 id="parallel-orchestration">6.5 병렬 Agent 오케스트레이션</h3>
+
+        <p>Skill 내에서 여러 Agent를 병렬로 호출하는 패턴입니다.</p>
+
+        <pre><code class="language-markdown"># content-workflow Skill
+
+## 사용법
+사용자가 "콘텐츠 생성" 요청 시 이 워크플로우를 따르세요.
+
+## 워크플로우
+
+### 1단계: 병렬 생성
+다음 Agent들을 **병렬로** 호출하세요:
+
+```
+Task(content-creator, prompt: "퀴즈 생성 [PARALLEL:1]")
+Task(seo-optimizer, prompt: "SEO 최적화 [PARALLEL:1]")
+Task(image-generator, prompt: "썸네일 생성 [PARALLEL:1]")
+```
+
+### 2단계: 통합 검증
+병렬 작업 완료 후:
+
+```
+Task(content-auditor, prompt: "통합 검증 [VERIFY]")
+```
+
+## Hook 분기
+- `[PARALLEL:1]`: 병렬 그룹 1 (동시 실행)
+- `[VERIFY]`: 검증 단계 (순차 실행)
+</code></pre>
+
+        <p>Hook에서 병렬 실행 감지:</p>
+
+        <pre><code class="language-javascript">// Hook에서 병렬 그룹 확인
+function getParallelGroup(transcript, agentName) {
+  const pattern = new RegExp(`${agentName}.*\\[PARALLEL:(\\d+)\\]`);
+  const match = transcript.match(pattern);
+  return match ? parseInt(match[1]) : null;
+}
+
+const parallelAgents = agents.filter(a =>
+  getParallelGroup(transcript, a) === 1
+);
+
+// 병렬 그룹 1의 모든 Agent 완료 확인
+if (parallelAgents.length === 3 &&
+    !agents.includes('content-auditor')) {
+  console.log(JSON.stringify({
+    decision: "block",
+    reason: "병렬 작업 완료. content-auditor 호출 필요"
+  }));
+  process.exit(0);
+}</code></pre>
+
+        <div class="card-highlight">
+          <h4>💡 병렬 vs 순차 실행</h4>
+          <ul>
+            <li><strong>병렬:</strong> 독립적인 작업을 동시에 실행 (시간 절약)</li>
+            <li><strong>순차:</strong> 이전 작업 결과가 필요한 경우</li>
+            <li><strong>Hook 제어:</strong> 메타데이터 태그로 실행 순서 강제</li>
+          </ul>
+        </div>
+
+        <div class="card-tip">
+          <h4>🎯 실전 팁</h4>
+          <ul>
+            <li><strong>Transcript 캐싱:</strong> 큰 Transcript는 파싱 비용이 높으므로 결과를 캐시</li>
+            <li><strong>에러 메시지 명확화:</strong> Hook의 <code>reason</code>을 구체적으로 작성해야 Claude가 올바르게 행동</li>
+            <li><strong>테스트:</strong> 각 분기 경로를 실제로 실행해서 검증</li>
+            <li><strong>로깅:</strong> Hook 실행 이력을 파일로 저장하면 디버깅에 유용</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 7: 실전 예시 -->
+      <section id="examples">
+        <h2>7. 실전 예시</h2>
+
+        <h3 id="example-basic">7.1 기본: 단일 검증 (Skill + Hook)</h3>
 
         <p><strong>목표:</strong> Task 호출 결과를 검증하고 실패시 재시도</p>
 
@@ -1014,7 +1307,7 @@ function validateOutput(output) {
   return true;
 }</code></pre>
 
-        <h3 id="example-intermediate">6.2 중급: 회고 루프 (Reflection Loop)</h3>
+        <h3 id="example-intermediate">7.2 중급: 회고 루프 (Reflection Loop)</h3>
 
         <p><strong>목표:</strong> 코드 작성 → 리뷰 → 수정 → 최종 검증</p>
 
@@ -1044,7 +1337,7 @@ allowed-tools: Task, Read, Write
 - 통과시 완료
 - 실패시 2단계로 돌아감 (최대 2회)</code></pre>
 
-        <h3 id="example-advanced">6.3 고급: 풀 파이프라인</h3>
+        <h3 id="example-advanced">7.3 고급: 풀 파이프라인</h3>
 
         <p><strong>목표:</strong> 다중 분기 + 병렬 실행 + 투표 + 체크포인트 + 에러 핸들링</p>
 
@@ -1075,7 +1368,7 @@ flowchart TB
           </div>
         </div>
 
-        <h3 id="project-structure">6.4 프로젝트 구조 예시</h3>
+        <h3 id="project-structure">7.4 프로젝트 구조 예시</h3>
 
         <pre><code class="language-text">my-project/
 ├── .claude/
@@ -1118,7 +1411,7 @@ flowchart TB
           </div>
         </div>
 
-        <h3 id="agent-definition">6.5 Agent 정의 파일 예시</h3>
+        <h3 id="agent-definition">7.5 Agent 정의 파일 예시</h3>
 
         <p><strong>.claude/agents/code-analyzer/code-analyzer.md:</strong></p>
 
@@ -1152,7 +1445,7 @@ tools: Read, Grep, Glob
 }
 ```</code></pre>
 
-        <h3 id="utils">6.6 공통 유틸리티 (utils.js)</h3>
+        <h3 id="utils">7.6 공통 유틸리티 (utils.js)</h3>
 
         <pre><code class="language-javascript">const fs = require('fs');
 const path = require('path');
@@ -1226,7 +1519,7 @@ module.exports = {
   STATE_FILE
 };</code></pre>
 
-        <h3 id="skill-tools">6.7 Skill에서 사용 가능한 도구 목록</h3>
+        <h3 id="skill-tools">7.7 Skill에서 사용 가능한 도구 목록</h3>
 
         <p><code>allowed-tools</code> 필드에 지정 가능한 도구:</p>
 
@@ -1253,11 +1546,11 @@ module.exports = {
         </div>
       </section>
 
-      <!-- Section 7: 한계점 및 확장 -->
+      <!-- Section 8: 한계점 및 확장 -->
       <section id="limitations">
-        <h2>7. 한계점 및 확장</h2>
+        <h2>8. 한계점 및 확장</h2>
 
-        <h3 id="cli-limits">7.1 Claude Code CLI 한계</h3>
+        <h3 id="cli-limits">8.1 Claude Code CLI 한계</h3>
 
         <div class="table-wrapper">
           <table>
@@ -1288,7 +1581,7 @@ module.exports = {
           </table>
         </div>
 
-        <h3 id="agent-sdk">7.2 Agent SDK로 전환 시점</h3>
+        <h3 id="agent-sdk">8.2 Agent SDK로 전환 시점</h3>
 
         <p>다음 경우 Agent SDK (Python/TypeScript) 고려:</p>
 
@@ -1309,7 +1602,7 @@ async def controlled_workflow():
             break
     return result</code></pre>
 
-        <h3 id="mcp-extension">7.3 MCP로 확장</h3>
+        <h3 id="mcp-extension">8.3 MCP로 확장</h3>
 
         <p>MCP(Model Context Protocol)를 연동하면:</p>
 

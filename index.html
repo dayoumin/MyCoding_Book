@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Claude Code 개발 가이드 모음 - 멀티 에이전트 오케스트레이션, MCP 연계 가이드">
+  <meta name="keywords" content="Claude, Claude Code, AI, Agent, MCP, Skill, Hook, 개발 가이드">
+  <meta name="author" content="MyCoding">
+  <meta name="theme-color" content="#6366f1">
+
+  <!-- PWA 지원 -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MyCoding Book">
+
+  <title>MyCoding Book - Claude Code 개발 가이드</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="header-logo">
+        <span>📚</span>
+        <span>MyCoding Book</span>
+      </a>
+
+      <div class="header-actions">
+        <!-- Search Button -->
+        <button class="search-btn" aria-label="검색">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <span>검색...</span>
+          <span class="search-kbd"><kbd>Ctrl</kbd><kbd>K</kbd></span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" aria-label="다크모드 전환">
+          <span class="theme-toggle-thumb">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" style="padding-top: var(--header-height);">
+    <!-- Hero Section -->
+    <section class="index-hero">
+      <h1>📚 MyCoding Book</h1>
+      <p>Claude Code를 활용한 개발 가이드 모음입니다.<br>멀티 에이전트 오케스트레이션부터 MCP 연계까지, 실전에서 바로 쓸 수 있는 지식을 담았습니다.</p>
+    </section>
+
+    <!-- Document Cards -->
+    <div class="index-content">
+      <div class="doc-cards">
+        <!-- Orchestration Guide -->
+        <a href="orchestration.html" class="doc-card">
+          <span class="doc-card-icon">🎭</span>
+          <h2 class="doc-card-title">멀티 에이전트 오케스트레이션 가이드</h2>
+          <p class="doc-card-desc">Skill, Agent, Hook을 조합하여 신뢰할 수 있는 멀티 에이전트 워크플로우를 구축하는 방법을 다룹니다.</p>
+          <div class="doc-card-meta">
+            <span>📅 2025-01-02</span>
+            <span>⏱️ 약 20분</span>
+          </div>
+          <div class="doc-card-tags">
+            <span class="doc-card-tag">Skill</span>
+            <span class="doc-card-tag">Agent</span>
+            <span class="doc-card-tag">Hook</span>
+            <span class="doc-card-tag">Workflow</span>
+          </div>
+        </a>
+
+        <!-- MCP Guide -->
+        <a href="mcp-guide.html" class="doc-card">
+          <span class="doc-card-icon">🔌</span>
+          <h2 class="doc-card-title">MCP 연계 가이드</h2>
+          <p class="doc-card-desc">Model Context Protocol을 활용하여 GitHub, Database, AWS 등 외부 시스템과 연동하는 방법을 다룹니다.</p>
+          <div class="doc-card-meta">
+            <span>📅 2025-01-02</span>
+            <span>⏱️ 약 25분</span>
+          </div>
+          <div class="doc-card-tags">
+            <span class="doc-card-tag">MCP</span>
+            <span class="doc-card-tag">GitHub</span>
+            <span class="doc-card-tag">Database</span>
+            <span class="doc-card-tag">Integration</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Quick Links -->
+      <section style="margin-top: 3rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--color-text-primary);">🔗 바로가기</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+          <a href="orchestration.html#overview" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
+            <strong style="color: var(--color-text-primary);">📋 Skill vs Agent</strong>
+            <p style="font-size: 0.875rem; margin-top: 0.25rem;">기본 개념 이해하기</p>
+          </a>
+          <a href="orchestration.html#hooks" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
+            <strong style="color: var(--color-text-primary);">🪝 Hook 시스템</strong>
+            <p style="font-size: 0.875rem; margin-top: 0.25rem;">워크플로우 제어하기</p>
+          </a>
+          <a href="mcp-guide.html#popular-servers" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
+            <strong style="color: var(--color-text-primary);">⭐ 인기 MCP 서버</strong>
+            <p style="font-size: 0.875rem; margin-top: 0.25rem;">GitHub, DB, AWS 연동</p>
+          </a>
+          <a href="orchestration.html#examples" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
+            <strong style="color: var(--color-text-primary);">💻 실전 예시</strong>
+            <p style="font-size: 0.875rem; margin-top: 0.25rem;">바로 쓸 수 있는 코드</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-border); text-align: center; color: var(--color-text-muted); font-size: 0.875rem;">
+        <p>© 2025 MyCoding Book. Claude Code 개발 가이드 모음.</p>
+        <p style="margin-top: 0.5rem;">
+          이 문서는 학습 목적으로 작성되었습니다.
+        </p>
+      </footer>
+    </div>
+  </main>
+
+  <!-- Search Modal -->
+  <div class="search-modal" role="dialog" aria-modal="true" aria-label="검색">
+    <div class="search-modal-content">
+      <div class="search-input-wrapper">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" class="search-input" placeholder="문서 검색..." aria-label="검색어 입력">
+      </div>
+      <div class="search-results"></div>
+      <div class="search-footer">
+        <span><kbd>↑↓</kbd> 이동</span>
+        <span><kbd>Enter</kbd> 선택</span>
+        <span><kbd>Esc</kbd> 닫기</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/search.js"></script>
+</body>
+</html>

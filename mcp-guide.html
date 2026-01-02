@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Claude Code에서 MCP(Model Context Protocol)를 활용하여 외부 시스템과 연동하는 가이드">
+  <meta name="keywords" content="Claude Code, MCP, Model Context Protocol, GitHub, Database, API">
+  <meta name="theme-color" content="#6366f1">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <title>MCP 연계 가이드 - MyCoding Book</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <!-- Prism.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔌</text></svg>">
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="header-logo">
+        <span>📚</span>
+        <span>MyCoding Book</span>
+      </a>
+
+      <div class="header-actions">
+        <!-- Document Selector -->
+        <div class="doc-selector">
+          <button class="doc-selector-btn" aria-expanded="false" aria-haspopup="true">
+            <span>🔌 MCP 연계</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="doc-selector-dropdown" role="menu">
+            <a href="orchestration.html" class="doc-selector-item" role="menuitem">
+              <span>🎭</span>
+              <span>오케스트레이션 가이드</span>
+            </a>
+            <a href="mcp-guide.html" class="doc-selector-item active" role="menuitem">
+              <span>🔌</span>
+              <span>MCP 연계 가이드</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" aria-label="메뉴 열기">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Search Button -->
+        <button class="search-btn" aria-label="검색">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <span>검색...</span>
+          <span class="search-kbd"><kbd>Ctrl</kbd><kbd>K</kbd></span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" aria-label="다크모드 전환">
+          <span class="theme-toggle-thumb">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Reading Progress -->
+  <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="목차">
+    <button class="sidebar-close" aria-label="메뉴 닫기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="sidebar-header">
+      <div class="sidebar-title">목차</div>
+      <div class="sidebar-doc-title">🔌 MCP 연계 가이드</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- Section 1 -->
+      <div class="sidebar-section expanded">
+        <div class="sidebar-section-title" data-section="mcp-overview" tabindex="0" role="button" aria-expanded="true">
+          <span><span class="sidebar-section-icon">📋</span>1. MCP 개요</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#what-is-mcp" class="sidebar-item">1.1 MCP란?</a>
+          <a href="#mcp-2025-changes" class="sidebar-item">1.2 2025년 스펙 변경사항</a>
+          <a href="#mcp-core-features" class="sidebar-item">1.3 세 가지 핵심 기능</a>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="mcp-setup" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">⚙️</span>2. MCP 설정</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#mcp-client" class="sidebar-item">2.1 MCP 클라이언트로서의 Claude Code</a>
+          <a href="#mcp-config-structure" class="sidebar-item">2.2 설정 파일 구조</a>
+          <a href="#mcp-config-scope" class="sidebar-item">2.3 프로젝트별 vs 글로벌 설정</a>
+          <a href="#mcp-execution-patterns" class="sidebar-item">2.4 MCP 서버 실행 패턴</a>
+          <a href="#mcp-cli-management" class="sidebar-item">2.5 CLI로 MCP 서버 관리</a>
+          <a href="#mcp-debugging" class="sidebar-item">2.6 디버깅</a>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="skill-mcp" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🎭</span>3. Skill + MCP</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#skill-mcp-call" class="sidebar-item">3.1 Skill에서 MCP 도구 호출</a>
+          <a href="#skill-mcp-multi" class="sidebar-item">3.2 여러 MCP 서버 조합</a>
+          <a href="#skill-mcp-example" class="sidebar-item">3.3 실전 예시</a>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="agent-mcp" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🤖</span>4. Agent + MCP</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#agent-mcp-assign" class="sidebar-item">4.1 전문화된 Agent에 MCP 도구 할당</a>
+          <a href="#agent-mcp-separation" class="sidebar-item">4.2 Agent별 MCP 서버 분리</a>
+          <a href="#agent-mcp-example" class="sidebar-item">4.3 실전 예시</a>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="orchestration-mcp" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🎼</span>5. 오케스트레이션 + MCP</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#agent-mcp-framework" class="sidebar-item">5.1 Agent-MCP 프레임워크</a>
+          <a href="#handoff-pattern" class="sidebar-item">5.2 Handoff 패턴</a>
+          <a href="#reflection-pattern" class="sidebar-item">5.3 Reflection 패턴</a>
+          <a href="#parallel-pattern" class="sidebar-item">5.4 병렬 실행 패턴</a>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="popular-servers" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">⭐</span>6. 인기 MCP 서버</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#github-mcp" class="sidebar-item">6.1 GitHub MCP</a>
+          <a href="#database-mcp" class="sidebar-item">6.2 Database MCP</a>
+          <a href="#aws-mcp" class="sidebar-item">6.3 AWS MCP</a>
+          <a href="#zapier-mcp" class="sidebar-item">6.4 Zapier MCP</a>
+          <a href="#playwright-mcp" class="sidebar-item">6.5 Playwright MCP</a>
+          <a href="#context7" class="sidebar-item">6.6 Context7</a>
+        </div>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="security" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🔒</span>7. 보안 Best Practices</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#credential-management" class="sidebar-item">7.1 자격 증명 관리</a>
+          <a href="#env-separation" class="sidebar-item">7.2 환경 분리</a>
+          <a href="#readonly-first" class="sidebar-item">7.3 읽기 전용 우선 원칙</a>
+          <a href="#security-issues" class="sidebar-item">7.4 2025년 보안 이슈</a>
+        </div>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="hook-mcp" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🪝</span>8. Hook + MCP 연계</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#mcp-hook-prepost" class="sidebar-item">8.1 MCP 도구 호출 전/후 Hook</a>
+          <a href="#mcp-hook-validate" class="sidebar-item">8.2 MCP 결과 검증 Hook</a>
+        </div>
+      </div>
+
+      <!-- Section 9 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="workflows" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">💻</span>9. 실전 워크플로우</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#workflow-basic" class="sidebar-item">9.1 기본: GitHub PR 자동 리뷰</a>
+          <a href="#workflow-intermediate" class="sidebar-item">9.2 중급: 멀티소스 경쟁분석</a>
+          <a href="#workflow-advanced" class="sidebar-item">9.3 고급: 풀스택 배포</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main" id="main-content">
+    <!-- Card Tabs -->
+    <div class="card-tabs-wrapper">
+      <div class="card-tabs" role="tablist" aria-label="섹션 탭">
+        <a href="#mcp-overview" class="card-tab active" data-section="mcp-overview" role="tab" aria-selected="true" tabindex="0">
+          <span class="card-tab-icon">📋</span>
+          <span class="card-tab-title">MCP 개요</span>
+        </a>
+        <a href="#mcp-setup" class="card-tab" data-section="mcp-setup" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">⚙️</span>
+          <span class="card-tab-title">설정</span>
+        </a>
+        <a href="#skill-mcp" class="card-tab" data-section="skill-mcp" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🎭</span>
+          <span class="card-tab-title">Skill+MCP</span>
+        </a>
+        <a href="#agent-mcp" class="card-tab" data-section="agent-mcp" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🤖</span>
+          <span class="card-tab-title">Agent+MCP</span>
+        </a>
+        <a href="#popular-servers" class="card-tab" data-section="popular-servers" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">⭐</span>
+          <span class="card-tab-title">서버 목록</span>
+        </a>
+        <a href="#security" class="card-tab" data-section="security" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🔒</span>
+          <span class="card-tab-title">보안</span>
+        </a>
+        <a href="#workflows" class="card-tab" data-section="workflows" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">💻</span>
+          <span class="card-tab-title">워크플로우</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Header -->
+      <header class="content-header">
+        <h1 class="content-title">MCP 연계 가이드</h1>
+        <div class="content-meta">
+          <span class="content-meta-item">📅 2025-01-02</span>
+          <span class="content-meta-item">⏱️ 약 25분</span>
+        </div>
+        <p style="margin-top: 1rem; color: var(--color-text-secondary);">
+          Claude Code CLI에서 MCP(Model Context Protocol)를 활용하여 외부 시스템과 연동하는 방법을 다룹니다.
+        </p>
+        <div class="content-tags">
+          <span class="content-tag">MCP</span>
+          <span class="content-tag">GitHub</span>
+          <span class="content-tag">Database</span>
+          <span class="content-tag">API</span>
+          <span class="content-tag">Integration</span>
+        </div>
+      </header>
+
+      <!-- Section 1: MCP 개요 -->
+      <section id="mcp-overview">
+        <h2>1. MCP 개요</h2>
+
+        <h3 id="what-is-mcp">1.1 MCP란?</h3>
+
+        <p><strong>Model Context Protocol (MCP)</strong>은 Anthropic이 2024년 11월 발표한 오픈 표준으로, AI 시스템이 외부 도구, 데이터 소스, 시스템과 표준화된 방식으로 연결할 수 있게 해줍니다.</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 MCP 아키텍처</div>
+          <div class="mermaid">
+flowchart LR
+    Claude["Claude Code\n(MCP Client)"]
+    MCP["MCP Server\n(GitHub, DB..)"]
+    Claude <-->|MCP| MCP
+          </div>
+        </div>
+
+        <p><strong>핵심 가치:</strong></p>
+        <ul>
+          <li><strong>표준화</strong>: 각 서비스마다 다른 API 대신 통일된 프로토콜</li>
+          <li><strong>보안</strong>: 자격 증명이 클라이언트를 거치지 않는 안전한 연결</li>
+          <li><strong>확장성</strong>: 플러그인처럼 MCP 서버 추가/제거 가능</li>
+        </ul>
+
+        <div class="callout callout-info">
+          <div class="callout-title">ℹ️ 2025년 현황</div>
+          <div class="callout-content">
+            <ul>
+              <li>2025년 3월 OpenAI 공식 채택</li>
+              <li>2025년 12월 Linux Foundation 산하 Agentic AI Foundation에 기증</li>
+              <li>"AI 모델에 컨텍스트를 제공하는 사실상의 표준"으로 자리잡음</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 id="mcp-2025-changes">1.2 2025년 11월 스펙 주요 변경사항</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>기능</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Server-side Agent Loops</strong></td>
+                <td>MCP 서버 내에서 다단계 추론 가능</td>
+              </tr>
+              <tr>
+                <td><strong>Parallel Tool Calls</strong></td>
+                <td>여러 도구를 동시에 호출하여 성능 향상</td>
+              </tr>
+              <tr>
+                <td><strong>Secure Credential Collection</strong></td>
+                <td>API 키가 클라이언트를 거치지 않는 보안 연결</td>
+              </tr>
+              <tr>
+                <td><strong>External OAuth Flows</strong></td>
+                <td>외부 OAuth 인증 지원</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="mcp-core-features">1.3 MCP의 세 가지 핵심 기능</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 MCP 핵심 기능</div>
+          <div class="mermaid">
+flowchart TB
+    subgraph Server["MCP Server"]
+        Resources["Resources\n(읽기 전용)\n파일, DB 조회 등"]
+        Tools["Tools\n(능동적 실행)\nAPI 호출, 생성 등"]
+        Prompts["Prompts\n(템플릿)\n사전 정의된 프롬프트"]
+    end
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>기능</th>
+                <th>설명</th>
+                <th>예시</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Resources</strong></td>
+                <td>읽기 전용 데이터</td>
+                <td>Google Drive 문서 조회</td>
+              </tr>
+              <tr>
+                <td><strong>Tools</strong></td>
+                <td>능동적 액션/함수</td>
+                <td>GitHub PR 생성, Slack 메시지 전송</td>
+              </tr>
+              <tr>
+                <td><strong>Prompts</strong></td>
+                <td>사전 정의 템플릿</td>
+                <td>"코드 리뷰 요청" 프롬프트</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 2: MCP 설정 -->
+      <section id="mcp-setup">
+        <h2>2. Claude Code에서 MCP 설정</h2>
+
+        <h3 id="mcp-client">2.1 MCP 클라이언트로서의 Claude Code</h3>
+
+        <p>Claude Code는 <strong>MCP 클라이언트이자 서버</strong>로 동작합니다:</p>
+        <ul>
+          <li><strong>클라이언트</strong>: 외부 MCP 서버에 연결하여 도구 사용</li>
+          <li><strong>서버</strong>: 다른 클라이언트에 도구 제공 가능</li>
+        </ul>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Claude Code + MCP 서버들</div>
+          <div class="mermaid">
+flowchart TB
+    subgraph Claude["Claude Code"]
+        Client["MCP Client"]
+        subgraph Servers["연결된 MCP 서버"]
+            GitHub["GitHub MCP"]
+            DB["DB MCP"]
+            AWS["AWS MCP"]
+        end
+        Client --> Servers
+    end
+
+    GitHub --> GH_API["GitHub API"]
+    DB --> PG["PostgreSQL"]
+    AWS --> AWS_SVC["AWS Services"]
+          </div>
+        </div>
+
+        <h3 id="mcp-config-structure">2.2 설정 파일 구조</h3>
+
+        <p><strong>.claude/settings.json 또는 ~/.claude/settings.json:</strong></p>
+
+        <pre><code class="language-jsonc">{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]
+    }
+  }
+}</code></pre>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>항목</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>command</code></td>
+                <td>MCP 서버 실행 명령어</td>
+              </tr>
+              <tr>
+                <td><code>args</code></td>
+                <td>명령어 인자</td>
+              </tr>
+              <tr>
+                <td><code>env</code></td>
+                <td>환경 변수 (토큰, 비밀번호 등)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="mcp-config-scope">2.3 프로젝트별 vs 글로벌 설정</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>위치</th>
+                <th>범위</th>
+                <th>용도</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>.claude/settings.json</code></td>
+                <td>프로젝트</td>
+                <td>프로젝트별 MCP 서버</td>
+              </tr>
+              <tr>
+                <td><code>~/.claude/settings.json</code></td>
+                <td>글로벌</td>
+                <td>모든 프로젝트에서 공통 사용</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>우선순위:</strong> 프로젝트 설정 > 글로벌 설정</p>
+
+        <h3 id="mcp-execution-patterns">2.4 MCP 서버 실행 패턴</h3>
+
+        <p>핵심: <strong>"그 도구를 어떻게 실행하느냐"가 다 다름</strong></p>
+
+        <pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐
+│                    MCP 서버 실행 방식                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  1. 자체 MCP 모드를 지원하는 경우                           │
+│     └─ codex mcp                                            │
+│        (codex 안에 mcp 명령이 내장됨)                       │
+│                                                             │
+│  2. npm 패키지로 배포된 경우                                │
+│     └─ npx -y @modelcontextprotocol/server-github           │
+│        (npm에서 받아서 실행)                                │
+│                                                             │
+│  3. 직접 만든 서버                                          │
+│     └─ node my-server.js                                    │
+│        (내가 만든 파일 실행)                                │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 비유: 음식 주문 방식이 가게마다 다른 것과 같음</div>
+          <div class="callout-content">
+            <ul>
+              <li><strong>맥도날드 키오스크</strong> → <code>codex mcp</code> (자체 주문 시스템)</li>
+              <li><strong>배달앱</strong> → <code>npx</code> 패키지 (앱으로 주문)</li>
+              <li><strong>집밥</strong> → <code>node server.js</code> (직접 요리)</li>
+            </ul>
+            <p style="margin-bottom: 0;">→ "MCP 서버를 실행한다"는 목적은 같지만 방법이 다름</p>
+          </div>
+        </div>
+
+        <p><strong>실행 방식 정리:</strong></p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>도구</th>
+                <th>실행 명령</th>
+                <th>이유</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Codex</td>
+                <td><code>codex mcp</code></td>
+                <td>Codex가 MCP 모드를 내장함</td>
+              </tr>
+              <tr>
+                <td>GitHub</td>
+                <td><code>npx -y @modelcontextprotocol/server-github</code></td>
+                <td>npm 패키지로 배포됨</td>
+              </tr>
+              <tr>
+                <td>내 서버</td>
+                <td><code>node server.js</code></td>
+                <td>직접 만듦</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">ℹ️ 핵심</div>
+          <div class="callout-content">
+            <p style="margin: 0;"><code>이름 mcp</code> 형식이 아니라, <strong>각 도구가 제공하는 방식을 그대로 쓰면 됩니다.</strong></p>
+          </div>
+        </div>
+
+        <h3 id="mcp-cli-management">2.5 CLI로 MCP 서버 관리</h3>
+
+        <p>설정 파일을 직접 편집하는 대신 <code>claude mcp</code> 명령어로 관리할 수 있습니다.</p>
+
+        <pre><code class="language-bash"># MCP 서버 목록 확인
+claude mcp list
+
+# MCP 서버 추가
+claude mcp add &lt;서버이름&gt; -- &lt;실행명령어&gt;
+
+# MCP 서버 제거
+claude mcp remove &lt;서버이름&gt;</code></pre>
+
+        <p><strong>예시:</strong></p>
+
+        <pre><code class="language-bash"># GitHub MCP 추가
+claude mcp add github -- npx -y @modelcontextprotocol/server-github
+
+# Codex 리뷰 서버 추가 (옵션 포함)
+claude mcp add codex-review -- codex mcp -c model="gpt-5.2-codex"</code></pre>
+
+        <h3 id="mcp-debugging">2.6 디버깅</h3>
+
+        <pre><code class="language-bash"># MCP 디버그 모드로 Claude Code 실행
+claude --mcp-debug
+
+# 디버그 출력 예시
+[MCP Debug] Connecting to server: github
+[MCP Debug] Available tools: create_issue, list_repos, ...
+[MCP Debug] Tool call: create_issue
+[MCP Debug] Response received in 234ms</code></pre>
+      </section>
+
+      <!-- Section 3: Skill + MCP -->
+      <section id="skill-mcp">
+        <h2>3. Skill + MCP 통합 패턴</h2>
+
+        <h3 id="skill-mcp-call">3.1 Skill에서 MCP 도구 호출</h3>
+
+        <p>Skill은 MCP 서버가 제공하는 도구를 직접 호출할 수 있습니다.</p>
+
+        <pre><code class="language-yaml">---
+name: github-assistant
+description: GitHub 저장소 관리 도우미
+allowed-tools: Read, Write, Task
+# MCP 도구는 allowed-tools에 명시하지 않아도 사용 가능
+# 시스템이 자동으로 MCP 서버의 도구를 인식
+---
+
+# GitHub 저장소 관리
+
+당신은 GitHub 관리 전문가입니다.
+
+## 사용 가능한 MCP 도구
+
+- `github_create_issue`: 이슈 생성
+- `github_list_repos`: 저장소 목록
+- `github_create_pr`: PR 생성
+- `github_get_file_contents`: 파일 내용 조회</code></pre>
+
+        <h3 id="skill-mcp-multi">3.2 여러 MCP 서버 조합</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Multi-Source Skill</div>
+          <div class="mermaid">
+flowchart TB
+    Skill["Multi-Source Skill"]
+
+    subgraph Servers["MCP 서버들"]
+        GitHub["GitHub MCP"]
+        GDrive["Google Drive MCP"]
+        Slack["Slack MCP"]
+    end
+
+    Skill --> Servers
+    Servers --> Result["결과 통합 및 보고"]
+          </div>
+        </div>
+
+        <h3 id="skill-mcp-example">3.3 실전 예시: 기술 경쟁분석 Skill</h3>
+
+        <pre><code class="language-yaml">---
+name: competitive-analysis
+description: 경쟁사 기술 분석 리포트 생성
+allowed-tools: Read, Write, WebSearch
+---
+
+# 경쟁사 기술 분석
+
+## 분석 프로세스
+
+### Phase 1: 내부 자료 수집
+1. Google Drive에서 기존 경쟁분석 문서 검색
+2. 관련 내부 리서치 자료 확인
+
+### Phase 2: 외부 정보 수집
+1. GitHub에서 경쟁사 오픈소스 프로젝트 분석
+2. 웹 검색으로 최신 뉴스/발표 확인
+
+### Phase 3: 리포트 생성
+1. 수집된 정보 종합
+2. SWOT 분석 작성
+3. 마크다운 리포트 생성</code></pre>
+      </section>
+
+      <!-- Section 4: Agent + MCP -->
+      <section id="agent-mcp">
+        <h2>4. Agent + MCP 통합 패턴</h2>
+
+        <h3 id="agent-mcp-assign">4.1 전문화된 Agent에 MCP 도구 할당</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Agent별 MCP 도구 분리</div>
+          <div class="mermaid">
+flowchart TB
+    Skill["Skill (오케스트레이터)"]
+
+    subgraph Agents["전문화된 Agent들"]
+        DB_Agent["DB Agent\npostgres_* 도구"]
+        GitHub_Agent["GitHub Agent\ngithub_* 도구"]
+        Report_Agent["Report Agent\ngdrive_* 도구"]
+    end
+
+    Skill --> Agents
+          </div>
+        </div>
+
+        <h3 id="agent-mcp-separation">4.2 Agent별 MCP 서버 분리 전략</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Agent 역할</th>
+                <th>MCP 서버</th>
+                <th>권한</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Code Analyst</td>
+                <td>GitHub MCP</td>
+                <td>읽기 전용</td>
+              </tr>
+              <tr>
+                <td>DB Analyst</td>
+                <td>PostgreSQL MCP</td>
+                <td>SELECT만</td>
+              </tr>
+              <tr>
+                <td>Deployer</td>
+                <td>AWS MCP</td>
+                <td>제한된 쓰기</td>
+              </tr>
+              <tr>
+                <td>Reporter</td>
+                <td>Google Drive MCP</td>
+                <td>문서 생성</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="agent-mcp-example">4.3 실전 예시: 코드 리뷰 Agent</h3>
+
+        <pre><code class="language-markdown">---
+name: code-reviewer
+description: GitHub PR 코드 리뷰 Agent
+tools: Read, Grep
+---
+
+# Code Reviewer Agent
+
+당신은 시니어 개발자로서 PR을 리뷰합니다.
+
+## MCP 도구 활용
+
+### 정보 수집
+- `github_get_pull_request`: PR 정보 조회
+- `github_list_pull_request_files`: 변경된 파일 목록
+- `github_get_file_contents`: 파일 내용 조회
+
+### 리뷰 작성
+- `github_create_review_comment`: 라인별 코멘트
+- `github_create_pull_request_review`: 전체 리뷰 제출
+
+## 출력 형식
+
+```json
+{
+  "agent": "code-reviewer",
+  "pr_number": 123,
+  "verdict": "APPROVE|REQUEST_CHANGES|COMMENT",
+  "summary": "전체 요약",
+  "comments": [...]
+}
+```</code></pre>
+      </section>
+
+      <!-- Section 5: 오케스트레이션 + MCP -->
+      <section id="orchestration-mcp">
+        <h2>5. 멀티 에이전트 오케스트레이션 + MCP</h2>
+
+        <h3 id="agent-mcp-framework">5.1 Agent-MCP 프레임워크 패턴</h3>
+
+        <p><strong>Short-lived, Focused Agents:</strong></p>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 핵심 원칙</div>
+          <div class="callout-content">
+            <ul>
+              <li>짧은 수명, 작업별 포커스</li>
+              <li>제한된 컨텍스트만 보유</li>
+              <li><strong>Fast, Focused, Safe</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 id="handoff-pattern">5.2 Handoff 패턴</h3>
+
+        <p>Agent 간 MCP 컨텍스트를 안전하게 전달:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Handoff 패턴</div>
+          <div class="mermaid">
+flowchart LR
+    A["Agent A\n(GitHub MCP)\nPR 정보 조회"]
+    B["Agent B\n(분석만)\n코드 분석"]
+    C["Agent C\n(Slack MCP)\n결과 공유"]
+
+    A -->|결과만 전달| B
+    B -->|결과만 전달| C
+          </div>
+        </div>
+
+        <h3 id="reflection-pattern">5.3 Reflection 패턴</h3>
+
+        <p>MCP 결과를 검증하고 개선하는 패턴:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Reflection Loop</div>
+          <div class="mermaid">
+flowchart TB
+    Action["Action Agent\nMCP로 작업 수행"]
+    Review["Review Agent\n결과 검증"]
+    Refine["Refine Agent\n개선된 결과"]
+
+    Action --> Review
+    Review -->|필요시| Refine
+    Refine --> Review
+    Review -->|실패, 최대 3회| Action
+    Review -->|통과| Done["완료"]
+          </div>
+        </div>
+
+        <h3 id="parallel-pattern">5.4 병렬 실행 패턴</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 병렬 MCP 실행</div>
+          <div class="mermaid">
+flowchart TB
+    Orchestrator["Orchestrator Skill"]
+
+    Orchestrator --> A["Agent A\nGitHub MCP"]
+    Orchestrator --> B["Agent B\nDB MCP"]
+    Orchestrator --> C["Agent C\nSlack MCP"]
+
+    A --> Result["결과 종합 및 처리"]
+    B --> Result
+    C --> Result
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: 인기 MCP 서버 -->
+      <section id="popular-servers">
+        <h2>6. 인기 MCP 서버 활용 가이드</h2>
+
+        <h3 id="github-mcp">6.1 GitHub MCP</h3>
+
+        <pre><code class="language-jsonc">{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>도구</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>github_create_issue</code></td><td>이슈 생성</td></tr>
+              <tr><td><code>github_list_issues</code></td><td>이슈 목록 조회</td></tr>
+              <tr><td><code>github_create_pull_request</code></td><td>PR 생성</td></tr>
+              <tr><td><code>github_get_pull_request</code></td><td>PR 정보 조회</td></tr>
+              <tr><td><code>github_create_review_comment</code></td><td>리뷰 코멘트</td></tr>
+              <tr><td><code>github_get_file_contents</code></td><td>파일 내용 조회</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="database-mcp">6.2 Database MCP</h3>
+
+        <p><strong>PostgreSQL:</strong></p>
+        <pre><code class="language-jsonc">{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "postgresql://user:pass@host:5432/db"
+      }
+    }
+  }
+}</code></pre>
+
+        <p><strong>Supabase:</strong></p>
+        <pre><code class="language-jsonc">{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server"],
+      "env": {
+        "SUPABASE_URL": "${SUPABASE_URL}",
+        "SUPABASE_KEY": "${SUPABASE_KEY}"
+      }
+    }
+  }
+}</code></pre>
+
+        <h3 id="aws-mcp">6.3 AWS MCP</h3>
+
+        <pre><code class="language-jsonc">{
+  "mcpServers": {
+    "aws": {
+      "command": "npx",
+      "args": ["-y", "@aws/mcp-server-aws"],
+      "env": {
+        "AWS_ACCESS_KEY_ID": "${AWS_ACCESS_KEY_ID}",
+        "AWS_SECRET_ACCESS_KEY": "${AWS_SECRET_ACCESS_KEY}",
+        "AWS_REGION": "us-east-1"
+      }
+    }
+  }
+}</code></pre>
+
+        <p><strong>주요 도구 영역:</strong> CDK/CloudFormation, S3, Lambda, Bedrock, Rekognition</p>
+
+        <h3 id="zapier-mcp">6.4 Zapier MCP</h3>
+
+        <p>수천 개의 앱을 하나의 MCP 서버로 연결:</p>
+        <ul>
+          <li>Gmail, Outlook</li>
+          <li>Slack, Discord, Teams</li>
+          <li>Notion, Airtable</li>
+          <li>Salesforce, HubSpot</li>
+          <li>Google Sheets, Excel</li>
+          <li>5,000+ 앱</li>
+        </ul>
+
+        <h3 id="playwright-mcp">6.5 Playwright MCP</h3>
+
+        <p>UI 테스팅 자동화:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>도구</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>playwright_navigate</code></td><td>페이지 이동</td></tr>
+              <tr><td><code>playwright_click</code></td><td>요소 클릭</td></tr>
+              <tr><td><code>playwright_fill</code></td><td>입력 필드 작성</td></tr>
+              <tr><td><code>playwright_screenshot</code></td><td>스크린샷 캡처</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="context7">6.6 Context7</h3>
+
+        <p>최신 문서와 코드 예시를 AI에 제공:</p>
+        <ul>
+          <li>최신 버전별 문서 제공</li>
+          <li>코드 예시 포함</li>
+          <li>React, Vue, Angular, Node.js, Python, Go 등 지원</li>
+        </ul>
+      </section>
+
+      <!-- Section 7: 보안 -->
+      <section id="security">
+        <h2>7. 보안 Best Practices</h2>
+
+        <h3 id="credential-management">7.1 자격 증명 관리</h3>
+
+        <div class="callout callout-danger">
+          <div class="callout-title">🚨 중요</div>
+          <div class="callout-content">
+            <p>환경 변수를 사용하세요. 하드코딩 절대 금지!</p>
+          </div>
+        </div>
+
+        <pre><code class="language-jsonc">// ✅ 올바른 예시
+{
+  "mcpServers": {
+    "github": {
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"  // 환경변수 참조
+      }
+    }
+  }
+}
+
+// ❌ 잘못된 예시 - 절대 하지 마세요!
+{
+  "mcpServers": {
+    "github": {
+      "env": {
+        "GITHUB_TOKEN": "ghp_xxxxxxxxxxxx"  // 하드코딩 금지!
+      }
+    }
+  }
+}</code></pre>
+
+        <h3 id="env-separation">7.2 환경 분리</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>환경</th>
+                <th>DB</th>
+                <th>API</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Development</strong></td>
+                <td>테스트 데이터</td>
+                <td>샌드박스</td>
+              </tr>
+              <tr>
+                <td><strong>Staging</strong></td>
+                <td>복제본</td>
+                <td>스테이징</td>
+              </tr>
+              <tr>
+                <td><strong>Production</strong></td>
+                <td>읽기 전용</td>
+                <td>제한된 권한</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="readonly-first">7.3 읽기 전용 우선 원칙</h3>
+
+        <ul>
+          <li><strong>Level 1 (기본)</strong>: 읽기 전용 - SELECT, 파일 조회, GET 요청</li>
+          <li><strong>Level 2 (승인 필요)</strong>: 제한된 쓰기 - 특정 테이블만 INSERT/UPDATE</li>
+          <li><strong>Level 3 (인간 감독)</strong>: 관리자 - DELETE, DROP, 프로덕션 배포</li>
+        </ul>
+
+        <h3 id="security-issues">7.4 2025년 보안 이슈 및 대응</h3>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">⚠️ Knostic 연구 결과 (2025년 7월)</div>
+          <div class="callout-content">
+            <ul>
+              <li>약 2,000개의 공개 MCP 서버 스캔</li>
+              <li>검증된 서버 중 <strong>100%가 인증 미적용</strong></li>
+              <li>내부 도구 목록 및 민감 데이터 노출 위험</li>
+            </ul>
+          </div>
+        </div>
+
+        <p><strong>보안 체크리스트:</strong></p>
+        <ul>
+          <li>☐ 모든 자격 증명이 환경 변수로 관리되는가?</li>
+          <li>☐ MCP 서버가 내부망/VPN 뒤에 있는가?</li>
+          <li>☐ 읽기 전용이 기본 설정인가?</li>
+          <li>☐ 쓰기 작업은 승인 프로세스가 있는가?</li>
+          <li>☐ MCP 호출 로그를 보관하는가?</li>
+        </ul>
+      </section>
+
+      <!-- Section 8: Hook + MCP -->
+      <section id="hook-mcp">
+        <h2>8. Hook + MCP 연계</h2>
+
+        <h3 id="mcp-hook-prepost">8.1 MCP 도구 호출 전/후 Hook</h3>
+
+        <pre><code class="language-jsonc">{
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "github_*",
+        "command": "node .claude/scripts/mcp-pre-check.js"
+      },
+      {
+        "matcher": "postgres_*",
+        "command": "node .claude/scripts/db-pre-check.js"
+      }
+    ],
+    "postToolUse": [
+      {
+        "matcher": "github_*",
+        "command": "node .claude/scripts/mcp-post-log.js"
+      }
+    ]
+  }
+}</code></pre>
+
+        <p><strong>mcp-pre-check.js:</strong></p>
+        <pre><code class="language-javascript">const input = JSON.parse(process.env.CLAUDE_TOOL_INPUT || '{}');
+const toolName = process.env.CLAUDE_TOOL_NAME || '';
+
+// 위험한 작업 차단
+const dangerousTools = [
+  'github_delete_repository',
+  'github_delete_branch'
+];
+
+if (dangerousTools.includes(toolName)) {
+  console.error(`차단: ${toolName}은 허용되지 않습니다.`);
+  process.exit(1);
+}
+
+// 특정 저장소 보호
+if (toolName.startsWith('github_') && input.repo === 'production-critical') {
+  console.error('차단: production-critical 저장소는 보호됩니다.');
+  process.exit(1);
+}
+
+console.log(`허용: ${toolName}`);
+process.exit(0);</code></pre>
+
+        <h3 id="mcp-hook-validate">8.2 MCP 결과 검증 Hook</h3>
+
+        <pre><code class="language-javascript">// .claude/scripts/mcp-post-validate.js
+const output = process.env.CLAUDE_TOOL_OUTPUT || '';
+const toolName = process.env.CLAUDE_TOOL_NAME || '';
+
+// DB 쿼리 결과 검증
+if (toolName.startsWith('postgres_')) {
+  try {
+    const result = JSON.parse(output);
+
+    // 너무 많은 행 경고
+    if (result.rows && result.rows.length > 1000) {
+      console.warn(`경고: ${result.rows.length}개 행 반환됨.`);
+    }
+
+    // 민감 데이터 마스킹 확인
+    const sensitiveFields = ['password', 'ssn', 'credit_card'];
+    const hasSensitive = sensitiveFields.some(field =>
+      output.toLowerCase().includes(field)
+    );
+
+    if (hasSensitive) {
+      console.error('차단: 민감 데이터 포함됨');
+      process.exit(1);
+    }
+  } catch (e) {
+    // JSON 파싱 실패는 무시
+  }
+}
+
+process.exit(0);</code></pre>
+      </section>
+
+      <!-- Section 9: 실전 워크플로우 -->
+      <section id="workflows">
+        <h2>9. 실전 워크플로우 예시</h2>
+
+        <h3 id="workflow-basic">9.1 기본: GitHub PR 자동 리뷰</h3>
+
+        <p><strong>목표:</strong> PR이 열리면 자동으로 코드 리뷰 수행</p>
+
+        <pre><code class="language-yaml">---
+name: pr-reviewer
+description: GitHub PR 자동 리뷰
+allowed-tools: Read
+---
+
+# PR 자동 리뷰어
+
+## 프로세스
+
+### 1. PR 정보 수집
+`github_get_pull_request`로 PR 상세 정보 조회
+
+### 2. 변경 파일 분석
+`github_list_pull_request_files`로 변경된 파일 목록 확인
+
+### 3. 코드 리뷰
+각 파일에 대해:
+- `github_get_file_contents`로 내용 조회
+- 코드 품질, 버그, 보안 검토
+
+### 4. 리뷰 제출
+`github_create_pull_request_review`로 리뷰 제출</code></pre>
+
+        <h3 id="workflow-intermediate">9.2 중급: 멀티소스 경쟁분석 파이프라인</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 경쟁분석 파이프라인</div>
+          <div class="mermaid">
+flowchart TB
+    subgraph Phase1["Phase 1: 병렬 정보 수집"]
+        GitHub["GitHub Analyzer"]
+        Docs["Doc Searcher"]
+        Web["Web Researcher"]
+    end
+
+    Phase1 --> Phase2["Phase 2: 분석 종합"]
+    Phase2 --> Phase3["Phase 3: 리포트 + Slack 공유"]
+          </div>
+        </div>
+
+        <h3 id="workflow-advanced">9.3 고급: 풀스택 배포 오케스트레이션</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 배포 파이프라인</div>
+          <div class="mermaid">
+flowchart TB
+    Test["Phase 1: 코드 검증\n테스트 실행"]
+    Test --> Security["Phase 2: 보안 검사\n취약점 스캔"]
+    Security --> Staging["Phase 3: 스테이징 배포\n+ E2E 테스트"]
+    Staging --> Approval{"인간 승인"}
+    Approval -->|승인| Prod["Phase 4: 프로덕션 배포\n블루-그린"]
+    Approval -->|거절| Stop["중단"]
+    Prod --> Monitor["Phase 5: 모니터링\n30분간"]
+    Monitor -->|이상감지| Rollback["자동 롤백"]
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">ℹ️ 롤백 조건</div>
+          <div class="callout-content">
+            <ul>
+              <li>에러율 1% 초과</li>
+              <li>응답시간 2배 증가</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section id="summary" style="margin-top: 3rem; padding: 2rem; background: var(--color-bg-secondary); border-radius: var(--radius-xl);">
+        <h2 style="margin-top: 0;">📝 요약</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>구성 요소</th>
+                <th>역할</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>MCP Server</strong></td>
+                <td>외부 시스템과의 표준화된 연결</td>
+              </tr>
+              <tr>
+                <td><strong>Skill + MCP</strong></td>
+                <td>여러 MCP 서버를 조합한 오케스트레이션</td>
+              </tr>
+              <tr>
+                <td><strong>Agent + MCP</strong></td>
+                <td>전문화된 역할에 특정 MCP 도구 할당</td>
+              </tr>
+              <tr>
+                <td><strong>Hook + MCP</strong></td>
+                <td>MCP 호출 전/후 검증 및 제어</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info" style="margin-bottom: 0;">
+          <div class="callout-title">🔑 핵심 공식</div>
+          <div class="callout-content">
+            <p style="font-size: 1.1rem; font-weight: 600; text-align: center; margin: 0;">
+              안전한 MCP 통합 = Skill (오케스트레이션) + Agent (전문화) + Hook (검증) + 최소 권한 원칙
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Related Docs -->
+      <section style="margin-top: 2rem;">
+        <h3>📚 연관 문서</h3>
+        <ul>
+          <li><a href="orchestration.html">Claude Code 멀티 에이전트 오케스트레이션 가이드</a> - Skill, Agent, Hook 기본 개념</li>
+          <li><a href="https://modelcontextprotocol.io/specification/2025-11-25" target="_blank" rel="noopener">MCP 공식 스펙</a> - 2025년 11월 스펙</li>
+        </ul>
+      </section>
+
+      <!-- Footer Navigation -->
+      <nav class="footer-nav" aria-label="문서 네비게이션">
+        <a href="orchestration.html" class="footer-nav-link prev">
+          <span class="footer-nav-label">← 이전</span>
+          <span class="footer-nav-title">오케스트레이션 가이드</span>
+        </a>
+        <a href="index.html" class="footer-nav-link next">
+          <span class="footer-nav-label">다음 →</span>
+          <span class="footer-nav-title">홈으로</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="맨 위로">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <!-- Search Modal -->
+  <div class="search-modal" role="dialog" aria-modal="true" aria-label="검색">
+    <div class="search-modal-content">
+      <div class="search-input-wrapper">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" class="search-input" placeholder="문서 검색..." aria-label="검색어 입력">
+      </div>
+      <div class="search-results"></div>
+      <div class="search-footer">
+        <span><kbd>↑↓</kbd> 이동</span>
+        <span><kbd>Enter</kbd> 선택</span>
+        <span><kbd>Esc</kbd> 닫기</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markdown.min.js"></script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/sidebar.js"></script>
+  <script src="assets/js/card-tabs.js"></script>
+  <script src="assets/js/search.js"></script>
+  <script src="assets/js/code-block.js"></script>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+      securityLevel: 'loose',
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis'
+      }
+    });
+  </script>
+</body>
+</html>

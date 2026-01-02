@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Claude Code CLI에서 Skill, Agent, Hook을 조합하여 멀티 에이전트 워크플로우를 구축하는 가이드">
+  <meta name="keywords" content="Claude Code, Skill, Agent, Hook, 오케스트레이션, 워크플로우">
+  <meta name="theme-color" content="#6366f1">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <title>멀티 에이전트 오케스트레이션 가이드 - MyCoding Book</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <!-- Prism.js for Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎭</text></svg>">
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="header-logo">
+        <span>📚</span>
+        <span>MyCoding Book</span>
+      </a>
+
+      <div class="header-actions">
+        <!-- Document Selector -->
+        <div class="doc-selector">
+          <button class="doc-selector-btn" aria-expanded="false" aria-haspopup="true">
+            <span>🎭 오케스트레이션</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="doc-selector-dropdown" role="menu">
+            <a href="orchestration.html" class="doc-selector-item active" role="menuitem">
+              <span>🎭</span>
+              <span>오케스트레이션 가이드</span>
+            </a>
+            <a href="mcp-guide.html" class="doc-selector-item" role="menuitem">
+              <span>🔌</span>
+              <span>MCP 연계 가이드</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" aria-label="메뉴 열기">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Search Button -->
+        <button class="search-btn" aria-label="검색">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <span>검색...</span>
+          <span class="search-kbd"><kbd>Ctrl</kbd><kbd>K</kbd></span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" aria-label="다크모드 전환">
+          <span class="theme-toggle-thumb">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Reading Progress -->
+  <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="목차">
+    <button class="sidebar-close" aria-label="메뉴 닫기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="sidebar-header">
+      <div class="sidebar-title">목차</div>
+      <div class="sidebar-doc-title">🎭 오케스트레이션 가이드</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- Section 1 -->
+      <div class="sidebar-section expanded">
+        <div class="sidebar-section-title" data-section="overview" tabindex="0" role="button" aria-expanded="true">
+          <span><span class="sidebar-section-icon">📋</span>1. 개요</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#skill-vs-agent" class="sidebar-item">1.1 Skill vs Agent 기본 개념</a>
+          <a href="#when-to-use" class="sidebar-item">1.2 언제 무엇을 쓰는가</a>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="architecture" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🏗️</span>2. 핵심 아키텍처</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#system-structure" class="sidebar-item">2.1 Claude Code 시스템 구조</a>
+          <a href="#session-isolation" class="sidebar-item">2.2 세션 독립성</a>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="patterns" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🧩</span>3. 조합 패턴</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#agent-in-skill" class="sidebar-item">3.1 Agent 안에 Skill</a>
+          <a href="#skill-in-agent" class="sidebar-item">3.2 Skill 안에 Agent</a>
+          <a href="#why-skill-orchestrator" class="sidebar-item">3.3 왜 Skill이 오케스트레이터로 강력한가</a>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="hooks" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🪝</span>4. Hook 시스템</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#hook-definition" class="sidebar-item">4.1 Hook 정의 위치</a>
+          <a href="#hook-trigger" class="sidebar-item">4.2 Hook 발동 조건</a>
+          <a href="#hook-env" class="sidebar-item">4.3 Hook 환경변수</a>
+          <a href="#hook-exit-code" class="sidebar-item">4.4 Hook 종료 코드</a>
+          <a href="#hook-system-level" class="sidebar-item">4.5 시스템 레벨 발동 원리</a>
+          <a href="#hook-filtering" class="sidebar-item">4.6 스크립트에서 컨텍스트 필터링</a>
+          <a href="#hook-state" class="sidebar-item">4.7 상태 관리</a>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="advanced" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">⚡</span>5. 고급 워크플로우</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#branching" class="sidebar-item">5.1 분기</a>
+          <a href="#validation" class="sidebar-item">5.2 검증</a>
+          <a href="#loop-control" class="sidebar-item">5.3 반복 제한</a>
+          <a href="#aggregation" class="sidebar-item">5.4 결과 종합</a>
+          <a href="#reflection" class="sidebar-item">5.5 회고</a>
+          <a href="#multi-branch" class="sidebar-item">5.6 다중 분기</a>
+          <a href="#dag" class="sidebar-item">5.7 워크트리/DAG</a>
+          <a href="#consensus" class="sidebar-item">5.8 투표/합의</a>
+          <a href="#racing" class="sidebar-item">5.9 경쟁</a>
+          <a href="#checkpoint" class="sidebar-item">5.10 체크포인트/롤백</a>
+          <a href="#error-handling" class="sidebar-item">5.11 에러 핸들링</a>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="examples" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">💻</span>6. 실전 예시</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#example-basic" class="sidebar-item">6.1 기본: 단일 검증</a>
+          <a href="#example-intermediate" class="sidebar-item">6.2 중급: 회고 루프</a>
+          <a href="#example-advanced" class="sidebar-item">6.3 고급: 풀 파이프라인</a>
+          <a href="#project-structure" class="sidebar-item">6.4 프로젝트 구조</a>
+          <a href="#agent-definition" class="sidebar-item">6.5 Agent 정의 파일</a>
+          <a href="#utils" class="sidebar-item">6.6 공통 유틸리티</a>
+          <a href="#skill-tools" class="sidebar-item">6.7 Skill 도구 목록</a>
+        </div>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="limitations" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🚀</span>7. 한계점 및 확장</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#cli-limits" class="sidebar-item">7.1 Claude Code CLI 한계</a>
+          <a href="#agent-sdk" class="sidebar-item">7.2 Agent SDK로 전환 시점</a>
+          <a href="#mcp-extension" class="sidebar-item">7.3 MCP로 확장</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main" id="main-content">
+    <!-- Card Tabs -->
+    <div class="card-tabs-wrapper">
+      <div class="card-tabs" role="tablist" aria-label="섹션 탭">
+        <a href="#overview" class="card-tab active" data-section="overview" role="tab" aria-selected="true" tabindex="0">
+          <span class="card-tab-icon">📋</span>
+          <span class="card-tab-title">개요</span>
+        </a>
+        <a href="#architecture" class="card-tab" data-section="architecture" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🏗️</span>
+          <span class="card-tab-title">아키텍처</span>
+        </a>
+        <a href="#patterns" class="card-tab" data-section="patterns" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🧩</span>
+          <span class="card-tab-title">조합 패턴</span>
+        </a>
+        <a href="#hooks" class="card-tab" data-section="hooks" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🪝</span>
+          <span class="card-tab-title">Hook</span>
+        </a>
+        <a href="#advanced" class="card-tab" data-section="advanced" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">⚡</span>
+          <span class="card-tab-title">고급</span>
+        </a>
+        <a href="#examples" class="card-tab" data-section="examples" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">💻</span>
+          <span class="card-tab-title">예시</span>
+        </a>
+        <a href="#limitations" class="card-tab" data-section="limitations" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🚀</span>
+          <span class="card-tab-title">확장</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Header -->
+      <header class="content-header">
+        <h1 class="content-title">멀티 에이전트 오케스트레이션 가이드</h1>
+        <div class="content-meta">
+          <span class="content-meta-item">📅 2025-01-02</span>
+          <span class="content-meta-item">⏱️ 약 20분</span>
+        </div>
+        <p style="margin-top: 1rem; color: var(--color-text-secondary);">
+          Claude Code CLI에서 Skill, Agent, Hook을 조합하여 신뢰할 수 있는 멀티 에이전트 워크플로우를 구축하는 방법을 다룹니다.
+        </p>
+        <div class="content-tags">
+          <span class="content-tag">Skill</span>
+          <span class="content-tag">Agent</span>
+          <span class="content-tag">Hook</span>
+          <span class="content-tag">Workflow</span>
+          <span class="content-tag">Pipeline</span>
+        </div>
+      </header>
+
+      <!-- Section 1: 개요 -->
+      <section id="overview">
+        <h2>1. 개요</h2>
+
+        <h3 id="skill-vs-agent">1.1 Skill vs Agent 기본 개념</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Skill</th>
+                <th>Agent</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>정의</strong></td>
+                <td>재사용 가능한 프롬프트 템플릿</td>
+                <td>독립된 컨텍스트의 작업자</td>
+              </tr>
+              <tr>
+                <td><strong>위치</strong></td>
+                <td><code>.claude/skills/</code></td>
+                <td><code>.claude/agents/</code></td>
+              </tr>
+              <tr>
+                <td><strong>특징</strong></td>
+                <td>명령어로 호출 (<code>/skill-name</code>)</td>
+                <td>Task 도구로 호출</td>
+              </tr>
+              <tr>
+                <td><strong>컨텍스트</strong></td>
+                <td>메인 모델과 공유</td>
+                <td>독립/격리됨</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="when-to-use">1.2 언제 무엇을 쓰는가</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>상황</th>
+                <th>선택</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>"이거 자주 쓰니까 명령어로 만들자"</td>
+                <td><strong>Skill</strong></td>
+              </tr>
+              <tr>
+                <td>"알아서 탐색하고 판단해야 해"</td>
+                <td><strong>Agent</strong></td>
+              </tr>
+              <tr>
+                <td>"명령어인데 내부가 복잡해"</td>
+                <td><strong>Skill → Agent</strong></td>
+              </tr>
+              <tr>
+                <td>"작업 중에 정형화된 단계 필요"</td>
+                <td><strong>Agent → Skill</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 핵심 차이점</div>
+          <div class="callout-content">
+            <ul>
+              <li>Agent는 하위에 다른 Agent를 둘 수 없음</li>
+              <li>Skill 안에서는 여러 Agent를 병렬로 호출 가능</li>
+              <li>이 차이가 <strong>Skill을 오케스트레이터로 만드는 핵심</strong></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: 핵심 아키텍처 -->
+      <section id="architecture">
+        <h2>2. 핵심 아키텍처</h2>
+
+        <h3 id="system-structure">2.1 Claude Code 시스템 구조</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Claude Code 시스템 구조</div>
+          <div class="mermaid">
+flowchart TB
+    subgraph System["Claude Code 시스템 (Harness/Runtime)"]
+        direction TB
+        Tools["도구 실행 관리"]
+        Hooks["Hook 발동"]
+        Sessions["세션 관리"]
+
+        subgraph Models["모델 레이어"]
+            Main["메인 모델\n(LLM)"]
+            Agent["Agent 모델\n(LLM)"]
+        end
+    end
+
+    Tools --> Models
+    Hooks --> Models
+    Sessions --> Models
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">ℹ️ 중요</div>
+          <div class="callout-content">
+            <p>모델(LLM)과 시스템(Runtime)은 분리되어 있습니다:</p>
+            <ul>
+              <li><strong>모델</strong>: 생각하고 도구 호출 요청</li>
+              <li><strong>시스템</strong>: 실제 도구 실행, Hook 발동, 세션 관리</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 id="session-isolation">2.2 세션 독립성</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 세션 독립성</div>
+          <div class="mermaid">
+flowchart TB
+    Main["메인 모델 (세션 A)"]
+
+    Main --> Read["settings.json 읽기 ✅"]
+    Main --> Hook1["Hook 적용 ✅\n(시스템이 발동)"]
+    Main --> Task["Task 도구로 Agent 호출"]
+
+    Task --> Agent["Agent (세션 B)\n독립/격리"]
+
+    Agent --> NoRead["settings.json 직접 읽기 ❌"]
+    Agent --> NoHook["Hook 인식 ❌\n(하지만 시스템이 발동함)"]
+    Agent --> Result["결과만 반환"]
+
+    Result --> Main
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">⚠️ 중요 구분</div>
+          <div class="callout-content">
+            <ul>
+              <li><strong>모델 관점</strong>: Agent는 Hook의 존재를 모름</li>
+              <li><strong>시스템 관점</strong>: Agent가 도구 호출해도 Hook은 발동됨</li>
+            </ul>
+            <p>Agent는 <strong>격리된 컨텍스트</strong>에서 실행되지만, 시스템 레벨의 Hook은 여전히 적용됩니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: 조합 패턴 -->
+      <section id="patterns">
+        <h2>3. 조합 패턴</h2>
+
+        <h3 id="agent-in-skill">3.1 Agent 안에 Skill</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Agent → Skill 패턴</div>
+          <div class="mermaid">
+flowchart TB
+    Agent["Agent (복잡한 작업 수행)"]
+    Agent --> Skill["Skill 호출\n(특정 단계에서)"]
+          </div>
+        </div>
+
+        <p><strong>사용 케이스:</strong></p>
+        <ul>
+          <li>Agent가 코드 리뷰 중 <code>/commit</code> 스킬 호출</li>
+          <li>Agent가 문서 작성 중 <code>/pdf</code> 스킬로 변환</li>
+          <li>큰 작업 흐름 안에서 정형화된 단계 실행</li>
+        </ul>
+
+        <h3 id="skill-in-agent">3.2 Skill 안에 Agent (핵심 패턴)</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Skill → Agent 패턴 (오케스트레이션)</div>
+          <div class="mermaid">
+flowchart TB
+    Skill["Skill (오케스트레이터)"]
+
+    Skill --> A["Agent A\n(코드 분석)"]
+    Skill --> B["Agent B\n(테스트 검토)"]
+    Skill --> C["Agent C\n(문서 검토)"]
+
+    A --> Result["결과 종합"]
+    B --> Result
+    C --> Result
+
+    Result --> Output["최종 출력"]
+          </div>
+        </div>
+
+        <p><strong>사용 케이스:</strong></p>
+        <ul>
+          <li><code>/full-review</code> 스킬로 여러 관점 동시 분석</li>
+          <li><code>/deploy</code> 스킬로 빌드, 테스트, 배포 파이프라인</li>
+          <li>복잡한 워크플로우를 단일 명령어로 실행</li>
+        </ul>
+
+        <h3 id="why-skill-orchestrator">3.3 왜 Skill이 오케스트레이터로 강력한가</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Agent</th>
+                <th>Skill</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>하위 Agent</strong></td>
+                <td>❌ 불가</td>
+                <td>✅ 여러 개 가능</td>
+              </tr>
+              <tr>
+                <td><strong>병렬 실행</strong></td>
+                <td>단일 흐름</td>
+                <td>동시 실행 가능</td>
+              </tr>
+              <tr>
+                <td><strong>역할</strong></td>
+                <td>단일 전문가</td>
+                <td><strong>팀 리더</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 기억하세요</div>
+          <div class="callout-content">
+            <p>Skill은 <strong>버튼</strong>, Agent는 <strong>조수</strong>라고 생각하면 됩니다.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Hook 시스템 -->
+      <section id="hooks">
+        <h2>4. Hook 시스템</h2>
+
+        <h3 id="hook-definition">4.1 Hook 정의 위치</h3>
+
+        <pre><code class="language-jsonc">// .claude/settings.json
+{
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "Task",
+        "command": "node .claude/scripts/pre-check.js"
+      }
+    ],
+    "postToolUse": [
+      {
+        "matcher": "Task",
+        "command": "node .claude/scripts/post-validate.js"
+      }
+    ]
+  }
+}</code></pre>
+
+        <p>Hook은 <strong>오직 settings.json에서만</strong> 정의됩니다.</p>
+
+        <h3 id="hook-trigger">4.2 Hook 발동 조건</h3>
+
+        <p><strong>matcher 조건만 맞으면 무조건 발동 (시스템 레벨):</strong></p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>호출 주체</th>
+                <th>Hook 발동</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>사용자 직접</td>
+                <td>✅</td>
+                <td>사용자가 직접 도구 요청</td>
+              </tr>
+              <tr>
+                <td>메인 모델</td>
+                <td>✅</td>
+                <td>메인 모델이 도구 호출</td>
+              </tr>
+              <tr>
+                <td>Skill 내에서</td>
+                <td>✅</td>
+                <td>Skill 실행 중 도구 호출</td>
+              </tr>
+              <tr>
+                <td>Agent 내에서</td>
+                <td>✅</td>
+                <td>Agent가 도구 호출해도 <strong>시스템이</strong> 발동</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>Hook은 <strong>"누가"가 아니라 "무엇을"</strong> 기준으로 발동합니다.</p>
+
+        <h3 id="hook-env">4.3 Hook 환경변수</h3>
+
+        <p>Hook 스크립트에서 사용 가능한 환경변수:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>환경변수</th>
+                <th>설명</th>
+                <th>사용 시점</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>CLAUDE_TOOL_INPUT</code></td>
+                <td>도구 호출 입력 (JSON)</td>
+                <td>pre/post</td>
+              </tr>
+              <tr>
+                <td><code>CLAUDE_TOOL_OUTPUT</code></td>
+                <td>도구 실행 결과</td>
+                <td>postToolUse만</td>
+              </tr>
+              <tr>
+                <td><code>CLAUDE_TOOL_NAME</code></td>
+                <td>호출된 도구 이름</td>
+                <td>pre/post</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <pre><code class="language-javascript">// 환경변수 사용 예시
+const input = JSON.parse(process.env.CLAUDE_TOOL_INPUT || '{}');
+const output = process.env.CLAUDE_TOOL_OUTPUT || '';
+const toolName = process.env.CLAUDE_TOOL_NAME || '';</code></pre>
+
+        <h3 id="hook-exit-code">4.4 Hook 종료 코드</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>종료 코드</th>
+                <th>의미</th>
+                <th>결과</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>process.exit(0)</code></td>
+                <td>성공/통과</td>
+                <td>작업 계속 진행</td>
+              </tr>
+              <tr>
+                <td><code>process.exit(1)</code></td>
+                <td>실패/차단</td>
+                <td>작업 중단, 에러 반환</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <pre><code class="language-javascript">// 검증 통과
+if (isValid) {
+  process.exit(0);  // 계속 진행
+}
+
+// 검증 실패
+console.error("검증 실패 이유");
+process.exit(1);  // 작업 중단</code></pre>
+
+        <h3 id="hook-system-level">4.5 시스템 레벨 발동 원리</h3>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 Hook 발동 흐름</div>
+          <div class="mermaid">
+sequenceDiagram
+    participant Main as 메인 모델
+    participant System as 시스템
+    participant Agent as Agent 모델
+
+    Main->>System: 1. Task 도구 호출할게
+    System->>System: 2. preToolUse Hook 실행 ✅
+    System->>Agent: 3. Agent 세션 생성 & 실행
+    Agent->>Agent: 4. 독립적으로 작업 (Hook 모름)
+    Agent->>System: 5. 결과 반환
+    System->>System: 6. postToolUse Hook 실행 ✅
+    System->>Main: 7. 결과 전달
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">ℹ️ 핵심</div>
+          <div class="callout-content">
+            <p>Hook은 모델이 아닌 <strong>시스템(Runtime)이 발동</strong>합니다. 모델이 우회 불가능합니다.</p>
+          </div>
+        </div>
+
+        <h3 id="hook-filtering">4.6 스크립트에서 컨텍스트 필터링</h3>
+
+        <p>모든 도구 호출에 Hook이 발동되므로, 스크립트에서 필터링이 필요합니다:</p>
+
+        <pre><code class="language-javascript">// .claude/scripts/post-validate.js
+const input = JSON.parse(process.env.CLAUDE_TOOL_INPUT || '{}');
+const output = process.env.CLAUDE_TOOL_OUTPUT || '';
+
+// 특정 워크플로우만 제어
+if (input.prompt?.includes('[AUDIT]')) {
+  // 검증 로직
+  if (output.includes('ERROR') || !output.includes('완료')) {
+    console.error("검증 실패");
+    process.exit(1);
+  }
+  console.log("검증 통과");
+  process.exit(0);
+} else {
+  // 나머지는 그냥 통과
+  process.exit(0);
+}</code></pre>
+
+        <h3 id="hook-state">4.7 상태 관리 (.claude/state.json)</h3>
+
+        <p>Hook 간 상태 공유를 위한 파일 기반 상태 관리:</p>
+
+        <pre><code class="language-javascript">// .claude/scripts/post-validate.js
+const fs = require('fs');
+const STATE_FILE = '.claude/state.json';
+
+// 상태 읽기
+function getState() {
+  if (fs.existsSync(STATE_FILE)) {
+    return JSON.parse(fs.readFileSync(STATE_FILE));
+  }
+  return { retryCount: 0, checkpoints: [] };
+}
+
+// 상태 저장
+function saveState(state) {
+  fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+}
+
+// 사용 예시
+const state = getState();
+if (state.retryCount >= 3) {
+  console.log("최대 반복 횟수 도달");
+  process.exit(1);
+}
+state.retryCount++;
+saveState(state);</code></pre>
+      </section>
+
+      <!-- Section 5: 고급 워크플로우 패턴 -->
+      <section id="advanced">
+        <h2>5. 고급 워크플로우 패턴</h2>
+
+        <h3 id="branching">5.1 분기 (Branching)</h3>
+
+        <p>조건에 따라 다른 Agent 호출:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 분기 패턴</div>
+          <div class="mermaid">
+flowchart TB
+    Input["입력 분석"]
+    Input --> TypeA["타입 A → Agent A"]
+    Input --> TypeB["타입 B → Agent B"]
+    Input --> TypeC["타입 C → Agent C"]
+          </div>
+        </div>
+
+        <h3 id="validation">5.2 검증 (Validation)</h3>
+
+        <p>Agent 결과를 다른 Agent가 검증:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 검증 패턴</div>
+          <div class="mermaid">
+flowchart TB
+    A["Agent A (작업)"]
+    A --> B["Agent B (검증)"]
+    B --> Pass{"통과?"}
+    Pass -->|Yes| Done["완료"]
+    Pass -->|No| A
+          </div>
+        </div>
+
+        <h3 id="loop-control">5.3 반복 제한 (Loop Control)</h3>
+
+        <p>무한 루프 방지:</p>
+
+        <pre><code class="language-javascript">// .claude/scripts/loop-control.js
+const { getState, saveState, resetState } = require('./utils');
+
+const state = getState();
+
+if (state.retryCount >= 3) {
+  console.error("최대 반복 횟수(3회) 초과");
+  resetState();
+  process.exit(1);
+}
+
+state.retryCount++;
+saveState(state);
+process.exit(0);</code></pre>
+
+        <h3 id="aggregation">5.4 결과 종합 (Aggregation)</h3>
+
+        <p>여러 Agent 결과를 하나로:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 결과 종합 패턴</div>
+          <div class="mermaid">
+flowchart LR
+    A["Agent A 결과"]
+    B["Agent B 결과"]
+    C["Agent C 결과"]
+
+    A --> Agg["종합 로직"]
+    B --> Agg
+    C --> Agg
+
+    Agg --> Report["최종 리포트"]
+          </div>
+        </div>
+
+        <h3 id="reflection">5.5 회고 (Reflection)</h3>
+
+        <p>자기 수정 패턴:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 회고 패턴</div>
+          <div class="mermaid">
+flowchart TB
+    A1["Agent A: 초안 작성"]
+    A1 --> B["Agent B (리뷰어):\n'이 부분 문제 있어'"]
+    B --> A2["Agent A: 피드백 반영 수정"]
+    A2 --> C["Agent C: 최종 검증"]
+          </div>
+        </div>
+
+        <h3 id="multi-branch">5.6 다중 분기 (Multi-Branch)</h3>
+
+        <p>동시에 여러 경로로 분기:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 다중 분기 패턴</div>
+          <div class="mermaid">
+flowchart TB
+    Input["입력"] --> Classify["분류"]
+
+    Classify --> A["Agent A\n(프론트엔드)"]
+    Classify --> B["Agent B\n(백엔드)"]
+    Classify --> C["Agent C\n(인프라)"]
+
+    A --> Result["결과 종합"]
+    B --> Result
+    C --> Result
+          </div>
+        </div>
+
+        <h3 id="dag">5.7 워크트리/DAG</h3>
+
+        <p>의존성이 있는 복잡한 파이프라인:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 DAG 패턴</div>
+          <div class="mermaid">
+flowchart TB
+    A["A (분석)"]
+    A --> B["B"]
+    A --> C["C"]
+    B --> D["D"]
+    C --> E["E"]
+    D --> F["F (종합)"]
+    E --> F
+          </div>
+        </div>
+
+        <h3 id="consensus">5.8 투표/합의 (Consensus)</h3>
+
+        <p>여러 Agent의 의견을 종합:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 투표 패턴</div>
+          <div class="mermaid">
+flowchart LR
+    A["Agent A\n답변 1"]
+    B["Agent B\n답변 2"]
+    C["Agent C\n답변 3"]
+
+    A --> Vote["다수결"]
+    B --> Vote
+    C --> Vote
+
+    Vote --> Decision["최종 결정"]
+          </div>
+        </div>
+
+        <h3 id="racing">5.9 경쟁 (Racing)</h3>
+
+        <p>여러 접근법 중 최선 선택:</p>
+
+        <ul>
+          <li>먼저 완료된 결과 (속도)</li>
+          <li>가장 높은 점수 (품질)</li>
+          <li>특정 조건 충족 (요구사항)</li>
+        </ul>
+
+        <h3 id="checkpoint">5.10 체크포인트/롤백</h3>
+
+        <p>긴 워크플로우에서 안전망:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 체크포인트 패턴</div>
+          <div class="mermaid">
+flowchart LR
+    W1["작업 1"] --> CP1["체크포인트 1"]
+    CP1 --> W2["작업 2"]
+    W2 --> CP2["체크포인트 2"]
+    CP2 --> W3["작업 3"]
+
+    W3 -.->|실패시 롤백| CP1
+          </div>
+        </div>
+
+        <h3 id="error-handling">5.11 에러 핸들링/폴백</h3>
+
+        <p>실패 시 대체 경로:</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 폴백 패턴</div>
+          <div class="mermaid">
+flowchart TB
+    A["Agent A (주 작업)"]
+    A --> Success{"성공?"}
+    Success -->|Yes| Done["완료"]
+    Success -->|No| B["Agent B (폴백)"]
+    B --> Success2{"성공?"}
+    Success2 -->|Yes| Done
+    Success2 -->|No| Human["인간 개입 요청"]
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: 실전 예시 -->
+      <section id="examples">
+        <h2>6. 실전 예시</h2>
+
+        <h3 id="example-basic">6.1 기본: 단일 검증 (Skill + Hook)</h3>
+
+        <p><strong>목표:</strong> Task 호출 결과를 검증하고 실패시 재시도</p>
+
+        <pre><code class="language-text">.claude/
+├── settings.json
+├── state.json
+├── skills/
+│   └── verified-task/
+│       └── SKILL.md
+└── scripts/
+    └── verify-result.js</code></pre>
+
+        <p><strong>settings.json:</strong></p>
+        <pre><code class="language-jsonc">{
+  "hooks": {
+    "postToolUse": [{
+      "matcher": "Task",
+      "command": "node .claude/scripts/verify-result.js"
+    }]
+  }
+}</code></pre>
+
+        <p><strong>verify-result.js:</strong></p>
+        <pre><code class="language-javascript">const fs = require('fs');
+const STATE_FILE = '.claude/state.json';
+
+const input = JSON.parse(process.env.CLAUDE_TOOL_INPUT || '{}');
+const output = process.env.CLAUDE_TOOL_OUTPUT || '';
+
+// [VERIFY] 태그가 있는 경우만 검증
+if (!input.prompt?.includes('[VERIFY]')) {
+  process.exit(0);
+}
+
+// 상태 관리
+let state = { retryCount: 0 };
+if (fs.existsSync(STATE_FILE)) {
+  state = JSON.parse(fs.readFileSync(STATE_FILE));
+}
+
+// 최대 3회 재시도
+if (state.retryCount >= 3) {
+  console.error("최대 재시도 횟수 초과");
+  fs.unlinkSync(STATE_FILE);
+  process.exit(1);
+}
+
+// 실제 검증 로직
+const isValid = validateOutput(output);
+if (!isValid) {
+  state.retryCount++;
+  fs.writeFileSync(STATE_FILE, JSON.stringify(state));
+  console.error(`검증 실패. 재시도 ${state.retryCount}/3`);
+  process.exit(1);
+}
+
+// 성공시 상태 초기화
+fs.unlinkSync(STATE_FILE);
+console.log("검증 통과!");
+process.exit(0);
+
+function validateOutput(output) {
+  if (output.includes('ERROR') || output.includes('error')) {
+    return false;
+  }
+  if (!output.includes('완료') && !output.includes('PASS')) {
+    return false;
+  }
+  return true;
+}</code></pre>
+
+        <h3 id="example-intermediate">6.2 중급: 회고 루프 (Reflection Loop)</h3>
+
+        <p><strong>목표:</strong> 코드 작성 → 리뷰 → 수정 → 최종 검증</p>
+
+        <pre><code class="language-yaml">---
+name: reflective-coder
+description: 회고를 통해 품질을 높이는 코드 작성
+allowed-tools: Task, Read, Write
+---
+
+# 회고형 코드 작성
+
+## 실행 순서
+
+### 1단계: 초안 작성
+[REFLECT:DRAFT] 태그와 함께 coder agent 호출
+
+### 2단계: 리뷰
+[REFLECT:REVIEW] 태그와 함께 reviewer agent 호출
+- 문제점과 개선사항을 구체적으로 지적
+
+### 3단계: 수정
+[REFLECT:REVISE] 태그와 함께 coder agent 재호출
+- 리뷰 피드백을 반드시 반영
+
+### 4단계: 최종 검증
+[REFLECT:VERIFY] 태그와 함께 verifier agent 호출
+- 통과시 완료
+- 실패시 2단계로 돌아감 (최대 2회)</code></pre>
+
+        <h3 id="example-advanced">6.3 고급: 풀 파이프라인</h3>
+
+        <p><strong>목표:</strong> 다중 분기 + 병렬 실행 + 투표 + 체크포인트 + 에러 핸들링</p>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📊 풀 파이프라인</div>
+          <div class="mermaid">
+flowchart TB
+    Start["시작"]
+    Start --> CP0["체크포인트 0"]
+    CP0 --> Parallel
+
+    subgraph Parallel["병렬 실행"]
+        Code["코드 분석"]
+        Security["보안 검토"]
+        Perf["성능 체크"]
+    end
+
+    Parallel --> CP1["체크포인트 1"]
+    CP1 --> Vote["투표/합의"]
+
+    Vote --> Consensus{"합의\n도달?"}
+    Consensus -->|Yes| Report["최종 리포트"]
+    Consensus -->|No| Resolver["consensus-resolver"]
+
+    Resolver --> Resolved{"해결?"}
+    Resolved -->|Yes| Report
+    Resolved -->|No| Human["인간 개입"]
+          </div>
+        </div>
+
+        <h3 id="project-structure">6.4 프로젝트 구조 예시</h3>
+
+        <pre><code class="language-text">my-project/
+├── .claude/
+│   ├── settings.json          # Hook 정의
+│   ├── state.json             # 런타임 상태 (gitignore)
+│   │
+│   ├── skills/
+│   │   ├── verified-task/
+│   │   │   └── SKILL.md
+│   │   ├── reflective-coder/
+│   │   │   └── SKILL.md
+│   │   └── full-audit/
+│   │       └── SKILL.md
+│   │
+│   ├── agents/
+│   │   ├── code-analyzer/
+│   │   │   └── code-analyzer.md
+│   │   ├── security-reviewer/
+│   │   ├── performance-checker/
+│   │   ├── reviewer/
+│   │   ├── verifier/
+│   │   └── fallback-analyzer/
+│   │
+│   └── scripts/
+│       ├── utils.js           # 공통 유틸리티
+│       ├── verify-result.js
+│       ├── reflection-control.js
+│       ├── pipeline-controller.js
+│       ├── checkpoint-manager.js
+│       └── voting-system.js
+│
+├── src/
+├── tests/
+└── package.json</code></pre>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">⚠️ .gitignore에 추가</div>
+          <div class="callout-content">
+            <pre><code>.claude/state.json</code></pre>
+          </div>
+        </div>
+
+        <h3 id="agent-definition">6.5 Agent 정의 파일 예시</h3>
+
+        <p><strong>.claude/agents/code-analyzer/code-analyzer.md:</strong></p>
+
+        <pre><code class="language-markdown">---
+name: code-analyzer
+description: 코드 구조와 품질을 분석하는 전문 Agent
+tools: Read, Grep, Glob
+---
+
+# Code Analyzer Agent
+
+당신은 코드베이스 분석 전문가입니다.
+
+## 분석 항목
+
+1. **구조 분석**: 디렉토리 구조, 모듈 구성
+2. **복잡도 분석**: 함수별 복잡도, 의존성
+3. **품질 지표**: 코드 중복, 네이밍 컨벤션
+
+## 출력 형식
+
+반드시 다음 JSON 형식으로 결과 반환:
+
+```json
+{
+  "agent": "code-analyzer",
+  "status": "pass|fail",
+  "severity": "low|medium|high|critical",
+  "findings": [...],
+  "score": 0-100
+}
+```</code></pre>
+
+        <h3 id="utils">6.6 공통 유틸리티 (utils.js)</h3>
+
+        <pre><code class="language-javascript">const fs = require('fs');
+const path = require('path');
+
+const STATE_FILE = path.join(__dirname, '..', 'state.json');
+
+function getState() {
+  if (fs.existsSync(STATE_FILE)) {
+    return JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+  }
+  return {
+    retryCount: 0,
+    phase: 'init',
+    results: {},
+    checkpoints: {},
+    failedAgents: [],
+    usedFallback: {}
+  };
+}
+
+function saveState(state) {
+  fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
+}
+
+function resetState() {
+  if (fs.existsSync(STATE_FILE)) {
+    fs.unlinkSync(STATE_FILE);
+  }
+}
+
+function saveCheckpoint(name) {
+  const state = getState();
+  state.checkpoints[name] = {
+    timestamp: Date.now(),
+    phase: state.phase,
+    results: { ...state.results }
+  };
+  saveState(state);
+  console.log(`[Checkpoint] ${name} 저장됨`);
+}
+
+function rollback(checkpointName) {
+  const state = getState();
+  const cp = state.checkpoints[checkpointName];
+  if (cp) {
+    state.phase = cp.phase;
+    state.results = { ...cp.results };
+    saveState(state);
+    console.log(`[Rollback] ${checkpointName}으로 복구됨`);
+    return true;
+  }
+  return false;
+}
+
+function getHookInput() {
+  return JSON.parse(process.env.CLAUDE_TOOL_INPUT || '{}');
+}
+
+function getHookOutput() {
+  return process.env.CLAUDE_TOOL_OUTPUT || '';
+}
+
+module.exports = {
+  getState,
+  saveState,
+  resetState,
+  saveCheckpoint,
+  rollback,
+  getHookInput,
+  getHookOutput,
+  STATE_FILE
+};</code></pre>
+
+        <h3 id="skill-tools">6.7 Skill에서 사용 가능한 도구 목록</h3>
+
+        <p><code>allowed-tools</code> 필드에 지정 가능한 도구:</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>도구</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>Read</code></td><td>파일 읽기</td></tr>
+              <tr><td><code>Write</code></td><td>파일 쓰기</td></tr>
+              <tr><td><code>Edit</code></td><td>파일 수정</td></tr>
+              <tr><td><code>Glob</code></td><td>파일 패턴 검색</td></tr>
+              <tr><td><code>Grep</code></td><td>내용 검색</td></tr>
+              <tr><td><code>Bash</code></td><td>셸 명령 실행</td></tr>
+              <tr><td><code>Task</code></td><td>Agent 호출</td></tr>
+              <tr><td><code>WebFetch</code></td><td>웹 페이지 가져오기</td></tr>
+              <tr><td><code>WebSearch</code></td><td>웹 검색</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 7: 한계점 및 확장 -->
+      <section id="limitations">
+        <h2>7. 한계점 및 확장</h2>
+
+        <h3 id="cli-limits">7.1 Claude Code CLI 한계</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>한계</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Agent 내부 제어 불가</strong></td>
+                <td>Agent 실행 중에는 개입 불가, 결과만 받음</td>
+              </tr>
+              <tr>
+                <td><strong>Hook 필터링 수동</strong></td>
+                <td>스크립트에서 직접 컨텍스트 판단 필요</td>
+              </tr>
+              <tr>
+                <td><strong>상태 관리 파일 기반</strong></td>
+                <td>복잡한 상태는 관리 어려움</td>
+              </tr>
+              <tr>
+                <td><strong>프롬프트 의존</strong></td>
+                <td>Skill 지시를 Claude가 해석, 100% 보장 아님</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="agent-sdk">7.2 Agent SDK로 전환 시점</h3>
+
+        <p>다음 경우 Agent SDK (Python/TypeScript) 고려:</p>
+
+        <ul>
+          <li><strong>정밀한 제어 필요</strong>: 반복, 분기를 코드로 완전 제어</li>
+          <li><strong>복잡한 상태 관리</strong>: 메모리, DB 연동</li>
+          <li><strong>외부 시스템 통합</strong>: API, 웹훅 등</li>
+          <li><strong>프로덕션 배포</strong>: 안정성, 모니터링 필요</li>
+        </ul>
+
+        <pre><code class="language-python"># Agent SDK 예시
+from claude_agent_sdk import query
+
+async def controlled_workflow():
+    for i in range(3):  # 정확히 3회
+        result = await run_agent("analyzer")
+        if validate(result):
+            break
+    return result</code></pre>
+
+        <h3 id="mcp-extension">7.3 MCP로 확장</h3>
+
+        <p>MCP(Model Context Protocol)를 연동하면:</p>
+
+        <ul>
+          <li>외부 DB 조회</li>
+          <li>API 호출</li>
+          <li>슬랙/이메일 알림</li>
+          <li>커스텀 도구 추가</li>
+        </ul>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 다음 단계</div>
+          <div class="callout-content">
+            <p><a href="mcp-guide.html">MCP 연계 가이드</a>에서 자세한 내용을 확인하세요.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section id="summary" style="margin-top: 3rem; padding: 2rem; background: var(--color-bg-secondary); border-radius: var(--radius-xl);">
+        <h2 style="margin-top: 0;">📝 요약</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>구성 요소</th>
+                <th>역할</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Skill</strong></td>
+                <td>오케스트레이터, 워크플로우 정의</td>
+              </tr>
+              <tr>
+                <td><strong>Agent</strong></td>
+                <td>독립된 작업자, 전문 영역 담당</td>
+              </tr>
+              <tr>
+                <td><strong>Hook</strong></td>
+                <td>시스템 레벨 제어, 검증/분기/반복</td>
+              </tr>
+              <tr>
+                <td><strong>Script</strong></td>
+                <td>Hook의 실제 로직, 상태 관리</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info" style="margin-bottom: 0;">
+          <div class="callout-title">🔑 핵심 공식</div>
+          <div class="callout-content">
+            <p style="font-size: 1.1rem; font-weight: 600; text-align: center; margin: 0;">
+              신뢰할 수 있는 워크플로우 = Skill (진입점) + Agent (작업자) + Hook (제어) + Script (로직)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Navigation -->
+      <nav class="footer-nav" aria-label="문서 네비게이션">
+        <a href="index.html" class="footer-nav-link prev">
+          <span class="footer-nav-label">← 이전</span>
+          <span class="footer-nav-title">홈으로</span>
+        </a>
+        <a href="mcp-guide.html" class="footer-nav-link next">
+          <span class="footer-nav-label">다음 →</span>
+          <span class="footer-nav-title">MCP 연계 가이드</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="맨 위로">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <!-- Search Modal -->
+  <div class="search-modal" role="dialog" aria-modal="true" aria-label="검색">
+    <div class="search-modal-content">
+      <div class="search-input-wrapper">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" class="search-input" placeholder="문서 검색..." aria-label="검색어 입력">
+      </div>
+      <div class="search-results"></div>
+      <div class="search-footer">
+        <span><kbd>↑↓</kbd> 이동</span>
+        <span><kbd>Enter</kbd> 선택</span>
+        <span><kbd>Esc</kbd> 닫기</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/sidebar.js"></script>
+  <script src="assets/js/card-tabs.js"></script>
+  <script src="assets/js/search.js"></script>
+  <script src="assets/js/code-block.js"></script>
+
+  <script>
+    // Mermaid 초기화
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+      securityLevel: 'loose',
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis'
+      }
+    });
+  </script>
+</body>
+</html>

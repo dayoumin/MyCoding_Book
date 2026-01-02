@@ -1,0 +1,16 @@
+# IDE
+.vscode/
+.idea/
+
+# Claude Code local settings
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Dependencies (if any in future)
+node_modules/
+
+# Logs
+*.log

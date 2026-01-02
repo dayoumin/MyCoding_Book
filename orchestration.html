@@ -1022,8 +1022,11 @@ function parseAgentCalls(transcript) {
   return agents;
 }
 
-// Transcript 읽기
-const transcriptPath = process.env.TRANSCRIPT_PATH;
+// Hook Input 읽기 (stdin에서 JSON 전달됨)
+const hookInput = JSON.parse(fs.readFileSync('/dev/stdin', 'utf-8'));
+
+// Transcript 경로 추출
+const transcriptPath = hookInput.transcript_path;
 const transcript = fs.readFileSync(transcriptPath, 'utf-8');
 
 // Agent 이력 파싱
@@ -1057,6 +1060,20 @@ if (agents.includes('content-creator') &&
   }));
   process.exit(0);
 }</code></pre>
+
+        <div class="card-note">
+          <h4>📝 Hook Input 구조</h4>
+          <p>Claude는 Hook 실행 시 다음과 같은 JSON을 stdin으로 전달합니다:</p>
+          <pre><code class="language-json">{
+  "session_id": "abc123",
+  "transcript_path": "/path/to/transcript.jsonl",
+  "tool_name": "Task",
+  "tool_input": { "subagent_type": "..." },
+  "tool_output": "...",
+  "project_dir": "/path/to/project"
+}</code></pre>
+          <p>Transcript 파일은 JSONL 형식(한 줄당 하나의 JSON 객체)으로 저장됩니다.</p>
+        </div>
 
         <h3 id="workflow-example">6.4 실전 워크플로우 예시</h3>
 

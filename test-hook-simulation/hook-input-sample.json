@@ -1,0 +1,11 @@
+{
+  "session_id": "test-session-001",
+  "transcript_path": "test-hook-simulation/transcript-sample.jsonl",
+  "tool_name": "Task",
+  "tool_input": {
+    "subagent_type": "content-creator",
+    "prompt": "고양이 퀴즈 5개 만들어줘"
+  },
+  "tool_output": "퀴즈 5개 생성 완료",
+  "project_dir": "d:/Projects/MyCoding_book"
+}

@@ -237,6 +237,20 @@
           <a href="#mcp-extension" class="sidebar-item">8.3 MCP로 확장</a>
         </div>
       </div>
+
+      <!-- Section 9 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="learning" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🎓</span>9. 학습 가이드</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#learning-mindset" class="sidebar-item">9.1 학습 마인드셋</a>
+          <a href="#learning-roadmap" class="sidebar-item">9.2 4주 학습 로드맵</a>
+          <a href="#learning-tips" class="sidebar-item">9.3 효과적인 학습 방법</a>
+          <a href="#learning-projects" class="sidebar-item">9.4 실습 프로젝트</a>
+        </div>
+      </div>
     </nav>
   </aside>
 
@@ -1635,6 +1649,374 @@ async def controlled_workflow():
           <div class="callout-content">
             <p><a href="mcp-guide.html">MCP 연계 가이드</a>에서 자세한 내용을 확인하세요.</p>
           </div>
+        </div>
+      </section>
+
+      <!-- Section 9: 학습 가이드 -->
+      <section id="learning">
+        <h2>9. 학습 가이드</h2>
+
+        <p>Claude Code 오케스트레이션을 마스터하기 위한 체계적인 학습 로드맵입니다.</p>
+
+        <h3 id="learning-mindset">9.1 학습 마인드셋</h3>
+
+        <div class="card-highlight">
+          <h4>🎯 AI 시대의 개발자 역할 변화</h4>
+          <p><strong>과거 (2023)</strong>: 코드를 직접 작성하는 구현자</p>
+          <p><strong>현재 (2025)</strong>: AI를 오케스트레이션하는 설계자</p>
+        </div>
+
+        <h4>❌ 배우지 않아도 되는 것</h4>
+        <ul>
+          <li><strong>모든 문법 외우기</strong> - AI가 대신 작성</li>
+          <li><strong>라이브러리 API 암기</strong> - 필요할 때 검색</li>
+          <li><strong>코딩 패턴 암기</strong> - Agent가 적용</li>
+        </ul>
+
+        <h4>✅ 반드시 배워야 하는 것</h4>
+        <ul>
+          <li><strong>개념 이해</strong> (Why & What) - AI에게 정확히 지시하기 위해</li>
+          <li><strong>오케스트레이션 설계</strong> - Skill과 Agent 구조 설계</li>
+          <li><strong>품질 검증</strong> - AI가 작성한 코드 리뷰</li>
+          <li><strong>의사결정</strong> - 아키텍처 선택과 트레이드오프</li>
+        </ul>
+
+        <div class="card-note">
+          <p><strong>핵심 원칙:</strong> "코드는 AI가 작성하고, 당신은 설계하고 검증한다"</p>
+        </div>
+
+        <h3 id="learning-roadmap">9.2 4주 학습 로드맵</h3>
+
+        <h4>Week 1: 패러다임 전환 이해</h4>
+
+        <pre><code class="language-text">📅 목표: AI 오케스트레이션 개념 이해
+
+Day 1-2: 마인드셋 전환 (4시간)
+  - 당신의 역할 변화 이해
+  - Level 1 → Level 3 진화 단계 학습
+  - AI 협업의 핵심 원칙
+
+Day 3-4: 오케스트레이션 개념 (6시간)
+  - Skill vs Agent 차이
+  - Hook 시스템 이해
+  - 기본 워크플로우 설계
+
+Day 5-7: 실습 (8시간)
+  - 기존 Skill 실행해보기
+  - Hook 설정 실습
+  - 간단한 Skill 수정
+
+✅ 검증: "AI를 지휘한다"의 의미를 설명할 수 있다</code></pre>
+
+        <h4>Week 2: Skill 설계 마스터</h4>
+
+        <pre><code class="language-text">📅 목표: 재사용 가능한 Skill 설계 능력
+
+Day 1-2: 설계 패턴 학습 (6시간)
+  - Sequential Pipeline
+  - Parallel Fan-out
+  - Validation Chain
+  - Self-Healing
+
+Day 3-4: Skill 설계 연습 (6시간)
+  - 문제 정의 → Agent 분리
+  - 워크플로우 설계
+  - Checkpoint 전략
+
+Day 5-7: 실전 구현 (8시간)
+  - 간단한 Skill 직접 설계
+  - AI에게 구현 요청
+  - 테스트 및 개선
+
+✅ 검증: "블로그 포스트 자동 생성" Skill을 설계할 수 있다</code></pre>
+
+        <h4>Week 3: Hook 활용 및 자동화</h4>
+
+        <pre><code class="language-text">📅 목표: Hook으로 워크플로우 제어
+
+Day 1-3: Hook 시스템 (8시간)
+  - Hook 종류와 발동 시점
+  - Transcript 파싱
+  - 분기 로직 구현
+  - Exit code 제어
+
+Day 4-5: 자동화 파이프라인 (6시간)
+  - PreToolUse Hook으로 검증
+  - SubagentStop Hook으로 체크포인트
+  - 에러 핸들링
+
+Day 6-7: 실습 (6시간)
+  - 3중 검증 Hook 구현
+  - 자동 수정 로직
+  - 롤백 메커니즘
+
+✅ 검증: Hook으로 Agent 실행을 제어할 수 있다</code></pre>
+
+        <h4>Week 4: 실전 프로젝트</h4>
+
+        <pre><code class="language-text">📅 목표: 독립적으로 오케스트레이션 구현
+
+Day 1-3: 프로젝트 설계 (10시간)
+  - 실제 필요한 기능 선정
+  - Skill + Agent 설계
+  - Hook 전략 수립
+  - 테스트 계획
+
+Day 4-6: 구현 및 검증 (10시간)
+  - AI에게 구현 요청
+  - Hook 스크립트 작성
+  - 테스트 및 디버깅
+  - 코드 리뷰
+
+Day 7: 문서화 및 정리 (4시간)
+  - Skill 문서 작성
+  - 사용 가이드
+  - 트러블슈팅
+
+✅ 검증: 완전한 오케스트레이션 시스템을 독립적으로 구축</code></pre>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Week</th>
+                <th>주제</th>
+                <th>핵심 목표</th>
+                <th>시간</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>패러다임 전환</td>
+                <td>AI 오케스트레이션 이해</td>
+                <td>18시간</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Skill 설계</td>
+                <td>설계 패턴 마스터</td>
+                <td>20시간</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Hook 활용</td>
+                <td>워크플로우 제어</td>
+                <td>20시간</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>실전 프로젝트</td>
+                <td>독립적 구현</td>
+                <td>24시간</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="learning-tips">9.3 효과적인 학습 방법</h3>
+
+        <h4>1. 개념 먼저, 구현은 나중에</h4>
+
+        <pre><code class="language-text">❌ 잘못된 접근:
+"Skill 파일 문법부터 외우자"
+
+✅ 올바른 접근:
+"왜 Skill이 필요한지 이해 → AI에게 작성 요청"</code></pre>
+
+        <h4>2. AI와 함께 학습하기</h4>
+
+        <div class="card-tip">
+          <h4>💡 학습 시 AI 활용법</h4>
+          <ul>
+            <li><strong>개념 설명 요청:</strong> "Skill과 Agent의 차이를 설명해줘"</li>
+            <li><strong>예제 요청:</strong> "Sequential Pipeline 패턴 예제를 보여줘"</li>
+            <li><strong>코드 리뷰:</strong> "이 Hook 스크립트의 문제점을 찾아줘"</li>
+            <li><strong>디버깅:</strong> "왜 이 Agent가 실행되지 않는지 분석해줘"</li>
+          </ul>
+        </div>
+
+        <h4>3. 실습 중심 학습</h4>
+
+        <pre><code class="language-text">학습 사이클:
+1. 개념 읽기 (20%)
+   └─ 문서 빠르게 훑기
+
+2. 예제 분석 (30%)
+   └─ 동작하는 코드 실행 및 관찰
+
+3. 직접 실습 (50%)
+   └─ 작은 것부터 직접 만들어보기
+
+핵심: 읽기보다 만들기에 더 많은 시간</code></pre>
+
+        <h4>4. 점진적 복잡도 증가</h4>
+
+        <div class="diagram-wrapper">
+          <div class="diagram-title">📈 학습 단계</div>
+          <div class="mermaid">
+flowchart TD
+    A["Level 1: 기존 Skill 실행<br/>(이해)"] --> B["Level 2: Skill 수정<br/>(적응)"]
+    B --> C["Level 3: 단순 Skill 설계<br/>(창작)"]
+    C --> D["Level 4: 복잡한 오케스트레이션<br/>(마스터)"]
+
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#f3e5f5
+    style D fill:#e8f5e9
+          </div>
+        </div>
+
+        <h4>5. 실패에서 배우기</h4>
+
+        <div class="card-highlight">
+          <h4>💪 일반적인 실패 사례와 해결법</h4>
+
+          <p><strong>실패 1:</strong> Agent가 무한 루프에 빠짐</p>
+          <p><strong>원인:</strong> Hook에 종료 조건 없음</p>
+          <p><strong>해결:</strong> SubagentStop Hook에 반복 카운터 추가</p>
+
+          <p style="margin-top: 1rem;"><strong>실패 2:</strong> AI가 잘못된 코드 생성</p>
+          <p><strong>원인:</strong> Skill 설명이 모호함</p>
+          <p><strong>해결:</strong> 구체적인 예시와 제약 조건 명시</p>
+
+          <p style="margin-top: 1rem;"><strong>실패 3:</strong> Hook이 발동하지 않음</p>
+          <p><strong>원인:</strong> settings.json 경로 오류</p>
+          <p><strong>해결:</strong> .claude/settings.json 위치 확인</p>
+        </div>
+
+        <h3 id="learning-projects">9.4 실습 프로젝트</h3>
+
+        <h4>프로젝트 1: 블로그 자동화 (초급)</h4>
+
+        <pre><code class="language-markdown">목표: 블로그 포스트 생성부터 배포까지 자동화
+
+Skill: /blog-automation
+
+Agent 구조:
+├─ outline-writer (개요 작성)
+├─ content-writer (본문 작성)
+├─ seo-optimizer (SEO 최적화)
+└─ publisher (배포)
+
+학습 포인트:
+✅ Sequential workflow 설계
+✅ 각 Agent 역할 분리
+✅ Checkpoint 전략
+✅ 최종 결과 검증
+
+예상 시간: 6-8시간</code></pre>
+
+        <h4>프로젝트 2: 코드 리뷰 봇 (중급)</h4>
+
+        <pre><code class="language-markdown">목표: PR 생성 시 자동 코드 리뷰
+
+Skill: /auto-code-review
+
+Agent 구조:
+├─ type-checker (타입 검증)
+├─ security-scanner (보안 검사)
+├─ performance-analyzer (성능 분석)
+└─ comment-generator (PR 코멘트)
+
+학습 포인트:
+✅ Parallel execution (병렬 실행)
+✅ 결과 aggregation
+✅ 품질 기준 정의
+✅ GitHub API 연동
+
+예상 시간: 12-16시간</code></pre>
+
+        <h4>프로젝트 3: E2E 테스트 자동화 (고급)</h4>
+
+        <pre><code class="language-markdown">목표: E2E 테스트 자동 생성 및 Self-Healing
+
+Skill: /e2e-test-automation
+
+Agent 구조:
+├─ scenario-analyzer (시나리오 분석)
+├─ test-generator (테스트 코드 생성)
+├─ test-runner (실행)
+└─ test-fixer (Self-Healing)
+
+학습 포인트:
+✅ Reflection 패턴
+✅ Self-Healing 구현
+✅ 에러 핸들링
+✅ 자동 복구 메커니즘
+
+예상 시간: 20-24시간</code></pre>
+
+        <div class="card-tip">
+          <h4>🎯 프로젝트 진행 체크리스트</h4>
+          <ul>
+            <li>☐ 문제 정의 명확화</li>
+            <li>☐ Agent 역할 분리 설계</li>
+            <li>☐ Workflow 다이어그램 작성</li>
+            <li>☐ Hook 전략 수립</li>
+            <li>☐ Skill 파일 작성</li>
+            <li>☐ Agent 파일 작성</li>
+            <li>☐ Hook 스크립트 구현</li>
+            <li>☐ 테스트 및 디버깅</li>
+            <li>☐ 문서화</li>
+          </ul>
+        </div>
+
+        <h4>프로젝트 성공 기준</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>항목</th>
+                <th>기준</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>완성도</strong></td>
+                <td>설계한 모든 기능이 작동</td>
+              </tr>
+              <tr>
+                <td><strong>품질</strong></td>
+                <td>Hook으로 검증 자동화</td>
+              </tr>
+              <tr>
+                <td><strong>재사용성</strong></td>
+                <td>다른 프로젝트에 적용 가능</td>
+              </tr>
+              <tr>
+                <td><strong>문서화</strong></td>
+                <td>다른 사람이 사용 가능한 가이드</td>
+              </tr>
+              <tr>
+                <td><strong>에러 처리</strong></td>
+                <td>실패 시 명확한 메시지</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-highlight">
+          <h4>🎓 학습 완료 후</h4>
+          <p>4주 과정을 완료하면 다음을 할 수 있습니다:</p>
+          <ul>
+            <li>✅ 복잡한 워크플로우를 Skill + Agent로 설계</li>
+            <li>✅ Hook으로 품질 자동 검증</li>
+            <li>✅ AI가 작성한 코드를 효과적으로 리뷰</li>
+            <li>✅ Self-Healing 메커니즘 구현</li>
+            <li>✅ 실전 프로젝트에 즉시 적용</li>
+          </ul>
+        </div>
+
+        <div class="card-note">
+          <p><strong>다음 단계:</strong> 이 가이드의 다른 섹션들을 참고하며 실습을 진행하세요.</p>
+          <ul>
+            <li><a href="#overview">섹션 2</a>: Skill vs Agent 개념</li>
+            <li><a href="#hooks">섹션 4</a>: Hook 시스템 상세</li>
+            <li><a href="#hook-branching">섹션 6</a>: 실전 Hook 분기 패턴</li>
+            <li><a href="#examples">섹션 7</a>: 실전 예시 코드</li>
+          </ul>
         </div>
       </section>
 

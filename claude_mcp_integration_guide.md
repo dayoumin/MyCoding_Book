@@ -47,6 +47,7 @@ Claude Code CLI에서 MCP(Model Context Protocol)를 활용하여 외부 시스�
    - 8.1 MCP 도구 호출 전/후 Hook
    - 8.2 MCP 결과 검증 Hook
    - 8.3 자격 증명 자동 주입 패턴
+   - 8.4 Prompt-Based MCP Validation - 2026 도입
 9. [실전 워크플로우 예시](#9-실전-워크플로우-예시)
    - 9.1 기본: GitHub PR 자동 리뷰
    - 9.2 중급: 멀티소스 경쟁분석 파이프라인
@@ -1326,6 +1327,268 @@ export DATABASE_URL_DEV=postgresql://dev:pass@localhost/dev
 export CLAUDE_ENV=prod
 export GITHUB_TOKEN_PROD=ghp_prod_xxx
 export DATABASE_URL_PROD=postgresql://readonly:pass@prod-db/main
+```
+
+---
+
+### 8.4 Prompt-Based MCP Validation
+
+**도입:** 2026년 1월 (Claude Code v2.1.0+)
+
+MCP 도구 호출을 **LLM 프롬프트로 검증**하는 기능입니다.
+
+#### 기존 방식 (Bash Hook)
+
+```jsonc
+// .claude/settings.json
+{
+  "hooks": {
+    "preToolUse": [{
+      "matcher": "mcp__github__create_pull_request",
+      "command": "node .claude/scripts/validate-pr.js"
+    }]
+  }
+}
+```
+
+```javascript
+// .claude/scripts/validate-pr.js
+const input = JSON.parse(process.env.CLAUDE_TOOL_INPUT || '{}');
+
+// PR이 main 브랜치로 가는지 체크
+if (input.base === 'main') {
+  const title = input.title || '';
+  // 엄격한 규칙 체크
+  if (!title.startsWith('[FEAT]') && !title.startsWith('[FIX]')) {
+    console.error("PR 제목은 [FEAT] 또는 [FIX]로 시작해야 합니다.");
+    process.exit(1);
+  }
+}
+
+process.exit(0);
+```
+
+**문제점:**
+- 복잡한 정책을 스크립트로 구현해야 함
+- PR 내용의 의미를 분석할 수 없음
+- 규칙 추가할 때마다 코드 수정 필요
+
+#### 개선 (Prompt Hook)
+
+```jsonc
+// .claude/settings.json
+{
+  "hooks": {
+    "preToolUse": [{
+      "matcher": "mcp__github__create_pull_request",
+      "type": "prompt",
+      "prompt": `GitHub PR 생성 전 다음 사항을 검증하세요:
+
+      1. **제목 규칙**:
+         - main 브랜치 PR은 [FEAT] 또는 [FIX]로 시작
+         - 명확하고 구체적인 설명
+
+      2. **내용 품질**:
+         - PR 설명이 충분히 상세한가?
+         - "무엇을" 뿐만 아니라 "왜" 변경했는지 설명되었나?
+         - 테스트 계획이 있는가?
+
+      3. **브랜치 전략**:
+         - main으로 직접 PR하는 게 적절한가?
+         - 더 나은 대안이 있는가?
+
+      문제가 있으면 구체적으로 설명하고, 개선 제안을 제공하세요.`
+    }]
+  }
+}
+```
+
+**효과:**
+- ✅ PR 내용의 **의미** 분석 가능
+- ✅ 자연어로 정책 정의
+- ✅ 유연한 검증 (맥락 고려)
+
+#### 실전 예시 1: Database 쿼리 안전성 검증
+
+```jsonc
+{
+  "hooks": {
+    "preToolUse": [{
+      "matcher": "mcp__database__execute_query",
+      "type": "prompt",
+      "prompt": `데이터베이스 쿼리를 실행하기 전 검증:
+
+      1. **읽기 전용 여부**:
+         - SELECT만 허용, UPDATE/DELETE/DROP은 차단
+         - WHERE 절 없는 UPDATE/DELETE는 절대 금지
+
+      2. **성능 영향**:
+         - 전체 테이블 스캔이 예상되는가?
+         - JOIN이 과도하게 많은가?
+         - LIMIT 절이 필요한가?
+
+      3. **보안**:
+         - SQL 인젝션 위험이 있는가?
+         - 민감한 테이블(users, credentials)을 조회하는가?
+
+      위험하거나 비효율적인 쿼리는 차단하고 대안을 제시하세요.`
+    }]
+  }
+}
+```
+
+#### 실전 예시 2: AWS 리소스 생성 검증
+
+```jsonc
+{
+  "hooks": {
+    "preToolUse": [{
+      "matcher": "mcp__aws__",
+      "type": "prompt",
+      "prompt": `AWS 리소스 작업 전 검증:
+
+      1. **비용 영향**:
+         - 새로운 EC2 인스턴스 타입이 적절한가?
+         - 예상 월 비용은?
+         - 더 저렴한 대안(Lambda, Fargate)은 없는가?
+
+      2. **보안 그룹**:
+         - 0.0.0.0/0으로 열려있는 포트가 있는가?
+         - 필수 포트만 열려있는가?
+
+      3. **환경 확인**:
+         - 프로덕션 환경에 실험적 변경을 시도하는가?
+         - 백업이나 스냅샷이 필요한가?
+
+      위험한 작업은 차단하고, 안전한 대안을 제안하세요.`
+    }]
+  }
+}
+```
+
+#### 실전 예시 3: Zapier 워크플로우 검증
+
+```jsonc
+{
+  "hooks": {
+    "postToolUse": [{
+      "matcher": "mcp__zapier__create_zap",
+      "type": "prompt",
+      "prompt": `생성된 Zapier 워크플로우를 검증:
+
+      1. **트리거 적절성**:
+         - 트리거가 너무 자주 발동하지 않는가?
+         - 필터 조건이 충분한가?
+
+      2. **액션 안전성**:
+         - 중요한 데이터를 외부로 전송하는가?
+         - 되돌릴 수 없는 작업(삭제, 전송)이 있는가?
+
+      3. **에러 처리**:
+         - 실패 시 알림이 설정되었는가?
+         - 재시도 로직이 적절한가?
+
+      개선이 필요한 부분을 구체적으로 지적하세요.`
+    }]
+  }
+}
+```
+
+#### Bash vs Prompt Hook 비교 (MCP 컨텍스트)
+
+| 검증 유형 | Bash Hook | Prompt Hook | 권장 |
+|-----------|-----------|-------------|------|
+| API 키 형식 | ✅ 완벽 | ⚠️ 부정확 | Bash |
+| 쿼리 안전성 | ❌ 복잡 | ✅ 우수 | Prompt |
+| 비용 예측 | ❌ 불가능 | ✅ 가능 | Prompt |
+| 의미 분석 | ❌ 불가능 | ✅ 우수 | Prompt |
+| 빠른 검증 | ✅ 우수 | ⚠️ 느림 | Bash |
+
+#### Best Practice: 2단계 검증
+
+```jsonc
+{
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "mcp__github__create_pull_request",
+        "command": "node .claude/scripts/pr-basic-check.js",
+        "description": "1단계: 형식 검증 (제목 길이, 브랜치명 형식)"
+      },
+      {
+        "matcher": "mcp__github__create_pull_request",
+        "type": "prompt",
+        "prompt": "2단계: 내용 품질 검증 (설명 충실도, 테스트 계획)"
+      }
+    ]
+  }
+}
+```
+
+**전략:**
+1. **Bash**: 빠른 형식/규칙 검증 (< 100ms)
+2. **Prompt**: 의미/품질 검증 (~ 1-2초)
+
+#### 조합 예시: Database + GitHub
+
+```jsonc
+{
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "mcp__database__execute_query",
+        "type": "prompt",
+        "prompt": "쿼리 안전성 검증 (읽기 전용, 성능, 보안)"
+      }
+    ],
+    "postToolUse": [
+      {
+        "matcher": "mcp__database__execute_query",
+        "type": "prompt",
+        "prompt": `쿼리 결과를 분석하여:
+        1. 예상과 다른 결과가 나왔는가?
+        2. 추가 조사가 필요한 이상 패턴이 있는가?
+        3. 다음 단계로 GitHub 이슈 생성이 필요한가?`
+      },
+      {
+        "matcher": "mcp__github__create_issue",
+        "type": "prompt",
+        "prompt": "이슈 제목과 내용이 데이터베이스 조사 결과를 잘 반영하는가?"
+      }
+    ]
+  }
+}
+```
+
+**워크플로우:**
+1. DB 쿼리 실행 전: 안전성 검증 (Prompt Hook)
+2. DB 쿼리 실행 후: 결과 분석 (Prompt Hook)
+3. GitHub 이슈 생성 전: 내용 품질 검증 (Prompt Hook)
+
+#### 주의사항
+
+**Prompt Hook의 한계 (MCP 컨텍스트):**
+- ❌ API 키 암호화/복호화 불가
+- ❌ 외부 API로 추가 검증 불가
+- ❌ 복잡한 비용 계산 부정확
+- ❌ 실시간 리소스 상태 확인 불가
+
+**이런 경우 Bash Hook + MCP 직접 호출:**
+
+```javascript
+// .claude/scripts/aws-cost-check.js
+const { exec } = require('child_process');
+const input = JSON.parse(process.env.CLAUDE_TOOL_INPUT || '{}');
+
+// MCP로 AWS Cost Explorer 조회
+exec('claude mcp call aws get_cost_forecast', (err, stdout) => {
+  const forecast = JSON.parse(stdout);
+  if (forecast.monthlyCost > 1000) {
+    console.error(`예상 비용 초과: $${forecast.monthlyCost}/month`);
+    process.exit(1);
+  }
+  process.exit(0);
+});
 ```
 
 ---

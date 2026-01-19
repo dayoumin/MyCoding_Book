@@ -9,8 +9,8 @@ const DocsConfig = {
     title: "MyCoding Book",
     description: "Claude Code 개발 가이드 모음",
     author: "MyCoding",
-    version: "1.0.0",
-    lastUpdated: "2025-01-02"
+    version: "1.1.0",
+    lastUpdated: "2025-01-19"
   },
 
   // 문서 목록
@@ -21,7 +21,7 @@ const DocsConfig = {
       shortTitle: "오케스트레이션",
       file: "orchestration.html",
       icon: "🎭",
-      category: "core",
+      category: "claude-code",
       description: "Skill, Agent, Hook을 조합하여 신뢰할 수 있는 멀티 에이전트 워크플로우 구축",
       lastUpdated: "2025-01-02",
       readingTime: 20,
@@ -42,7 +42,7 @@ const DocsConfig = {
       shortTitle: "MCP 연계",
       file: "mcp-guide.html",
       icon: "🔌",
-      category: "integration",
+      category: "claude-code",
       description: "Model Context Protocol을 활용하여 외부 시스템과 연동하는 방법",
       lastUpdated: "2025-01-02",
       readingTime: 25,
@@ -58,15 +58,39 @@ const DocsConfig = {
         { id: "hook-mcp", title: "Hook + MCP 연계", icon: "🪝" },
         { id: "workflows", title: "실전 워크플로우", icon: "💻" }
       ]
+    },
+    {
+      id: "monorepo",
+      title: "AI 시대 모노레포 가이드",
+      shortTitle: "모노레포",
+      file: "monorepo.html",
+      icon: "📦",
+      category: "dev-env",
+      description: "AI 코딩 도구와 함께 효율적으로 개발하기 위한 모노레포 구조",
+      lastUpdated: "2025-01-19",
+      readingTime: 25,
+      tags: ["monorepo", "pnpm", "uv", "turborepo", "typescript", "ai-coding"],
+      sections: [
+        { id: "intro", title: "모노레포란?", icon: "📋" },
+        { id: "structure", title: "기본 구조", icon: "🏗️" },
+        { id: "config", title: "핵심 설정", icon: "⚙️" },
+        { id: "dependencies", title: "패키지 의존성", icon: "🔗" },
+        { id: "shared", title: "공유 패키지", icon: "📦" },
+        { id: "ai-optimization", title: "AI 코딩 최적화", icon: "🤖" },
+        { id: "commands", title: "주요 명령어", icon: "💻" },
+        { id: "practice", title: "실전", icon: "🔧" },
+        { id: "reference", title: "참고", icon: "📚" },
+        { id: "package-managers-ai", title: "AI용 패키지 매니저", icon: "⚡" }
+      ]
     }
   ],
 
   // 카테고리 정의
   categories: {
-    core: { name: "핵심 가이드", color: "indigo" },
-    integration: { name: "연동 가이드", color: "emerald" },
-    reference: { name: "레퍼런스", color: "amber" },
-    tutorial: { name: "튜토리얼", color: "rose" }
+    "claude-code": { name: "Claude Code 가이드", icon: "🤖", color: "indigo" },
+    "dev-env": { name: "개발 환경 가이드", icon: "🛠️", color: "emerald" },
+    reference: { name: "레퍼런스", icon: "📚", color: "amber" },
+    tutorial: { name: "튜토리얼", icon: "📝", color: "rose" }
   },
 
   // 테마 설정

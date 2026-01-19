@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="description" content="Claude Code 개발 가이드 모음 - 멀티 에이전트 오케스트레이션, MCP 연계 가이드">
-  <meta name="keywords" content="Claude, Claude Code, AI, Agent, MCP, Skill, Hook, 개발 가이드">
+  <meta name="description" content="Claude Code 개발 가이드 모음 - 멀티 에이전트 오케스트레이션, MCP 연계, AI 시대 모노레포 가이드">
+  <meta name="keywords" content="Claude, Claude Code, AI, Agent, MCP, Skill, Hook, Monorepo, pnpm, Turborepo, 개발 가이드">
   <meta name="author" content="MyCoding">
   <meta name="theme-color" content="#6366f1">
 
@@ -68,46 +68,73 @@
     <!-- Hero Section -->
     <section class="index-hero">
       <h1>📚 MyCoding Book</h1>
-      <p>Claude Code를 활용한 개발 가이드 모음입니다.<br>멀티 에이전트 오케스트레이션부터 MCP 연계까지, 실전에서 바로 쓸 수 있는 지식을 담았습니다.</p>
+      <p>Claude Code를 활용한 개발 가이드 모음입니다.<br>멀티 에이전트 오케스트레이션, MCP 연계, AI 최적화 모노레포까지 실전에서 바로 쓸 수 있는 지식을 담았습니다.</p>
     </section>
 
     <!-- Document Cards -->
     <div class="index-content">
-      <div class="doc-cards">
-        <!-- Orchestration Guide -->
-        <a href="orchestration.html" class="doc-card">
-          <span class="doc-card-icon">🎭</span>
-          <h2 class="doc-card-title">멀티 에이전트 오케스트레이션 가이드</h2>
-          <p class="doc-card-desc">Skill, Agent, Hook을 조합하여 신뢰할 수 있는 멀티 에이전트 워크플로우를 구축하는 방법을 다룹니다.</p>
-          <div class="doc-card-meta">
-            <span>📅 2025-01-02</span>
-            <span>⏱️ 약 20분</span>
-          </div>
-          <div class="doc-card-tags">
-            <span class="doc-card-tag">Skill</span>
-            <span class="doc-card-tag">Agent</span>
-            <span class="doc-card-tag">Hook</span>
-            <span class="doc-card-tag">Workflow</span>
-          </div>
-        </a>
+      <!-- Category: Claude Code 가이드 -->
+      <section class="doc-category">
+        <h2 class="doc-category-title">🤖 Claude Code 가이드</h2>
+        <div class="doc-cards">
+          <!-- Orchestration Guide -->
+          <a href="orchestration.html" class="doc-card">
+            <span class="doc-card-icon">🎭</span>
+            <h3 class="doc-card-title">멀티 에이전트 오케스트레이션 가이드</h3>
+            <p class="doc-card-desc">Skill, Agent, Hook을 조합하여 신뢰할 수 있는 멀티 에이전트 워크플로우를 구축하는 방법을 다룹니다.</p>
+            <div class="doc-card-meta">
+              <span>📅 2025-01-02</span>
+              <span>⏱️ 약 20분</span>
+            </div>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">Skill</span>
+              <span class="doc-card-tag">Agent</span>
+              <span class="doc-card-tag">Hook</span>
+              <span class="doc-card-tag">Workflow</span>
+            </div>
+          </a>
 
-        <!-- MCP Guide -->
-        <a href="mcp-guide.html" class="doc-card">
-          <span class="doc-card-icon">🔌</span>
-          <h2 class="doc-card-title">MCP 연계 가이드</h2>
-          <p class="doc-card-desc">Model Context Protocol을 활용하여 GitHub, Database, AWS 등 외부 시스템과 연동하는 방법을 다룹니다.</p>
-          <div class="doc-card-meta">
-            <span>📅 2025-01-02</span>
-            <span>⏱️ 약 25분</span>
-          </div>
-          <div class="doc-card-tags">
-            <span class="doc-card-tag">MCP</span>
-            <span class="doc-card-tag">GitHub</span>
-            <span class="doc-card-tag">Database</span>
-            <span class="doc-card-tag">Integration</span>
-          </div>
-        </a>
-      </div>
+          <!-- MCP Guide -->
+          <a href="mcp-guide.html" class="doc-card">
+            <span class="doc-card-icon">🔌</span>
+            <h3 class="doc-card-title">MCP 연계 가이드</h3>
+            <p class="doc-card-desc">Model Context Protocol을 활용하여 GitHub, Database, AWS 등 외부 시스템과 연동하는 방법을 다룹니다.</p>
+            <div class="doc-card-meta">
+              <span>📅 2025-01-02</span>
+              <span>⏱️ 약 25분</span>
+            </div>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">MCP</span>
+              <span class="doc-card-tag">GitHub</span>
+              <span class="doc-card-tag">Database</span>
+              <span class="doc-card-tag">Integration</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Category: 개발 환경 가이드 -->
+      <section class="doc-category">
+        <h2 class="doc-category-title">🛠️ 개발 환경 가이드</h2>
+        <div class="doc-cards">
+          <!-- Monorepo Guide -->
+          <a href="monorepo.html" class="doc-card">
+            <span class="doc-card-icon">📦</span>
+            <h3 class="doc-card-title">AI 시대 모노레포 가이드</h3>
+            <p class="doc-card-desc">AI 코딩 도구와 함께 효율적으로 개발하기 위한 모노레포 구조를 설명합니다. pnpm, Turborepo 활용법을 다룹니다.</p>
+            <div class="doc-card-meta">
+              <span>📅 2025-01-19</span>
+              <span>⏱️ 약 25분</span>
+            </div>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">Monorepo</span>
+              <span class="doc-card-tag">pnpm</span>
+              <span class="doc-card-tag">uv</span>
+              <span class="doc-card-tag">Turborepo</span>
+            </div>
+          </a>
+        </div>
+      </section>
 
       <!-- Quick Links -->
       <section style="margin-top: 3rem;">
@@ -128,6 +155,14 @@
           <a href="orchestration.html#examples" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
             <strong style="color: var(--color-text-primary);">💻 실전 예시</strong>
             <p style="font-size: 0.875rem; margin-top: 0.25rem;">바로 쓸 수 있는 코드</p>
+          </a>
+          <a href="monorepo.html#ai-optimization" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
+            <strong style="color: var(--color-text-primary);">🤖 AI 코딩 최적화</strong>
+            <p style="font-size: 0.875rem; margin-top: 0.25rem;">모노레포 + 타입 체크</p>
+          </a>
+          <a href="monorepo.html#quick-start" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
+            <strong style="color: var(--color-text-primary);">🚀 모노레포 시작</strong>
+            <p style="font-size: 0.875rem; margin-top: 0.25rem;">빠른 시작 가이드</p>
           </a>
         </div>
       </section>

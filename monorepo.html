@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="AI 코딩 도구와 함께 효율적으로 개발하기 위한 모노레포 구조 가이드">
+  <meta name="keywords" content="모노레포, Monorepo, pnpm, Turborepo, TypeScript, AI 코딩">
+  <meta name="theme-color" content="#6366f1">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <title>AI 시대 모노레포 가이드 - MyCoding Book</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <!-- Prism.js for Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Icons -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/icons/icon-512x512.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="header-logo">
+        <span>📚</span>
+        <span>MyCoding Book</span>
+      </a>
+
+      <div class="header-actions">
+        <!-- Document Selector -->
+        <div class="doc-selector">
+          <button class="doc-selector-btn" aria-expanded="false" aria-haspopup="true">
+            <span>📦 모노레포</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="doc-selector-dropdown" role="menu">
+            <div class="doc-selector-category">🤖 Claude Code 가이드</div>
+            <a href="orchestration.html" class="doc-selector-item" role="menuitem">
+              <span>🎭</span>
+              <span>오케스트레이션 가이드</span>
+            </a>
+            <a href="mcp-guide.html" class="doc-selector-item" role="menuitem">
+              <span>🔌</span>
+              <span>MCP 연계 가이드</span>
+            </a>
+            <div class="doc-selector-category">🛠️ 개발 환경 가이드</div>
+            <a href="monorepo.html" class="doc-selector-item active" role="menuitem">
+              <span>📦</span>
+              <span>모노레포 가이드</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" aria-label="메뉴 열기">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Search Button -->
+        <button class="search-btn" aria-label="검색">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <span>검색...</span>
+          <span class="search-kbd"><kbd>Ctrl</kbd><kbd>K</kbd></span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" aria-label="다크모드 전환">
+          <span class="theme-toggle-thumb">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Reading Progress -->
+  <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="목차">
+    <button class="sidebar-close" aria-label="메뉴 닫기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="sidebar-header">
+      <div class="sidebar-title">목차</div>
+      <div class="sidebar-doc-title">📦 모노레포 가이드</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- Section 1 -->
+      <div class="sidebar-section expanded">
+        <div class="sidebar-section-title" data-section="intro" tabindex="0" role="button" aria-expanded="true">
+          <span><span class="sidebar-section-icon">📋</span>1. 모노레포란?</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#what-is-monorepo" class="sidebar-item">1.1 기본 개념</a>
+          <a href="#why-monorepo" class="sidebar-item">1.2 왜 모노레포인가</a>
+          <a href="#ai-synergy" class="sidebar-item">1.3 AI 코딩과의 시너지</a>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="structure" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🏗️</span>2. 기본 구조</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#directory-structure" class="sidebar-item">2.1 표준 디렉토리 구조</a>
+          <a href="#directory-roles" class="sidebar-item">2.2 각 디렉토리 역할</a>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="config" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">⚙️</span>3. 핵심 설정</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#pnpm-workspace" class="sidebar-item">3.1 pnpm-workspace.yaml</a>
+          <a href="#root-package" class="sidebar-item">3.2 루트 package.json</a>
+          <a href="#turbo-json" class="sidebar-item">3.3 turbo.json</a>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="dependencies" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🔗</span>4. 패키지 의존성</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#workspace-protocol" class="sidebar-item">4.1 workspace:* 프로토콜</a>
+          <a href="#usage-example" class="sidebar-item">4.2 실제 사용 예시</a>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="shared" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">📦</span>5. 공유 패키지</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#ui-package" class="sidebar-item">5.1 UI 패키지 예시</a>
+          <a href="#barrel-export" class="sidebar-item">5.2 Barrel Export 패턴</a>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="ai-optimization" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🤖</span>6. AI 코딩 최적화</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#strict-type" class="sidebar-item">6.1 엄격한 타입 체크</a>
+          <a href="#shared-types" class="sidebar-item">6.2 공유 타입 관리</a>
+          <a href="#shared-utils" class="sidebar-item">6.3 공유 유틸리티</a>
+          <a href="#tsconfig-inheritance" class="sidebar-item">6.4 tsconfig 상속</a>
+        </div>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="commands" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">💻</span>7. 주요 명령어</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#basic-commands" class="sidebar-item">7.1 기본 명령어</a>
+          <a href="#filter-commands" class="sidebar-item">7.2 필터링 명령어</a>
+          <a href="#dependency-commands" class="sidebar-item">7.3 의존성 관리</a>
+        </div>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="practice" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🔧</span>8. 실전</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#create-package" class="sidebar-item">8.1 패키지 만들기</a>
+          <a href="#troubleshooting" class="sidebar-item">8.2 문제 해결</a>
+          <a href="#quick-start" class="sidebar-item">8.3 빠른 시작</a>
+        </div>
+      </div>
+
+      <!-- Section 9 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="reference" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">📚</span>9. 참고</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#dependency-diagram" class="sidebar-item">9.1 의존성 다이어그램</a>
+          <a href="#checklist" class="sidebar-item">9.2 체크리스트</a>
+          <a href="#package-managers" class="sidebar-item">9.3 패키지 매니저 비교</a>
+        </div>
+      </div>
+
+      <!-- Section 10 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="package-managers-ai" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">⚡</span>10. AI용 패키지 매니저</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#why-pnpm" class="sidebar-item">10.1 왜 pnpm인가</a>
+          <a href="#why-uv" class="sidebar-item">10.2 왜 uv인가</a>
+          <a href="#quick-reference" class="sidebar-item">10.3 빠른 참조</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main" id="main-content">
+    <!-- Card Tabs -->
+    <div class="card-tabs-wrapper">
+      <div class="card-tabs" role="tablist" aria-label="섹션 탭">
+        <a href="#intro" class="card-tab active" data-section="intro" role="tab" aria-selected="true" tabindex="0">
+          <span class="card-tab-icon">📋</span>
+          <span class="card-tab-title">개념</span>
+        </a>
+        <a href="#structure" class="card-tab" data-section="structure" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🏗️</span>
+          <span class="card-tab-title">구조</span>
+        </a>
+        <a href="#config" class="card-tab" data-section="config" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">⚙️</span>
+          <span class="card-tab-title">설정</span>
+        </a>
+        <a href="#ai-optimization" class="card-tab" data-section="ai-optimization" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🤖</span>
+          <span class="card-tab-title">AI 최적화</span>
+        </a>
+        <a href="#commands" class="card-tab" data-section="commands" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">💻</span>
+          <span class="card-tab-title">명령어</span>
+        </a>
+        <a href="#practice" class="card-tab" data-section="practice" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🔧</span>
+          <span class="card-tab-title">실전</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Header -->
+      <header class="content-header">
+        <h1 class="content-title">AI 시대 모노레포 완벽 가이드</h1>
+        <div class="content-meta">
+          <span class="content-meta-item">📅 2025-01-19</span>
+          <span class="content-meta-item">⏱️ 약 25분</span>
+        </div>
+        <p class="content-desc">AI 코딩 도구(Claude, Cursor, Copilot 등)와 함께 효율적으로 개발하기 위한 모노레포 구조를 설명합니다.</p>
+      </header>
+
+      <!-- Section 1: 모노레포란? -->
+      <section id="intro">
+        <h2><span class="section-icon">📋</span>1. 모노레포란?</h2>
+
+        <h3 id="what-is-monorepo">1.1 기본 개념</h3>
+
+        <p><strong>모노레포(Monorepo)</strong> = Mono(하나) + Repo(저장소)</p>
+        <p>여러 프로젝트를 <strong>하나의 Git 저장소</strong>에서 관리하는 방식입니다.</p>
+
+        <pre><code class="language-text"># 기존 방식 (멀티레포)
+my-web-app/          ← 별도 Git 저장소
+my-mobile-app/       ← 별도 Git 저장소
+my-shared-utils/     ← 별도 Git 저장소
+
+# 모노레포 방식
+my-monorepo/         ← 하나의 Git 저장소
+├── apps/web/
+├── apps/mobile/
+└── packages/utils/</code></pre>
+
+        <div class="card-tip">
+          <h4>💡 비유로 이해하기</h4>
+          <ul>
+            <li><strong>멀티레포:</strong> 각 팀원이 자기 집에서 따로 살면서 협업</li>
+            <li><strong>모노레포:</strong> 한 오피스에서 함께 일하며 자원 공유</li>
+          </ul>
+        </div>
+
+        <h3 id="why-monorepo">1.2 왜 모노레포인가?</h3>
+
+        <h4>일반적인 이점</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>이점</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>코드 재사용</strong></td>
+                <td>공통 코드를 패키지로 만들어 여러 앱에서 사용</td>
+              </tr>
+              <tr>
+                <td><strong>일관된 설정</strong></td>
+                <td>ESLint, TypeScript 설정을 한 곳에서 관리</td>
+              </tr>
+              <tr>
+                <td><strong>원자적 커밋</strong></td>
+                <td>여러 패키지 변경을 하나의 커밋으로</td>
+              </tr>
+              <tr>
+                <td><strong>의존성 관리</strong></td>
+                <td>버전 충돌 없이 패키지 간 의존성 관리</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>모노레포의 단점 (알아두기)</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>단점</th>
+                <th>설명</th>
+                <th>완화 방법</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>초기 설정 복잡</strong></td>
+                <td>워크스페이스, 빌드 도구 설정 필요</td>
+                <td>템플릿 사용 (create-turbo)</td>
+              </tr>
+              <tr>
+                <td><strong>저장소 크기 증가</strong></td>
+                <td>모든 프로젝트가 한 곳에</td>
+                <td>Git sparse checkout</td>
+              </tr>
+              <tr>
+                <td><strong>CI/CD 복잡도</strong></td>
+                <td>변경 감지, 선택적 빌드 필요</td>
+                <td>Turborepo 캐싱 활용</td>
+              </tr>
+              <tr>
+                <td><strong>학습 곡선</strong></td>
+                <td>팀원들이 구조 이해 필요</td>
+                <td>문서화, 온보딩 가이드</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">판단 기준</div>
+          <div class="callout-content">
+            <p>2개 이상의 앱이 코드를 공유하거나, 팀 규모가 3명 이상이면 모노레포 고려</p>
+          </div>
+        </div>
+
+        <h3 id="ai-synergy">1.3 AI 코딩 도구와의 시너지 (핵심!)</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>이점</th>
+                <th>설명</th>
+                <th>예시</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>컨텍스트 공유</strong></td>
+                <td>AI가 전체 코드베이스를 한 번에 이해</td>
+                <td>"이 프로젝트의 Button 컴포넌트 찾아줘"</td>
+              </tr>
+              <tr>
+                <td><strong>타입 안전성</strong></td>
+                <td>엄격한 타입 체크로 AI 생성 코드 오류 즉시 발견</td>
+                <td>AI가 잘못된 타입 사용 → 빌드 에러로 즉시 알림</td>
+              </tr>
+              <tr>
+                <td><strong>일관된 패턴</strong></td>
+                <td>공유 패키지로 AI가 학습할 패턴 통일</td>
+                <td>모든 앱에서 같은 API 클라이언트 패턴 사용</td>
+              </tr>
+              <tr>
+                <td><strong>즉각적 피드백</strong></td>
+                <td>변경 시 영향받는 모든 패키지에서 바로 에러 확인</td>
+                <td>공유 타입 변경 → 사용처 모두에서 에러 표시</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-highlight">
+          <h4>🔑 핵심 포인트</h4>
+          <p>AI가 코드를 생성할 때, 엄격한 타입 체크가 <strong>"자동 코드 리뷰어"</strong> 역할을 합니다.</p>
+        </div>
+      </section>
+
+      <!-- Section 2: 기본 구조 -->
+      <section id="structure">
+        <h2><span class="section-icon">🏗️</span>2. 기본 구조</h2>
+
+        <h3 id="directory-structure">2.1 표준 디렉토리 구조</h3>
+
+        <pre><code class="language-text">my-monorepo/
+│
+├── apps/                    # 애플리케이션 (실제 배포되는 것들)
+│   ├── web/                 #    Next.js 웹앱
+│   ├── mobile/              #    React Native 앱
+│   └── api/                 #    Backend API 서버
+│
+├── packages/                # 공유 라이브러리 (앱들이 공유하는 코드)
+│   ├── ui/                  #    공통 UI 컴포넌트 (Button, Input 등)
+│   ├── utils/               #    유틸리티 함수 (formatDate, parseJSON 등)
+│   ├── config/              #    공유 설정 (상수, 환경변수 타입 등)
+│   └── types/               #    공유 타입 정의
+│
+├── tooling/                 # 개발 도구 설정 (개발 환경 통일)
+│   ├── eslint/              #    ESLint 공통 설정
+│   ├── typescript/          #    TypeScript 공통 설정
+│   └── prettier/            #    Prettier 공통 설정
+│
+├── pnpm-workspace.yaml      # 워크스페이스 정의 (어떤 폴더가 패키지인지)
+├── turbo.json               # Turborepo 설정 (빌드 최적화)
+├── package.json             # 루트 패키지 (전체 스크립트)
+└── pnpm-lock.yaml           # 의존성 잠금 파일</code></pre>
+
+        <h3 id="directory-roles">2.2 각 디렉토리 역할</h3>
+
+        <h4><code>apps/</code> - 애플리케이션</h4>
+        <pre><code class="language-text">실제로 사용자에게 배포되는 프로젝트들
+- 각각 독립적으로 빌드/배포 가능
+- packages/의 코드를 가져다 사용</code></pre>
+
+        <h4><code>packages/</code> - 공유 라이브러리</h4>
+        <pre><code class="language-text">여러 앱에서 공통으로 사용하는 코드
+- npm에 배포하지 않고 내부에서만 사용 (private: true)
+- 변경하면 사용하는 모든 앱에 즉시 반영</code></pre>
+
+        <h4><code>tooling/</code> - 개발 도구 설정</h4>
+        <pre><code class="language-text">개발 환경을 통일하는 설정 파일들
+- 모든 패키지가 같은 규칙을 따르도록 함
+- AI 생성 코드도 같은 규칙으로 검사됨</code></pre>
+      </section>
+
+      <!-- Section 3: 핵심 설정 파일 -->
+      <section id="config">
+        <h2><span class="section-icon">⚙️</span>3. 핵심 설정 파일</h2>
+
+        <h3 id="pnpm-workspace">3.1 pnpm-workspace.yaml</h3>
+
+        <p><strong>역할:</strong> "이 폴더들이 워크스페이스(패키지)야"라고 pnpm에게 알려줌</p>
+
+        <pre><code class="language-yaml">packages:
+  - "apps/*"       # apps 폴더 안의 모든 폴더를 패키지로 인식
+  - "packages/*"   # packages 폴더 안의 모든 폴더를 패키지로 인식
+  - "tooling/*"    # tooling 폴더 안의 모든 폴더를 패키지로 인식</code></pre>
+
+        <div class="card-tip">
+          <h4>💡 초보자 팁</h4>
+          <p>이 파일이 없으면 pnpm이 각 폴더를 별개의 프로젝트로 인식합니다.</p>
+        </div>
+
+        <h3 id="root-package">3.2 루트 package.json</h3>
+
+        <p><strong>역할:</strong> 전체 모노레포를 관리하는 메인 설정</p>
+
+        <pre><code class="language-json">{
+  "name": "my-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}</code></pre>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>필드</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>private: true</code></td>
+                <td>npm에 실수로 배포되는 것 방지</td>
+              </tr>
+              <tr>
+                <td><code>scripts</code></td>
+                <td>모든 패키지에 대해 명령 실행</td>
+              </tr>
+              <tr>
+                <td><code>turbo</code></td>
+                <td>빌드 도구 (캐싱, 병렬 실행)</td>
+              </tr>
+              <tr>
+                <td><code>packageManager</code></td>
+                <td>사용할 패키지 매니저 지정</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="turbo-json">3.3 turbo.json</h3>
+
+        <p><strong>역할:</strong> 빌드 캐싱과 작업 순서 정의</p>
+
+        <pre><code class="language-json">{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "type-check": {
+      "dependsOn": ["^build"]
+    }
+  }
+}</code></pre>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>설정</th>
+                <th>의미</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>dependsOn: ["^build"]</code></td>
+                <td>의존하는 패키지를 먼저 빌드 (^ = 의존성 패키지)</td>
+              </tr>
+              <tr>
+                <td><code>outputs</code></td>
+                <td>캐싱할 빌드 결과물 경로</td>
+              </tr>
+              <tr>
+                <td><code>cache: false</code></td>
+                <td>캐싱하지 않음 (dev는 항상 새로 실행)</td>
+              </tr>
+              <tr>
+                <td><code>persistent: true</code></td>
+                <td>계속 실행 상태 유지 (dev 서버)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card-tip">
+          <h4>💡 초보자 팁</h4>
+          <p><code>dependsOn: ["^build"]</code>는 "내가 사용하는 패키지들이 먼저 빌드되어야 해"라는 의미입니다.</p>
+        </div>
+      </section>
+
+      <!-- Section 4: 패키지 간 의존성 -->
+      <section id="dependencies">
+        <h2><span class="section-icon">🔗</span>4. 패키지 간 의존성</h2>
+
+        <h3 id="workspace-protocol">4.1 workspace:* 프로토콜</h3>
+
+        <p>모노레포 내부 패키지를 참조할 때는 <code>workspace:*</code>를 사용합니다.</p>
+
+        <pre><code class="language-json">// apps/web/package.json
+{
+  "name": "@myorg/web",
+  "dependencies": {
+    "@myorg/ui": "workspace:*",
+    "@myorg/utils": "workspace:*",
+    "react": "^18.0.0"
+  }
+}</code></pre>
+
+        <div class="callout callout-info">
+          <div class="callout-title"><code>workspace:*</code>의 의미</div>
+          <div class="callout-content">
+            <ul>
+              <li>"이 패키지는 모노레포 내부에 있어"</li>
+              <li>npm에서 다운로드하지 않고 로컬 패키지 사용</li>
+              <li><code>*</code>는 "버전 상관없이 로컬 것 사용"</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3 id="usage-example">4.2 실제 사용 예시</h3>
+
+        <pre><code class="language-typescript">// apps/web/src/pages/index.tsx
+
+// 내부 패키지에서 가져오기 (npm 패키지처럼 사용)
+import { Button, Card } from '@myorg/ui';
+import { formatDate, formatCurrency } from '@myorg/utils';
+import type { User } from '@myorg/types';
+
+// 외부 패키지
+import { useState } from 'react';
+
+export default function Home() {
+  const [user, setUser] = useState&lt;User | null&gt;(null);
+
+  return (
+    &lt;Card&gt;
+      &lt;Button onClick={() => console.log('clicked')}&gt;
+        가입일: {formatDate(user?.createdAt)}
+      &lt;/Button&gt;
+    &lt;/Card&gt;
+  );
+}</code></pre>
+      </section>
+
+      <!-- Section 5: 공유 패키지 만들기 -->
+      <section id="shared">
+        <h2><span class="section-icon">📦</span>5. 공유 패키지 만들기</h2>
+
+        <h3 id="ui-package">5.1 UI 패키지 예시 구조</h3>
+
+        <pre><code class="language-text">packages/ui/
+├── src/
+│   ├── button.tsx
+│   ├── input.tsx
+│   ├── card.tsx
+│   ├── types.ts
+│   └── index.ts        # 모든 컴포넌트 내보내기
+├── package.json
+└── tsconfig.json</code></pre>
+
+        <h4>packages/ui/package.json</h4>
+
+        <pre><code class="language-json">{
+  "name": "@myorg/ui",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./button": "./src/button.tsx",
+    "./card": "./src/card.tsx"
+  },
+  "dependencies": {
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@myorg/typescript-config": "workspace:*",
+    "typescript": "^5.0.0"
+  }
+}</code></pre>
+
+        <p><strong>exports 필드 설명:</strong></p>
+        <pre><code class="language-typescript">// "." → import { Button } from '@myorg/ui'
+// "./button" → import { Button } from '@myorg/ui/button'</code></pre>
+
+        <h3 id="barrel-export">5.2 Barrel Export 패턴</h3>
+
+        <h4>packages/ui/src/index.ts</h4>
+
+        <pre><code class="language-typescript">// 모든 컴포넌트를 한 곳에서 내보내기
+export { Button } from './button';
+export { Input } from './input';
+export { Card } from './card';
+
+// 타입도 함께 내보내기
+export type { ButtonProps } from './button';
+export type { InputProps } from './input';
+export type { CardProps } from './card';</code></pre>
+
+        <div class="card-tip">
+          <h4>💡 Barrel Export란?</h4>
+          <p>여러 파일의 export를 하나의 index.ts에서 모아서 다시 내보내는 패턴. AI가 import 경로를 쉽게 파악할 수 있습니다.</p>
+        </div>
+
+        <h4>packages/ui/src/button.tsx</h4>
+
+        <pre><code class="language-typescript">import { forwardRef, type ButtonHTMLAttributes } from 'react';
+
+export interface ButtonProps extends ButtonHTMLAttributes&lt;HTMLButtonElement&gt; {
+  variant?: 'primary' | 'secondary' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
+}
+
+export const Button = forwardRef&lt;HTMLButtonElement, ButtonProps&gt;(
+  ({ variant = 'primary', size = 'md', className, children, ...props }, ref) => {
+    return (
+      &lt;button
+        ref={ref}
+        className={`btn btn-${variant} btn-${size} ${className ?? ''}`}
+        {...props}
+      &gt;
+        {children}
+      &lt;/button&gt;
+    );
+  }
+);
+
+Button.displayName = 'Button';</code></pre>
+      </section>
+
+      <!-- Section 6: AI 코딩 최적화 전략 -->
+      <section id="ai-optimization">
+        <h2><span class="section-icon">🤖</span>6. AI 코딩 최적화 전략</h2>
+
+        <h3 id="strict-type">6.1 엄격한 타입 체크 설정</h3>
+
+        <h4>tooling/typescript/base.json</h4>
+
+        <pre><code class="language-json">{
+  "compilerOptions": {
+    // 엄격 모드 - AI 생성 코드 오류 잡기
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+
+    // 모듈 설정
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+
+    // 기타
+    "skipLibCheck": true,
+    "declaration": true
+  }
+}</code></pre>
+
+        <h4>각 옵션이 AI 코드에서 잡아주는 오류</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>옵션</th>
+                <th>잡아주는 오류</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>strict</code></td>
+                <td>null/undefined 체크 누락</td>
+              </tr>
+              <tr>
+                <td><code>noUncheckedIndexedAccess</code></td>
+                <td>배열/객체 접근 시 undefined 가능성 무시</td>
+              </tr>
+              <tr>
+                <td><code>noImplicitReturns</code></td>
+                <td>일부 경로에서 return 누락</td>
+              </tr>
+              <tr>
+                <td><code>noFallthroughCasesInSwitch</code></td>
+                <td>switch문 break 누락</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>예시 - AI가 생성한 코드의 오류 발견</h4>
+
+        <pre><code class="language-typescript">// AI가 생성한 코드
+function getUser(users: User[], id: string) {
+  return users.find(u => u.id === id).name;
+  //                                  ^^^^
+  // 에러: 'undefined'일 수 있습니다.
+  // find()가 못 찾으면 undefined 반환!
+}
+
+// 수정된 코드
+function getUser(users: User[], id: string) {
+  const user = users.find(u => u.id === id);
+  return user?.name ?? 'Unknown';  // 안전하게 처리
+}</code></pre>
+
+        <h3 id="shared-types">6.2 공유 타입으로 일관성 유지</h3>
+
+        <h4>packages/types/src/index.ts</h4>
+
+        <pre><code class="language-typescript">// API 응답 타입
+export interface ApiResponse&lt;T&gt; {
+  data: T;
+  error?: string;
+  status: 'success' | 'error';
+}
+
+// 공통 엔티티 타입
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  createdAt: Date;
+}
+
+export interface Post {
+  id: string;
+  title: string;
+  content: string;
+  authorId: string;
+  createdAt: Date;
+}</code></pre>
+
+        <div class="card-tip">
+          <h4>💡 이점</h4>
+          <p>AI에게 "User 타입 사용해서 함수 만들어줘"라고 하면, 정확한 타입을 알고 생성</p>
+        </div>
+
+        <h3 id="shared-utils">6.3 공유 유틸리티 함수</h3>
+
+        <h4>packages/utils/src/api.ts</h4>
+
+        <pre><code class="language-typescript">import type { ApiResponse } from '@myorg/types';
+
+// API 호출 래퍼 - 모든 앱에서 동일한 패턴 사용
+export async function fetchApi&lt;T&gt;(
+  url: string,
+  options?: RequestInit
+): Promise&lt;ApiResponse&lt;T&gt;&gt; {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
+      ...options,
+    });
+
+    if (!response.ok) {
+      return { data: null as T, error: response.statusText, status: 'error' };
+    }
+
+    const data = await response.json();
+    return { data, status: 'success' };
+  } catch (error) {
+    return {
+      data: null as T,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 'error'
+    };
+  }
+}</code></pre>
+
+        <div class="card-tip">
+          <h4>💡 이점</h4>
+          <p>AI가 API 호출 코드 생성 시 이 패턴을 따르도록 유도</p>
+        </div>
+
+        <h3 id="tsconfig-inheritance">6.4 tsconfig 상속 패턴</h3>
+
+        <p>각 패키지에서 공통 설정을 상속받아 사용합니다.</p>
+
+        <h4>apps/web/tsconfig.json</h4>
+
+        <pre><code class="language-json">{
+  "extends": "../../tooling/typescript/nextjs.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "next-env.d.ts"],
+  "exclude": ["node_modules"]
+}</code></pre>
+
+        <h4>tooling/typescript/ 구조 예시</h4>
+
+        <pre><code class="language-text">tooling/typescript/
+├── base.json           # 모든 프로젝트 공통
+├── nextjs.json         # Next.js 앱용 (extends base.json)
+├── react-library.json  # React 라이브러리용 (extends base.json)
+└── node.json           # Node.js 백엔드용 (extends base.json)</code></pre>
+      </section>
+
+      <!-- Section 7: 주요 명령어 -->
+      <section id="commands">
+        <h2><span class="section-icon">💻</span>7. 주요 명령어</h2>
+
+        <h3 id="basic-commands">7.1 기본 명령어</h3>
+
+        <pre><code class="language-bash"># 모든 패키지 빌드
+pnpm build
+
+# 모든 패키지 개발 서버 시작
+pnpm dev
+
+# 타입 체크 (AI 생성 코드 검증에 유용!)
+pnpm type-check
+
+# 린트 검사
+pnpm lint</code></pre>
+
+        <h3 id="filter-commands">7.2 필터링 명령어</h3>
+
+        <pre><code class="language-bash"># 특정 패키지만 실행
+pnpm dev --filter=@myorg/web
+
+# 특정 패키지와 그 의존성 모두 빌드
+pnpm build --filter=@myorg/web...
+
+# 특정 패키지에 의존하는 모든 패키지 빌드
+pnpm build --filter=...@myorg/ui
+
+# main 브랜치 이후 변경된 패키지만 빌드
+pnpm build --filter=...[origin/main]</code></pre>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>문법</th>
+                <th>의미</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>--filter=@myorg/web</code></td>
+                <td>web 패키지만</td>
+              </tr>
+              <tr>
+                <td><code>--filter=@myorg/web...</code></td>
+                <td>web + web이 의존하는 패키지들</td>
+              </tr>
+              <tr>
+                <td><code>--filter=...@myorg/ui</code></td>
+                <td>ui + ui를 의존하는 패키지들</td>
+              </tr>
+              <tr>
+                <td><code>--filter=...[origin/main]</code></td>
+                <td>main 이후 변경된 패키지들</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="dependency-commands">7.3 의존성 관리</h3>
+
+        <pre><code class="language-bash"># 외부 패키지 추가
+pnpm add lodash --filter=@myorg/utils
+
+# 개발 의존성 추가
+pnpm add -D vitest --filter=@myorg/utils
+
+# 내부 패키지 의존성 추가
+pnpm add @myorg/ui --filter=@myorg/web --workspace
+
+# 루트에 개발 도구 추가 (모든 패키지에서 사용)
+pnpm add -D -w prettier</code></pre>
+      </section>
+
+      <!-- Section 8: 실전 -->
+      <section id="practice">
+        <h2><span class="section-icon">🔧</span>8. 실전</h2>
+
+        <h3 id="create-package">8.1 새 공유 패키지 만들기</h3>
+
+        <pre><code class="language-bash"># 1. 디렉토리 생성
+mkdir -p packages/hooks/src</code></pre>
+
+        <h4>packages/hooks/package.json</h4>
+
+        <pre><code class="language-json">{
+  "name": "@myorg/hooks",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@myorg/typescript-config": "workspace:*"
+  }
+}</code></pre>
+
+        <h4>packages/hooks/src/index.ts</h4>
+
+        <pre><code class="language-typescript">export { useDebounce } from './use-debounce';
+export { useLocalStorage } from './use-local-storage';</code></pre>
+
+        <h4>packages/hooks/src/use-debounce.ts</h4>
+
+        <pre><code class="language-typescript">import { useState, useEffect } from 'react';
+
+export function useDebounce&lt;T&gt;(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState&lt;T&gt;(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+}</code></pre>
+
+        <pre><code class="language-bash"># 2. 앱에서 사용하도록 의존성 추가
+pnpm add @myorg/hooks --filter=@myorg/web --workspace</code></pre>
+
+        <h4>사용 예시</h4>
+
+        <pre><code class="language-typescript">// apps/web/src/components/search.tsx
+import { useDebounce } from '@myorg/hooks';
+
+function Search() {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 300);
+
+  // debouncedQuery로 API 호출...
+}</code></pre>
+
+        <h3 id="troubleshooting">8.2 문제 해결</h3>
+
+        <h4>1. "모듈을 찾을 수 없습니다"</h4>
+        <pre><code class="language-text">Error: Cannot find module '@myorg/ui'</code></pre>
+
+        <p><strong>해결:</strong></p>
+        <pre><code class="language-bash"># 의존성 재설치
+pnpm install
+
+# 또는 빌드 후 다시 시도
+pnpm build --filter=@myorg/ui</code></pre>
+
+        <h4>2. 타입 에러가 IDE에서 안 보임</h4>
+        <p><strong>해결:</strong></p>
+        <pre><code class="language-bash"># TypeScript 서버 재시작
+# VSCode: Cmd+Shift+P → "TypeScript: Restart TS Server"
+
+# 또는 의존 패키지 빌드
+pnpm build --filter=@myorg/types</code></pre>
+
+        <h4>3. 변경사항이 반영 안 됨</h4>
+        <p><strong>해결:</strong></p>
+        <pre><code class="language-bash"># 캐시 삭제 후 재빌드
+pnpm clean
+pnpm build</code></pre>
+
+        <h4>4. 순환 의존성 에러</h4>
+        <pre><code class="language-text">Error: Circular dependency detected</code></pre>
+
+        <p><strong>해결:</strong> 의존성 구조 확인</p>
+        <pre><code class="language-text"># 잘못된 예 (순환)
+packages/ui → packages/utils → packages/ui
+
+# 올바른 예
+packages/ui → packages/utils (단방향)</code></pre>
+
+        <h4>5. Turborepo 캐시 문제</h4>
+        <pre><code class="language-text">cache miss, but outputs already exist</code></pre>
+
+        <p><strong>해결:</strong></p>
+        <pre><code class="language-bash"># Turbo 캐시 완전 삭제
+rm -rf node_modules/.cache/turbo
+pnpm turbo build --force</code></pre>
+
+        <h3 id="quick-start">8.3 빠른 시작 (Quick Start)</h3>
+
+        <h4>방법 1: create-turbo 사용 (권장)</h4>
+
+        <pre><code class="language-bash"># Turborepo 공식 템플릿으로 시작
+pnpm create turbo@latest my-monorepo
+
+# 또는 npx 사용
+npx create-turbo@latest my-monorepo</code></pre>
+
+        <h4>방법 2: 수동 설정</h4>
+
+        <pre><code class="language-bash"># 1. 디렉토리 생성
+mkdir my-monorepo && cd my-monorepo
+
+# 2. Git 초기화
+git init
+
+# 3. 기본 파일 생성
+cat > pnpm-workspace.yaml << 'EOF'
+packages:
+  - "apps/*"
+  - "packages/*"
+  - "tooling/*"
+EOF
+
+cat > package.json << 'EOF'
+{
+  "name": "my-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0",
+    "typescript": "^5.0.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}
+EOF
+
+cat > turbo.json << 'EOF'
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "type-check": {
+      "dependsOn": ["^build"]
+    }
+  }
+}
+EOF
+
+# 4. 디렉토리 구조 생성
+mkdir -p apps packages tooling/typescript
+
+# 5. 의존성 설치
+pnpm install
+
+echo "모노레포 초기화 완료!"</code></pre>
+      </section>
+
+      <!-- Section 9: 참고 -->
+      <section id="reference">
+        <h2><span class="section-icon">📚</span>9. 참고</h2>
+
+        <h3 id="dependency-diagram">9.1 의존성 규칙 다이어그램</h3>
+
+        <pre><code class="language-text">┌─────────────────────────────────────────────────────────────┐
+│                          apps/                               │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐                      │
+│  │   web   │  │ mobile  │  │   api   │                      │
+│  └────┬────┘  └────┬────┘  └────┬────┘                      │
+│       │            │            │                            │
+│       └────────────┼────────────┘                            │
+│                    │                                         │
+│                    ▼                                         │
+├─────────────────────────────────────────────────────────────┤
+│                       packages/                              │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
+│  │   ui    │  │  utils  │  │  types  │  │  hooks  │        │
+│  └────┬────┘  └────┬────┘  └─────────┘  └────┬────┘        │
+│       │            │                          │              │
+│       └────────────┼──────────────────────────┘              │
+│                    │                                         │
+│                    ▼                                         │
+├─────────────────────────────────────────────────────────────┤
+│                       tooling/                               │
+│  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐    │
+│  │    eslint     │  │  typescript   │  │   prettier    │    │
+│  └───────────────┘  └───────────────┘  └───────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+
+화살표 방향 = 의존 가능 방향 (위 → 아래만 가능)</code></pre>
+
+        <h3 id="checklist">9.2 체크리스트</h3>
+
+        <h4>초기 설정</h4>
+        <ul>
+          <li>☐ pnpm 설치 (<code>npm install -g pnpm</code>)</li>
+          <li>☐ <code>pnpm-workspace.yaml</code> 생성</li>
+          <li>☐ <code>turbo.json</code> 생성</li>
+          <li>☐ 루트 <code>package.json</code> 설정</li>
+        </ul>
+
+        <h4>패키지 구조</h4>
+        <ul>
+          <li>☐ <code>apps/</code> 디렉토리 생성</li>
+          <li>☐ <code>packages/</code> 디렉토리 생성</li>
+          <li>☐ <code>tooling/</code> 디렉토리 생성</li>
+        </ul>
+
+        <h4>공유 설정</h4>
+        <ul>
+          <li>☐ TypeScript 기본 설정 (<code>tooling/typescript/</code>)</li>
+          <li>☐ ESLint 기본 설정 (<code>tooling/eslint/</code>)</li>
+          <li>☐ Prettier 설정</li>
+        </ul>
+
+        <h4>AI 최적화</h4>
+        <ul>
+          <li>☐ <code>strict: true</code> 설정</li>
+          <li>☐ 공유 타입 패키지 생성</li>
+          <li>☐ Barrel export 패턴 적용</li>
+        </ul>
+
+        <h3 id="package-managers">9.3 패키지 매니저 비교</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>기능</th>
+                <th>pnpm</th>
+                <th>npm workspaces</th>
+                <th>yarn workspaces</th>
+                <th>bun</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>디스크 효율</strong></td>
+                <td>최고 (하드링크)</td>
+                <td>보통</td>
+                <td>보통</td>
+                <td>좋음</td>
+              </tr>
+              <tr>
+                <td><strong>설치 속도</strong></td>
+                <td>빠름</td>
+                <td>느림</td>
+                <td>보통</td>
+                <td>가장 빠름</td>
+              </tr>
+              <tr>
+                <td><strong>유령 의존성 방지</strong></td>
+                <td>O</td>
+                <td>X</td>
+                <td>X</td>
+                <td>X</td>
+              </tr>
+              <tr>
+                <td><strong>워크스페이스 지원</strong></td>
+                <td>네이티브</td>
+                <td>네이티브</td>
+                <td>네이티브</td>
+                <td>네이티브</td>
+              </tr>
+              <tr>
+                <td><strong>Turborepo 호환</strong></td>
+                <td>최적</td>
+                <td>지원</td>
+                <td>지원</td>
+                <td>지원</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">권장</div>
+          <div class="callout-content">
+            <p>pnpm을 기본으로 사용하고, 속도가 중요하면 Bun 고려</p>
+          </div>
+        </div>
+
+        <h4>Bun 워크스페이스 설정</h4>
+
+        <pre><code class="language-json">// package.json (Bun 사용 시)
+{
+  "name": "my-monorepo",
+  "workspaces": ["apps/*", "packages/*"]
+}</code></pre>
+
+        <pre><code class="language-bash"># Bun으로 의존성 설치
+bun install
+
+# 특정 패키지에 의존성 추가
+bun add lodash --filter @myorg/utils</code></pre>
+
+        <h4>추천 도구</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>도구</th>
+                <th>용도</th>
+                <th>설치</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>pnpm</strong></td>
+                <td>패키지 매니저</td>
+                <td><code>npm i -g pnpm</code></td>
+              </tr>
+              <tr>
+                <td><strong>Turborepo</strong></td>
+                <td>빌드 캐싱</td>
+                <td><code>pnpm add -D turbo</code></td>
+              </tr>
+              <tr>
+                <td><strong>Changesets</strong></td>
+                <td>버전 관리</td>
+                <td><code>pnpm add -D @changesets/cli</code></td>
+              </tr>
+              <tr>
+                <td><strong>syncpack</strong></td>
+                <td>버전 동기화</td>
+                <td><code>pnpm add -D syncpack</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>참고 자료</h4>
+        <ul>
+          <li><a href="https://turbo.build/repo/docs" target="_blank" rel="noopener">Turborepo 공식 문서</a></li>
+          <li><a href="https://pnpm.io/workspaces" target="_blank" rel="noopener">pnpm Workspaces</a></li>
+          <li><a href="https://www.typescriptlang.org/docs/handbook/project-references.html" target="_blank" rel="noopener">TypeScript Project References</a></li>
+          <li><a href="https://bun.sh/docs/install/workspaces" target="_blank" rel="noopener">Bun Workspaces</a></li>
+          <li><a href="https://nx.dev/" target="_blank" rel="noopener">Nx (대규모 모노레포 도구)</a></li>
+        </ul>
+      </section>
+
+      <!-- Section 10: AI 코딩용 패키지 매니저 -->
+      <section id="package-managers-ai">
+        <h2><span class="section-icon">⚡</span>10. AI 코딩용 패키지 매니저</h2>
+
+        <p>AI 코딩 도구(Claude Code, Cursor 등)와 함께 작업할 때 빠른 패키지 매니저가 생산성을 크게 향상시킵니다.</p>
+
+        <h3 id="why-pnpm">10.1 왜 pnpm인가 (npm 대신)</h3>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>항목</th>
+                <th>npm</th>
+                <th>pnpm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>설치 속도</strong></td>
+                <td>느림</td>
+                <td>2-3배 빠름</td>
+              </tr>
+              <tr>
+                <td><strong>디스크 사용</strong></td>
+                <td>프로젝트마다 중복 저장</td>
+                <td>하드링크로 공유 (최대 70% 절약)</td>
+              </tr>
+              <tr>
+                <td><strong>유령 의존성</strong></td>
+                <td>발생 가능 (hoisting)</td>
+                <td>방지 (strict isolation)</td>
+              </tr>
+              <tr>
+                <td><strong>모노레포 지원</strong></td>
+                <td>workspaces (기본)</td>
+                <td>workspace: 프로토콜 (강력)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>명령어 비교 (치트시트)</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>작업</th>
+                <th>npm</th>
+                <th>pnpm</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>의존성 설치</td>
+                <td><code>npm install</code></td>
+                <td><code>pnpm install</code></td>
+              </tr>
+              <tr>
+                <td>패키지 추가</td>
+                <td><code>npm install lodash</code></td>
+                <td><code>pnpm add lodash</code></td>
+              </tr>
+              <tr>
+                <td>개발 의존성 추가</td>
+                <td><code>npm install -D typescript</code></td>
+                <td><code>pnpm add -D typescript</code></td>
+              </tr>
+              <tr>
+                <td>스크립트 실행</td>
+                <td><code>npm run dev</code></td>
+                <td><code>pnpm dev</code></td>
+              </tr>
+              <tr>
+                <td>전역 설치</td>
+                <td><code>npm install -g</code></td>
+                <td><code>pnpm add -g</code></td>
+              </tr>
+              <tr>
+                <td>캐시 정리</td>
+                <td><code>npm cache clean --force</code></td>
+                <td><code>pnpm store prune</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>pnpm 설치</h4>
+
+        <pre><code class="language-bash"># npm으로 설치
+npm install -g pnpm
+
+# 또는 corepack 사용 (Node.js 16.10+)
+corepack enable
+corepack prepare pnpm@latest --activate
+
+# 버전 확인
+pnpm --version</code></pre>
+
+        <h3 id="why-uv">10.2 왜 uv인가 (pip 대신)</h3>
+
+        <p><strong>uv</strong>는 Rust로 작성된 Python 패키지 매니저로, pip보다 <strong>10-100배 빠릅니다</strong>.</p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>항목</th>
+                <th>pip</th>
+                <th>uv</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>설치 속도</strong></td>
+                <td>기준</td>
+                <td>10-100배 빠름</td>
+              </tr>
+              <tr>
+                <td><strong>의존성 해결</strong></td>
+                <td>느림</td>
+                <td>매우 빠름 (Rust 기반)</td>
+              </tr>
+              <tr>
+                <td><strong>가상환경</strong></td>
+                <td><code>python -m venv</code></td>
+                <td><code>uv venv</code> (더 빠름)</td>
+              </tr>
+              <tr>
+                <td><strong>lock 파일</strong></td>
+                <td>없음 (requirements.txt)</td>
+                <td><code>uv.lock</code> 지원</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>명령어 비교 (치트시트)</h4>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>작업</th>
+                <th>pip</th>
+                <th>uv</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>패키지 설치</td>
+                <td><code>pip install requests</code></td>
+                <td><code>uv pip install requests</code></td>
+              </tr>
+              <tr>
+                <td>requirements.txt 설치</td>
+                <td><code>pip install -r requirements.txt</code></td>
+                <td><code>uv pip install -r requirements.txt</code></td>
+              </tr>
+              <tr>
+                <td>가상환경 생성</td>
+                <td><code>python -m venv .venv</code></td>
+                <td><code>uv venv</code></td>
+              </tr>
+              <tr>
+                <td>패키지 목록</td>
+                <td><code>pip freeze</code></td>
+                <td><code>uv pip freeze</code></td>
+              </tr>
+              <tr>
+                <td>패키지 제거</td>
+                <td><code>pip uninstall requests</code></td>
+                <td><code>uv pip uninstall requests</code></td>
+              </tr>
+              <tr>
+                <td>캐시 정리</td>
+                <td><code>pip cache purge</code></td>
+                <td><code>uv cache clean</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>uv 설치</h4>
+
+        <pre><code class="language-bash"># macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows (PowerShell)
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# pip으로 설치 (덜 권장)
+pip install uv
+
+# 버전 확인
+uv --version</code></pre>
+
+        <h3 id="quick-reference">10.3 빠른 참조</h3>
+
+        <div class="card-highlight">
+          <h4>🎯 AI 코딩 시 기억할 것</h4>
+          <ul>
+            <li><strong>JavaScript/TypeScript:</strong> <code>npm</code> → <code>pnpm</code></li>
+            <li><strong>Python:</strong> <code>pip</code> → <code>uv pip</code></li>
+            <li><strong>가상환경:</strong> <code>python -m venv</code> → <code>uv venv</code></li>
+          </ul>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">CLAUDE.md에 추가하면 좋은 설정</div>
+          <div class="callout-content">
+            <pre><code class="language-markdown"># 전역 개발 규칙
+
+## Node.js / JavaScript / TypeScript
+- npm 대신 pnpm 사용
+- `npm install` → `pnpm install`
+- `npm run` → `pnpm`
+
+## Python
+- pip 대신 uv 사용
+- `pip install` → `uv pip install`
+- `python -m venv` → `uv venv`</code></pre>
+          </div>
+        </div>
+
+        <div class="card-tip">
+          <h4>💡 왜 빠른 패키지 매니저가 중요한가?</h4>
+          <p>AI 코딩 도구로 작업할 때 패키지 설치/업데이트가 자주 발생합니다. 매번 수십 초씩 기다리면 흐름이 끊깁니다. pnpm과 uv는 이 대기 시간을 최소화해줍니다.</p>
+        </div>
+      </section>
+
+      <!-- Summary -->
+      <section id="summary" style="margin-top: 3rem; padding: 2rem; background: var(--color-bg-secondary); border-radius: var(--radius-xl);">
+        <h2 style="margin-top: 0;">📝 요약</h2>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>구성 요소</th>
+                <th>역할</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>apps/</strong></td>
+                <td>실제 배포되는 애플리케이션</td>
+              </tr>
+              <tr>
+                <td><strong>packages/</strong></td>
+                <td>여러 앱에서 공유하는 코드</td>
+              </tr>
+              <tr>
+                <td><strong>tooling/</strong></td>
+                <td>개발 환경 통일 설정</td>
+              </tr>
+              <tr>
+                <td><strong>pnpm + Turborepo</strong></td>
+                <td>효율적인 의존성 관리 및 빌드</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info" style="margin-bottom: 0;">
+          <div class="callout-title">🔑 핵심 공식</div>
+          <div class="callout-content">
+            <p style="font-size: 1.1rem; font-weight: 600; text-align: center; margin: 0;">
+              AI 코딩 최적화 = 모노레포 구조 + 엄격한 타입 체크 + 공유 패턴
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Navigation -->
+      <nav class="footer-nav" aria-label="문서 네비게이션">
+        <a href="mcp-guide.html" class="footer-nav-link prev">
+          <span class="footer-nav-label">← 이전</span>
+          <span class="footer-nav-title">MCP 연계 가이드</span>
+        </a>
+        <a href="index.html" class="footer-nav-link next">
+          <span class="footer-nav-label">다음 →</span>
+          <span class="footer-nav-title">홈으로</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="맨 위로">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <!-- Search Modal -->
+  <div class="search-modal" role="dialog" aria-modal="true" aria-label="검색">
+    <div class="search-modal-content">
+      <div class="search-input-wrapper">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" class="search-input" placeholder="문서 검색..." aria-label="검색어 입력">
+      </div>
+      <div class="search-results"></div>
+      <div class="search-footer">
+        <span><kbd>↑↓</kbd> 이동</span>
+        <span><kbd>Enter</kbd> 선택</span>
+        <span><kbd>Esc</kbd> 닫기</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/sidebar.js"></script>
+  <script src="assets/js/card-tabs.js"></script>
+  <script src="assets/js/search.js"></script>
+  <script src="assets/js/code-block.js"></script>
+
+  <script>
+    // Mermaid 초기화
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default',
+      securityLevel: 'loose',
+      flowchart: {
+        useMaxWidth: true,
+        htmlLabels: true,
+        curve: 'basis'
+      }
+    });
+  </script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('Service Worker 등록 성공:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('Service Worker 등록 실패:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

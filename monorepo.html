@@ -48,31 +48,26 @@
       </a>
 
       <div class="header-actions">
-        <!-- Document Selector -->
-        <div class="doc-selector">
-          <button class="doc-selector-btn" aria-expanded="false" aria-haspopup="true">
-            <span>📦 모노레포</span>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div class="doc-selector-dropdown" role="menu">
-            <div class="doc-selector-category">🤖 Claude Code 가이드</div>
-            <a href="orchestration.html" class="doc-selector-item" role="menuitem">
-              <span>🎭</span>
-              <span>오케스트레이션 가이드</span>
-            </a>
-            <a href="mcp-guide.html" class="doc-selector-item" role="menuitem">
-              <span>🔌</span>
-              <span>MCP 연계 가이드</span>
-            </a>
-            <div class="doc-selector-category">🛠️ 개발 환경 가이드</div>
-            <a href="monorepo.html" class="doc-selector-item active" role="menuitem">
-              <span>📦</span>
-              <span>모노레포 가이드</span>
-            </a>
-          </div>
-        </div>
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs" aria-label="가이드 탐색">
+          <a href="orchestration.html" class="nav-tab">
+            <span class="nav-tab-icon">🎭</span>오케스트레이션
+          </a>
+          <a href="mcp-guide.html" class="nav-tab">
+            <span class="nav-tab-icon">🔌</span>MCP 연계
+          </a>
+          <div class="nav-tab-divider"></div>
+          <a href="video-animation.html" class="nav-tab">
+            <span class="nav-tab-icon">🎬</span>영상/애니메이션
+          </a>
+          <a href="product-page.html" class="nav-tab">
+            <span class="nav-tab-icon">🛍️</span>상세페이지
+          </a>
+          <div class="nav-tab-divider"></div>
+          <a href="monorepo.html" class="nav-tab active">
+            <span class="nav-tab-icon">📦</span>모노레포
+          </a>
+        </nav>
 
         <!-- Mobile Menu Button -->
         <button class="mobile-menu-btn" aria-label="메뉴 열기">

@@ -180,53 +180,7 @@
     }
   };
 
-  // ========================================
-  // Document Selector Dropdown
-  // ========================================
-  const DocSelector = {
-    init() {
-      this.container = document.querySelector('.doc-selector');
-      this.btn = document.querySelector('.doc-selector-btn');
-
-      if (!this.container || !this.btn) return;
-
-      this.bindEvents();
-    },
-
-    bindEvents() {
-      this.btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.toggle();
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!this.container.contains(e.target)) {
-          this.close();
-        }
-      });
-
-      // 키보드 접근성
-      this.btn.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          this.toggle();
-        } else if (e.key === 'Escape') {
-          this.close();
-        }
-      });
-    },
-
-    toggle() {
-      this.container.classList.toggle('active');
-      const isOpen = this.container.classList.contains('active');
-      this.btn.setAttribute('aria-expanded', isOpen);
-    },
-
-    close() {
-      this.container.classList.remove('active');
-      this.btn.setAttribute('aria-expanded', 'false');
-    }
-  };
+  // (Document Selector removed — replaced by nav-tabs)
 
   // ========================================
   // Smooth Scroll for Anchor Links
@@ -466,7 +420,7 @@
     MobileMenu.init();
     ReadingProgress.init();
     BackToTop.init();
-    DocSelector.init();
+    // DocSelector removed — nav-tabs are plain links
     SmoothScroll.init();
     KeyboardNav.init();
     TouchGestures.init();

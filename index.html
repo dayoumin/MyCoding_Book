@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="description" content="Claude Code 개발 가이드 모음 - 멀티 에이전트 오케스트레이션, MCP 연계, AI 시대 모노레포 가이드">
-  <meta name="keywords" content="Claude, Claude Code, AI, Agent, MCP, Skill, Hook, Monorepo, pnpm, Turborepo, 개발 가이드">
+  <meta name="description" content="Claude Code 개발 가이드 모음 - 멀티 에이전트 오케스트레이션, MCP 연계, 영상/애니메이션, 제품 상세페이지, AI 시대 모노레포, 2026 신규 기능 가이드">
+  <meta name="keywords" content="Claude, Claude Code, AI, Agent, MCP, Skill, Hook, Monorepo, pnpm, Turborepo, Plugins, Agent Teams, 개발 가이드">
   <meta name="author" content="MyCoding">
   <meta name="theme-color" content="#6366f1">
 
@@ -68,7 +68,8 @@
     <!-- Hero Section -->
     <section class="index-hero">
       <h1>📚 MyCoding Book</h1>
-      <p>Claude Code를 활용한 개발 가이드 모음입니다.<br>멀티 에이전트 오케스트레이션, MCP 연계, AI 최적화 모노레포까지 실전에서 바로 쓸 수 있는 지식을 담았습니다.</p>
+      <p>Claude Code를 활용한 개발 가이드 모음입니다.<br>멀티 에이전트 오케스트레이션, MCP 연계, Plugins, Agent Teams 등 실전에서 바로 쓸 수 있는 지식을 담았습니다.</p>
+      <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-top: 0.5rem;">최종 업데이트: 2026년 3월 | Claude Code v2.1.72 기반</p>
     </section>
 
     <!-- Document Cards -->
@@ -81,16 +82,16 @@
           <a href="orchestration.html" class="doc-card">
             <span class="doc-card-icon">🎭</span>
             <h3 class="doc-card-title">멀티 에이전트 오케스트레이션 가이드</h3>
-            <p class="doc-card-desc">Skill, Agent, Hook을 조합하여 신뢰할 수 있는 멀티 에이전트 워크플로우를 구축하는 방법을 다룹니다.</p>
+            <p class="doc-card-desc">Skill, Agent, Hook을 조합하여 멀티 에이전트 워크플로우를 구축합니다. Agent Teams, Persistent Memory, Worktree 격리 포함.</p>
             <div class="doc-card-meta">
-              <span>📅 2025-01-02</span>
+              <span>📅 2026-03-11</span>
               <span>⏱️ 약 20분</span>
             </div>
             <div class="doc-card-tags">
+              <span class="doc-card-tag">Agent Teams</span>
               <span class="doc-card-tag">Skill</span>
               <span class="doc-card-tag">Agent</span>
               <span class="doc-card-tag">Hook</span>
-              <span class="doc-card-tag">Workflow</span>
             </div>
           </a>
 
@@ -98,16 +99,73 @@
           <a href="mcp-guide.html" class="doc-card">
             <span class="doc-card-icon">🔌</span>
             <h3 class="doc-card-title">MCP 연계 가이드</h3>
-            <p class="doc-card-desc">Model Context Protocol을 활용하여 GitHub, Database, AWS 등 외부 시스템과 연동하는 방법을 다룹니다.</p>
+            <p class="doc-card-desc">Model Context Protocol을 활용하여 GitHub, Database, AWS 등 외부 시스템과 연동하는 방법을 다룹니다. OAuth 2.0, Tool Search, Resources 등 최신 기능 포함.</p>
             <div class="doc-card-meta">
-              <span>📅 2025-01-02</span>
+              <span>📅 2026-03-11</span>
               <span>⏱️ 약 25분</span>
             </div>
             <div class="doc-card-tags">
               <span class="doc-card-tag">MCP</span>
-              <span class="doc-card-tag">GitHub</span>
-              <span class="doc-card-tag">Database</span>
+              <span class="doc-card-tag">OAuth</span>
+              <span class="doc-card-tag">Tool Search</span>
               <span class="doc-card-tag">Integration</span>
+            </div>
+          </a>
+
+          <!-- 2026 Update Guide -->
+          <a href="claude_code_2026_update.md" class="doc-card">
+            <span class="doc-card-icon">🆕</span>
+            <h3 class="doc-card-title">2026년 3월 종합 업데이트</h3>
+            <p class="doc-card-desc">Plugins, Plan Mode, Voice Mode, Auto Memory, Output Styles, Effort Levels 등 v2.1.72 신규 기능을 종합 정리합니다.</p>
+            <div class="doc-card-meta">
+              <span>📅 2026-03-11</span>
+              <span>⏱️ 약 15분</span>
+            </div>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">Plugins</span>
+              <span class="doc-card-tag">Plan Mode</span>
+              <span class="doc-card-tag">Voice</span>
+              <span class="doc-card-tag">v2.1.72</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Category: 크리에이티브 가이드 -->
+      <section class="doc-category">
+        <h2 class="doc-category-title">🎨 크리에이티브 가이드</h2>
+        <div class="doc-cards">
+          <!-- Video/Animation Guide -->
+          <a href="video-animation.html" class="doc-card">
+            <span class="doc-card-icon">🎬</span>
+            <h3 class="doc-card-title">영상/애니메이션 제작 가이드</h3>
+            <p class="doc-card-desc">Remotion, Manim, Blender, FFmpeg를 활용하여 프로그래밍 방식으로 영상과 애니메이션을 제작합니다. 37개 Remotion 룰 파일 카탈로그 포함.</p>
+            <div class="doc-card-meta">
+              <span>📅 2026-03-11</span>
+              <span>⏱️ 약 15분</span>
+            </div>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">Remotion</span>
+              <span class="doc-card-tag">Manim</span>
+              <span class="doc-card-tag">Blender</span>
+              <span class="doc-card-tag">Video</span>
+            </div>
+          </a>
+
+          <!-- Product Page Guide -->
+          <a href="product-page.html" class="doc-card">
+            <span class="doc-card-icon">🛍️</span>
+            <h3 class="doc-card-title">제품 상세페이지 제작 가이드</h3>
+            <p class="doc-card-desc">나노바나나 2, Flair.ai, Claude Code Frontend Design Skill을 활용하여 네이버/쿠팡 등 한국 이커머스 제품 상세페이지를 제작합니다.</p>
+            <div class="doc-card-meta">
+              <span>📅 2026-03-11</span>
+              <span>⏱️ 약 20분</span>
+            </div>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">나노바나나</span>
+              <span class="doc-card-tag">Gemini MCP</span>
+              <span class="doc-card-tag">Frontend Design</span>
+              <span class="doc-card-tag">이커머스</span>
             </div>
           </a>
         </div>
@@ -164,12 +222,20 @@
             <strong style="color: var(--color-text-primary);">🚀 모노레포 시작</strong>
             <p style="font-size: 0.875rem; margin-top: 0.25rem;">빠른 시작 가이드</p>
           </a>
+          <a href="claude_code_2026_update.md#1-plugins-시스템" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
+            <strong style="color: var(--color-text-primary);">🔌 Plugins 시스템</strong>
+            <p style="font-size: 0.875rem; margin-top: 0.25rem;">마켓플레이스 & 확장</p>
+          </a>
+          <a href="claude_code_2026_update.md#8-슬래시-명령어-전체-목록" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
+            <strong style="color: var(--color-text-primary);">⌨️ 40+ 명령어</strong>
+            <p style="font-size: 0.875rem; margin-top: 0.25rem;">전체 슬래시 명령어</p>
+          </a>
         </div>
       </section>
 
       <!-- Footer -->
       <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-border); text-align: center; color: var(--color-text-muted); font-size: 0.875rem;">
-        <p>© 2025 MyCoding Book. Claude Code 개발 가이드 모음.</p>
+        <p>© 2025-2026 MyCoding Book. Claude Code 개발 가이드 모음.</p>
         <p style="margin-top: 0.5rem;">
           이 문서는 학습 목적으로 작성되었습니다.
         </p>

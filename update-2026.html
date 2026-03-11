@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Claude Code v2.1.72 신규 기능 종합 가이드 - Plugins, Plan Mode, Voice Mode, Auto Memory, Output Styles, Effort Levels">
+  <meta name="keywords" content="Claude Code, Plugins, Plan Mode, Voice Mode, Auto Memory, Output Styles, Effort Levels, v2.1.72">
+  <meta name="theme-color" content="#6366f1">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <title>2026년 3월 종합 업데이트 - MyCoding Book</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <!-- Prism.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Icons -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🆕</text></svg>">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/icons/icon-512x512.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+</head>
+<body>
+  <!-- Skip Link -->
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <a href="index.html" class="header-logo">
+        <span>📚</span>
+        <span>MyCoding Book</span>
+      </a>
+
+      <div class="header-actions">
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs" aria-label="가이드 탐색">
+          <a href="orchestration.html" class="nav-tab">
+            <span class="nav-tab-icon">🎭</span>오케스트레이션
+          </a>
+          <a href="mcp-guide.html" class="nav-tab">
+            <span class="nav-tab-icon">🔌</span>MCP 연계
+          </a>
+          <a href="update-2026.html" class="nav-tab active">
+            <span class="nav-tab-icon">🆕</span>2026 업데이트
+          </a>
+          <div class="nav-tab-divider"></div>
+          <a href="video-animation.html" class="nav-tab">
+            <span class="nav-tab-icon">🎬</span>영상/애니메이션
+          </a>
+          <a href="product-page.html" class="nav-tab">
+            <span class="nav-tab-icon">🛍️</span>상세페이지
+          </a>
+          <div class="nav-tab-divider"></div>
+          <a href="monorepo.html" class="nav-tab">
+            <span class="nav-tab-icon">📦</span>모노레포
+          </a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" aria-label="메뉴 열기">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Search Button -->
+        <button class="search-btn" aria-label="검색">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <span>검색...</span>
+          <span class="search-kbd"><kbd>Ctrl</kbd><kbd>K</kbd></span>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" aria-label="다크모드 전환">
+          <span class="theme-toggle-thumb">☀️</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Reading Progress -->
+  <div class="reading-progress">
+    <div class="reading-progress-bar"></div>
+  </div>
+
+  <!-- Sidebar Overlay (Mobile) -->
+  <div class="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" role="navigation" aria-label="목차">
+    <button class="sidebar-close" aria-label="메뉴 닫기">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="sidebar-header">
+      <div class="sidebar-title">목차</div>
+      <div class="sidebar-doc-title">🆕 2026 종합 업데이트</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <!-- Section 1 -->
+      <div class="sidebar-section expanded">
+        <div class="sidebar-section-title" data-section="plugins" tabindex="0" role="button" aria-expanded="true">
+          <span><span class="sidebar-section-icon">🧩</span>1. Plugins</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#plugin-structure" class="sidebar-item">1.1 구조</a>
+          <a href="#plugin-manifest" class="sidebar-item">1.2 매니페스트</a>
+          <a href="#plugin-install" class="sidebar-item">1.3 설치 및 관리</a>
+          <a href="#plugin-scope" class="sidebar-item">1.4 설치 스코프</a>
+        </div>
+      </div>
+
+      <!-- Section 2 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="plan-mode" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">📐</span>2. Plan Mode</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#plan-activate" class="sidebar-item">2.1 활성화</a>
+          <a href="#plan-usage" class="sidebar-item">2.2 사용 방식</a>
+          <a href="#plan-features" class="sidebar-item">2.3 특징</a>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="voice-mode" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🎙️</span>3. Voice Mode</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#voice-activate" class="sidebar-item">3.1 활성화 및 사용</a>
+          <a href="#voice-support" class="sidebar-item">3.2 지원</a>
+        </div>
+      </div>
+
+      <!-- Section 4 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="auto-memory" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🧠</span>4. Auto Memory</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#memory-location" class="sidebar-item">4.1 저장 위치</a>
+          <a href="#memory-manage" class="sidebar-item">4.2 관리</a>
+          <a href="#memory-contents" class="sidebar-item">4.3 저장 내용</a>
+          <a href="#memory-disable" class="sidebar-item">4.4 비활성화</a>
+        </div>
+      </div>
+
+      <!-- Section 5 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="output-styles" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">🎨</span>5. Output Styles</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#style-builtin" class="sidebar-item">5.1 내장 스타일</a>
+          <a href="#style-change" class="sidebar-item">5.2 변경</a>
+          <a href="#style-custom" class="sidebar-item">5.3 커스텀 스타일</a>
+        </div>
+      </div>
+
+      <!-- Section 6 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="effort-levels" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">⚡</span>6. Effort Levels</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#effort-levels" class="sidebar-item">6.1 3단계</a>
+          <a href="#effort-settings" class="sidebar-item">6.2 설정</a>
+          <a href="#effort-adaptive" class="sidebar-item">6.3 Adaptive Reasoning</a>
+        </div>
+      </div>
+
+      <!-- Section 7 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="bundle-skills" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">📦</span>7. 번들 스킬</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#bundle-skills-table" class="sidebar-item">7.1 스킬 요약</a>
+        </div>
+      </div>
+
+      <!-- Section 8 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="slash-commands" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">⌨️</span>8. 슬래시 명령어</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#cmd-workflow" class="sidebar-item">8.1 워크플로우</a>
+          <a href="#cmd-memory" class="sidebar-item">8.2 메모리 & 컨텍스트</a>
+          <a href="#cmd-code" class="sidebar-item">8.3 코드 & Git</a>
+          <a href="#cmd-settings" class="sidebar-item">8.4 설정</a>
+          <a href="#cmd-info" class="sidebar-item">8.5 정보</a>
+          <a href="#cmd-etc" class="sidebar-item">8.6 기타</a>
+        </div>
+      </div>
+
+      <!-- Section 9 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="ide" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">💻</span>9. IDE 통합</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#ide-vscode" class="sidebar-item">9.1 VS Code Extension</a>
+          <a href="#ide-jetbrains" class="sidebar-item">9.2 JetBrains IDEs</a>
+          <a href="#ide-desktop" class="sidebar-item">9.3 Desktop Apps</a>
+          <a href="#ide-chrome" class="sidebar-item">9.4 Chrome Extension</a>
+          <a href="#ide-slack" class="sidebar-item">9.5 Slack Integration</a>
+        </div>
+      </div>
+
+      <!-- Section 10 -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" data-section="changelog" tabindex="0" role="button" aria-expanded="false">
+          <span><span class="sidebar-section-icon">📝</span>10. 주요 개선사항</span>
+          <span class="sidebar-section-arrow">▸</span>
+        </div>
+        <div class="sidebar-items">
+          <a href="#changelog-perf" class="sidebar-item">10.1 성능</a>
+          <a href="#changelog-stability" class="sidebar-item">10.2 안정성</a>
+          <a href="#changelog-new" class="sidebar-item">10.3 새 도구/명령어</a>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main" id="main-content">
+    <!-- Card Tabs -->
+    <div class="card-tabs-wrapper">
+      <div class="card-tabs" role="tablist" aria-label="섹션 탭">
+        <a href="#plugins" class="card-tab active" data-section="plugins" role="tab" aria-selected="true" tabindex="0">
+          <span class="card-tab-icon">🧩</span>
+          <span class="card-tab-title">Plugins</span>
+        </a>
+        <a href="#plan-mode" class="card-tab" data-section="plan-mode" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">📐</span>
+          <span class="card-tab-title">Plan Mode</span>
+        </a>
+        <a href="#voice-mode" class="card-tab" data-section="voice-mode" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🎙️</span>
+          <span class="card-tab-title">Voice</span>
+        </a>
+        <a href="#auto-memory" class="card-tab" data-section="auto-memory" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🧠</span>
+          <span class="card-tab-title">Memory</span>
+        </a>
+        <a href="#output-styles" class="card-tab" data-section="output-styles" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">🎨</span>
+          <span class="card-tab-title">Styles</span>
+        </a>
+        <a href="#effort-levels-section" class="card-tab" data-section="effort-levels" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">⚡</span>
+          <span class="card-tab-title">Effort</span>
+        </a>
+        <a href="#slash-commands" class="card-tab" data-section="slash-commands" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">⌨️</span>
+          <span class="card-tab-title">명령어</span>
+        </a>
+        <a href="#ide" class="card-tab" data-section="ide" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">💻</span>
+          <span class="card-tab-title">IDE</span>
+        </a>
+        <a href="#changelog" class="card-tab" data-section="changelog" role="tab" aria-selected="false" tabindex="-1">
+          <span class="card-tab-icon">📝</span>
+          <span class="card-tab-title">변경사항</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Header -->
+      <header class="content-header">
+        <h1 class="content-title">Claude Code 2026년 3월 종합 업데이트 가이드</h1>
+        <div class="content-meta">
+          <span class="content-meta-item">📅 2026-03-11 (v2.1.72)</span>
+          <span class="content-meta-item">⏱️ 약 15분</span>
+        </div>
+        <p style="margin-top: 1rem; color: var(--color-text-secondary);">
+          Claude Code v2.1.0 이후 추가된 <strong>주요 신규 기능</strong>을 종합 정리한 가이드입니다. 기존 가이드에서 다루지 않는 독립적인 기능들을 포함합니다.
+        </p>
+        <div class="content-tags">
+          <span class="content-tag">Plugins</span>
+          <span class="content-tag">Plan Mode</span>
+          <span class="content-tag">Voice</span>
+          <span class="content-tag">Auto Memory</span>
+          <span class="content-tag">Output Styles</span>
+          <span class="content-tag">v2.1.72</span>
+        </div>
+      </header>
+
+      <!-- Section 1: Plugins 시스템 -->
+      <section id="plugins">
+        <h2>1. Plugins 시스템</h2>
+        <p><strong>Plugins</strong>는 Skills, Agents, Hooks, MCP 서버, LSP 서버를 하나로 묶어 배포하는 확장 패키지입니다.</p>
+
+        <h3 id="plugin-structure">1.1 구조</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">text</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code>my-plugin/
+├── .claude-plugin/
+│   └── plugin.json          # 매니페스트 (필수)
+├── skills/                  # 스킬 번들
+│   └── deploy/SKILL.md
+├── agents/                  # 에이전트 번들
+│   └── reviewer.md
+├── hooks/                   # Hook 번들
+│   └── hooks.json
+├── .mcp.json               # MCP 서버 설정
+└── .lsp.json               # LSP 서버 설정</code></pre>
+        </div>
+
+        <h3 id="plugin-manifest">1.2 매니페스트 (plugin.json)</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">json</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-json">{
+  "name": "my-plugin",
+  "description": "플러그인 설명",
+  "version": "1.0.0",
+  "author": { "name": "작성자" },
+  "homepage": "https://...",
+  "license": "MIT"
+}</code></pre>
+        </div>
+
+        <h3 id="plugin-install">1.3 설치 및 관리</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">bash</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-bash"># 인터랙티브 메뉴
+/plugin                              # 검색, 설치, 관리
+/plugin install plugin-name          # 직접 설치
+
+# 마켓플레이스 관리
+/plugin marketplace add owner/repo   # GitHub에서 추가
+/plugin marketplace add ./path       # 로컬 경로
+/plugin marketplace list             # 목록
+/plugin marketplace update name      # 업데이트
+/plugin marketplace remove name      # 제거
+
+# 변경 적용
+/reload-plugins                      # 재시작 없이 적용</code></pre>
+        </div>
+
+        <h3 id="plugin-scope">1.4 설치 스코프</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>스코프</th>
+                <th>위치</th>
+                <th>범위</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>User</strong></td>
+                <td><code>~/.claude/plugins/</code></td>
+                <td>모든 프로젝트</td>
+              </tr>
+              <tr>
+                <td><strong>Project</strong></td>
+                <td><code>.claude/settings.json</code></td>
+                <td>팀 공유</td>
+              </tr>
+              <tr>
+                <td><strong>Local</strong></td>
+                <td><code>.claude/settings.local.json</code></td>
+                <td>개인</td>
+              </tr>
+              <tr>
+                <td><strong>Managed</strong></td>
+                <td>관리자 배포</td>
+                <td>조직 전체</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 2: Plan Mode -->
+      <section id="plan-mode">
+        <h2>2. Plan Mode</h2>
+        <p>코드 변경 없이 <strong>분석과 계획만</strong> 수행하는 안전한 모드입니다.</p>
+
+        <h3 id="plan-activate">2.1 활성화</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">bash</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-bash"># CLI 옵션
+claude --permission-mode plan
+
+# 세션 중 전환
+Shift+Tab   # 권한 모드 순환 (default → acceptEdits → plan)</code></pre>
+        </div>
+
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">json</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-json">{ "permissions": { "defaultMode": "plan" } }</code></pre>
+        </div>
+
+        <h3 id="plan-usage">2.2 사용 방식</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">text</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code>1. Plan Mode 진입
+2. "인증 시스템을 OAuth2로 리팩토링해야 해" → Claude가 분석 + 계획 제시
+3. "하위 호환성은?" → 계획 보완
+4. Ctrl+G → 에디터에서 계획 편집
+5. Plan Mode 해제 → Claude가 계획 기반으로 구현</code></pre>
+        </div>
+
+        <h3 id="plan-features">2.3 특징</h3>
+        <ul>
+          <li>읽기 전용 도구만 사용 (Read, Grep, Glob 등)</li>
+          <li><code>AskUserQuestion</code>으로 명확화 질문</li>
+          <li>코드 분석 → 계획 제시 → 사용자 승인 후 구현</li>
+          <li>Headless 모드: <code>claude --permission-mode plan -p "분석할 내용..."</code></li>
+        </ul>
+      </section>
+
+      <!-- Section 3: Voice Mode -->
+      <section id="voice-mode">
+        <h2>3. Voice Mode</h2>
+        <p>Push-to-talk 방식의 <strong>음성 입력</strong> 모드입니다.</p>
+
+        <h3 id="voice-activate">3.1 활성화 및 사용</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">bash</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-bash">/voice    # 음성 모드 활성화</code></pre>
+        </div>
+        <ul>
+          <li><strong>스페이스바 길게 누르기</strong> → 말하기 → 놓기</li>
+          <li>실시간 음성 → 텍스트 변환</li>
+          <li>터미널 안전을 위해 의도적 push-to-talk 설계 (상시 청취 없음)</li>
+        </ul>
+
+        <h3 id="voice-support">3.2 지원</h3>
+        <ul>
+          <li>Pro, Max, Team, Enterprise 플랜</li>
+          <li>추가 비용 없음</li>
+          <li>리포 이름, 개발 용어에 최적화된 전사 정확도</li>
+        </ul>
+      </section>
+
+      <!-- Section 4: Auto Memory -->
+      <section id="auto-memory">
+        <h2>4. Auto Memory</h2>
+        <p>Claude가 세션을 넘어 <strong>자동으로 학습 내용을 저장</strong>합니다.</p>
+
+        <h3 id="memory-location">4.1 저장 위치</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">text</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code>~/.claude/projects/&lt;project&gt;/memory/
+├── MEMORY.md          # 인덱스 (처음 200줄 자동 로딩)
+├── debugging.md       # 토픽 파일 (온디맨드)
+├── api-conventions.md
+└── ...</code></pre>
+        </div>
+        <ul>
+          <li><code>&lt;project&gt;</code> = git 저장소 (worktree는 메모리 공유)</li>
+          <li>파일은 일반 마크다운, 직접 편집/삭제 가능</li>
+        </ul>
+
+        <h3 id="memory-manage">4.2 관리</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">bash</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-bash">/memory    # 인터랙티브 관리</code></pre>
+        </div>
+        <ul>
+          <li>로딩된 CLAUDE.md 확인</li>
+          <li>자동 메모리 파일 확인</li>
+          <li>자동 메모리 켜기/끄기</li>
+          <li>메모리 폴더 열기</li>
+        </ul>
+
+        <h3 id="memory-contents">4.3 저장 내용</h3>
+        <ul>
+          <li>빌드 명령어</li>
+          <li>디버깅 인사이트</li>
+          <li>아키텍처 노트</li>
+          <li>코드 스타일 선호</li>
+          <li>워크플로우 습관</li>
+        </ul>
+
+        <h3 id="memory-disable">4.4 비활성화</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">bash</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-bash">export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+# 또는 settings.json: { "autoMemoryEnabled": false }
+# 또는 /memory 메뉴에서 토글</code></pre>
+        </div>
+      </section>
+
+      <!-- Section 5: Output Styles -->
+      <section id="output-styles">
+        <h2>5. Output Styles</h2>
+        <p>Claude Code의 응답 스타일을 변경합니다.</p>
+
+        <h3 id="style-builtin">5.1 내장 스타일</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>스타일</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Default</strong></td>
+                <td>표준 — 효율적 소프트웨어 엔지니어링</td>
+              </tr>
+              <tr>
+                <td><strong>Explanatory</strong></td>
+                <td>설명형 — 구현 선택의 이유와 패턴 설명</td>
+              </tr>
+              <tr>
+                <td><strong>Learning</strong></td>
+                <td>학습형 — 코드 작성 실습 유도</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="style-change">5.2 변경</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">bash</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-bash">/output-style              # 인터랙티브 메뉴
+/output-style explanatory  # 직접 변경</code></pre>
+        </div>
+        <p>프로젝트별 <code>.claude/settings.local.json</code>에 저장.</p>
+
+        <h3 id="style-custom">5.3 커스텀 스타일 생성</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">yaml</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-yaml"># ~/.claude/output-styles/my-style.md
+---
+name: My Custom Style
+description: 간단한 설명
+keep-coding-instructions: false   # true면 코딩 지침 유지
+---
+
+# 커스텀 지침
+
+당신은 [역할]입니다...
+[커스텀 시스템 프롬프트]</code></pre>
+        </div>
+        <p><strong>저장 위치:</strong></p>
+        <ul>
+          <li>사용자: <code>~/.claude/output-styles/</code></li>
+          <li>프로젝트: <code>.claude/output-styles/</code></li>
+        </ul>
+      </section>
+
+      <!-- Section 6: Effort Levels -->
+      <section id="effort-levels-section">
+        <h2>6. Effort Levels</h2>
+        <p>Claude의 추론 깊이를 조절합니다.</p>
+
+        <h3 id="effort-levels">6.1 3단계</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>레벨</th>
+                <th>표시</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Low</strong></td>
+                <td>○</td>
+                <td>빠름, 저비용, 최소 추론</td>
+              </tr>
+              <tr>
+                <td><strong>Medium</strong></td>
+                <td>◐</td>
+                <td>균형 (Opus 4.6 기본)</td>
+              </tr>
+              <tr>
+                <td><strong>High</strong></td>
+                <td>●</td>
+                <td>깊은 추론, 더 많은 thinking 토큰</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="effort-settings">6.2 설정</h3>
+        <div class="code-block-wrapper">
+          <div class="code-block-header">
+            <span class="code-block-lang">bash</span>
+            <div class="code-block-actions">
+              <button class="code-copy-btn" aria-label="코드 복사">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                복사
+              </button>
+            </div>
+          </div>
+          <pre><code class="language-bash"># 키보드
+Alt+P (Windows/Linux) / Option+P (macOS)
+
+# /model 명령에서 좌/우 화살표
+
+# 환경변수
+export CLAUDE_CODE_EFFORT_LEVEL=high
+
+# settings.json
+{ "effortLevel": "medium" }</code></pre>
+        </div>
+
+        <h3 id="effort-adaptive">6.3 Adaptive Reasoning</h3>
+        <ul>
+          <li>Opus 4.6, Sonnet 4.6에서 지원</li>
+          <li>effort level에 따라 thinking 토큰 동적 할당</li>
+          <li>고정 예산이 아닌 복잡도 기반 스케일링</li>
+          <li>비활성화: <code>CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1</code></li>
+        </ul>
+      </section>
+
+      <!-- Section 7: 번들 스킬 요약 -->
+      <section id="bundle-skills">
+        <h2>7. 번들 스킬 요약</h2>
+
+        <div class="table-wrapper" id="bundle-skills-table">
+          <table>
+            <thead>
+              <tr>
+                <th>스킬</th>
+                <th>호출</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>/simplify</code></td>
+                <td>수동/자동</td>
+                <td>코드 재사용, 품질, 효율성 리뷰 (3 에이전트 병렬)</td>
+              </tr>
+              <tr>
+                <td><code>/batch</code></td>
+                <td>수동/자동</td>
+                <td>대규모 코드베이스 병렬 변경 (worktree 격리)</td>
+              </tr>
+              <tr>
+                <td><code>/debug</code></td>
+                <td>수동/자동</td>
+                <td>세션 디버그 로그 분석</td>
+              </tr>
+              <tr>
+                <td><code>/loop</code></td>
+                <td>수동/자동</td>
+                <td>프롬프트 반복 실행 (기본 10분 간격)</td>
+              </tr>
+              <tr>
+                <td><code>/claude-api</code></td>
+                <td>자동</td>
+                <td>Claude API/SDK 레퍼런스 자동 로딩</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>상세: <a href="orchestration.html">오케스트레이션 가이드</a>의 Skill 섹션 참고</p>
+      </section>
+
+      <!-- Section 8: 슬래시 명령어 전체 목록 -->
+      <section id="slash-commands">
+        <h2>8. 슬래시 명령어 전체 목록</h2>
+
+        <h3 id="cmd-workflow">8.1 워크플로우</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>명령어</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/agents</code></td><td>서브에이전트 관리</td></tr>
+              <tr><td><code>/plan</code></td><td>Plan Mode 진입</td></tr>
+              <tr><td><code>/fork</code></td><td>대화 포크 생성</td></tr>
+              <tr><td><code>/batch</code></td><td>대규모 병렬 변경</td></tr>
+              <tr><td><code>/simplify</code></td><td>코드 품질 리뷰</td></tr>
+              <tr><td><code>/debug</code></td><td>세션 디버깅</td></tr>
+              <tr><td><code>/loop</code></td><td>반복 실행</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="cmd-memory">8.2 메모리 & 컨텍스트</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>명령어</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/memory</code></td><td>CLAUDE.md 및 자동 메모리 관리</td></tr>
+              <tr><td><code>/clear</code></td><td>대화 기록 초기화</td></tr>
+              <tr><td><code>/compact</code></td><td>컨텍스트 압축 (포커스 옵션)</td></tr>
+              <tr><td><code>/context</code></td><td>컨텍스트 사용량 시각화</td></tr>
+              <tr><td><code>/copy</code></td><td>응답 클립보드 복사 (picker)</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="cmd-code">8.3 코드 & Git</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>명령어</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/diff</code></td><td>인터랙티브 diff 뷰어</td></tr>
+              <tr><td><code>/rewind</code></td><td>대화 되감기/체크포인트</td></tr>
+              <tr><td><code>/resume</code></td><td>이전 세션 재개</td></tr>
+              <tr><td><code>/remote-control</code></td><td>원격 접근 가능 세션</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="cmd-settings">8.4 설정</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>명령어</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/config</code></td><td>설정 열기</td></tr>
+              <tr><td><code>/permissions</code></td><td>권한 관리</td></tr>
+              <tr><td><code>/hooks</code></td><td>Hook 관리</td></tr>
+              <tr><td><code>/keybindings</code></td><td>키 바인딩 설정</td></tr>
+              <tr><td><code>/mcp</code></td><td>MCP 서버 관리</td></tr>
+              <tr><td><code>/terminal-setup</code></td><td>터미널 키 바인딩</td></tr>
+              <tr><td><code>/statusline</code></td><td>상태줄 설정</td></tr>
+              <tr><td><code>/model</code></td><td>모델 선택/변경</td></tr>
+              <tr><td><code>/fast</code></td><td>Fast 모드 토글</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="cmd-info">8.5 정보</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>명령어</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/help</code></td><td>명령어 도움말</td></tr>
+              <tr><td><code>/cost</code></td><td>토큰 사용 통계</td></tr>
+              <tr><td><code>/status</code></td><td>버전/모델/계정 정보</td></tr>
+              <tr><td><code>/release-notes</code></td><td>체인지로그</td></tr>
+              <tr><td><code>/doctor</code></td><td>설치 진단</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="cmd-etc">8.6 기타</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>명령어</th>
+                <th>설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/output-style</code></td><td>출력 스타일 변경</td></tr>
+              <tr><td><code>/theme</code></td><td>색상 테마 변경</td></tr>
+              <tr><td><code>/vim</code></td><td>Vim 편집 모드 토글</td></tr>
+              <tr><td><code>/voice</code></td><td>음성 모드</td></tr>
+              <tr><td><code>/plugin</code></td><td>플러그인 관리</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Section 9: IDE 통합 -->
+      <section id="ide">
+        <h2>9. IDE 통합</h2>
+
+        <h3 id="ide-vscode">9.1 VS Code Extension</h3>
+        <ul>
+          <li>Effort level 표시 (입력 테두리)</li>
+          <li>Activity Bar에 모든 세션 목록 (Spark 아이콘)</li>
+          <li>Plan 모드: 마크다운 문서 뷰 + 댓글</li>
+          <li>MCP 서버 관리 다이얼로그</li>
+          <li>플러그인 마켓플레이스 통합</li>
+        </ul>
+
+        <h3 id="ide-jetbrains">9.2 JetBrains IDEs</h3>
+        <ul>
+          <li>PyCharm, IntelliJ, WebStorm 등 지원</li>
+          <li>Remote Development 및 WSL 지원</li>
+        </ul>
+
+        <h3 id="ide-desktop">9.3 Desktop Apps</h3>
+        <ul>
+          <li>macOS 및 Windows 데스크톱 앱</li>
+          <li>원격 세션 지원</li>
+          <li>Cowork 탭 (협업 세션)</li>
+          <li>Preview 서버 자동 검증</li>
+        </ul>
+
+        <h3 id="ide-chrome">9.4 Chrome Extension</h3>
+        <ul>
+          <li>브라우저 자동화 (테스트/디버깅)</li>
+          <li>멀티사이트 워크플로우</li>
+        </ul>
+
+        <h3 id="ide-slack">9.5 Slack Integration</h3>
+        <ul>
+          <li>Slack에서 직접 Claude Code 실행</li>
+          <li>저장소 선택 및 컨텍스트 수집</li>
+        </ul>
+      </section>
+
+      <!-- Section 10: 주요 개선사항 -->
+      <section id="changelog">
+        <h2>10. 주요 개선사항 (v2.1.0 → v2.1.72)</h2>
+
+        <h3 id="changelog-perf">10.1 성능</h3>
+        <ul>
+          <li>번들 크기 ~510KB 감소</li>
+          <li>Bash 명령 파싱 개선 (빠른 초기화, 메모리 누수 수정)</li>
+          <li>음성 전사 정확도 개선 (리포 이름, 개발 용어)</li>
+          <li>느린 종료 수정 (백그라운드 태스크/Hook 미응답)</li>
+        </ul>
+
+        <h3 id="changelog-stability">10.2 안정성</h3>
+        <ul>
+          <li>Skill Hook 이중 발동 수정</li>
+          <li>음성 모드 입력 지연 및 오탐 수정</li>
+          <li><code>--continue</code> + <code>--compact</code> 호환 수정</li>
+          <li>와일드카드/heredoc 권한 규칙 매칭 수정</li>
+          <li>병렬 도구 호출 시 실패한 Read/WebFetch/Glob이 형제 도구 취소하던 문제 수정</li>
+          <li>Worktree 격리 + 태스크 재개 호환 수정</li>
+        </ul>
+
+        <h3 id="changelog-new">10.3 새 도구/명령어</h3>
+        <ul>
+          <li><code>/copy</code>에 <code>w</code> 키 추가 (파일 직접 쓰기, SSH 유용)</li>
+          <li><code>/plan</code>에 선택적 설명 인수 (<code>/plan 인증 버그 수정</code>)</li>
+          <li><code>ExitWorktree</code> 도구 추가</li>
+          <li>Bash 자동 승인 확장 (<code>lsof</code>, <code>pgrep</code>, <code>ss</code>, <code>fd</code> 등)</li>
+          <li>Agent 도구에 <code>model</code> 파라미터 복원</li>
+          <li><code>CLAUDE_CODE_DISABLE_CRON</code> 환경변수 추가</li>
+        </ul>
+
+        <div class="callout callout-info" style="margin-top: 2rem;">
+          <div class="callout-title">참고 문서</div>
+          <div class="callout-content">
+            <ul style="margin-bottom: 0;">
+              <li><a href="orchestration.html">멀티 에이전트 오케스트레이션 가이드</a> — Skill, Agent, Hook 조합 패턴</li>
+              <li><a href="mcp-guide.html">MCP 연계 가이드</a> — 외부 시스템 연동</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Navigation -->
+      <nav class="footer-nav" aria-label="문서 네비게이션">
+        <a href="mcp-guide.html" class="footer-nav-link prev">
+          <span class="footer-nav-label">&larr; 이전</span>
+          <span class="footer-nav-title">MCP 연계 가이드</span>
+        </a>
+        <a href="video-animation.html" class="footer-nav-link next">
+          <span class="footer-nav-label">다음 &rarr;</span>
+          <span class="footer-nav-title">영상/애니메이션 가이드</span>
+        </a>
+      </nav>
+    </div>
+  </main>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" aria-label="맨 위로">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <!-- Search Modal -->
+  <div class="search-modal" role="dialog" aria-modal="true" aria-label="검색">
+    <div class="search-modal-content">
+      <div class="search-input-wrapper">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <input type="text" class="search-input" placeholder="문서 검색..." aria-label="검색어 입력">
+      </div>
+      <div class="search-results"></div>
+      <div class="search-footer">
+        <span><kbd>&uarr;&darr;</kbd> 이동</span>
+        <span><kbd>Enter</kbd> 선택</span>
+        <span><kbd>Esc</kbd> 닫기</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markdown.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/sidebar.js"></script>
+  <script src="assets/js/card-tabs.js"></script>
+  <script src="assets/js/search.js"></script>
+  <script src="assets/js/code-block.js"></script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((registration) => {
+            console.log('Service Worker 등록 성공:', registration.scope);
+          })
+          .catch((error) => {
+            console.log('Service Worker 등록 실패:', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

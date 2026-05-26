@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Codex Hooks 운영 기준">
+  <title>Codex Hooks 운영 기준 - MyCoding Book</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="header-logo"><span>MC</span><span>MyCoding Book</span></a>
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a class="active" href="index.html">Codex</a>
+        <a href="../updates/index.html">Updates</a>
+        <a href="../reference/index.html">Reference</a>
+        <a href="../legacy/index.html">Legacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <header class="page-header">
+      <span class="hero-kicker">Guardrails</span>
+      <h1>Codex Hooks 운영 기준</h1>
+      <p>
+        Hooks는 Codex의 agentic loop 중간에 결정적인 스크립트를 끼워 넣는 장치입니다.
+        모든 검증을 hook으로 옮기기보다, 반복적이고 기계적으로 판정할 수 있는 정책에만 씁니다.
+      </p>
+    </header>
+
+    <section class="content-section">
+      <h2>이번 결론</h2>
+      <div class="note-panel">
+        <strong>Hook은 마지막 안전망이지, 작업 설계의 대체물이 아닙니다.</strong>
+        <p>
+          AGENTS.md, 좁은 테스트, 리뷰 루프가 먼저입니다. Hook은 위험 명령 차단, 필수 검증 누락 방지,
+          세션 시작 컨텍스트 주입처럼 자동화할 가치가 확실할 때만 둡니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>언제 hook을 쓰나</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>상황</th>
+              <th>추천</th>
+              <th>이유</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>삭제, 배포, 권한 변경처럼 위험한 명령</td>
+              <td>PreToolUse 또는 PermissionRequest</td>
+              <td>실행 전에 차단하거나 승인 판단을 보강해야 합니다.</td>
+            </tr>
+            <tr>
+              <td>작업 종료 전에 반드시 확인할 품질 기준</td>
+              <td>Stop</td>
+              <td>테스트 누락, diff review 누락, 문서 업데이트 누락을 마지막에 잡습니다.</td>
+            </tr>
+            <tr>
+              <td>도구 실행 결과를 로그나 메모리로 남겨야 함</td>
+              <td>PostToolUse</td>
+              <td>이미 실행된 결과를 분석하거나 기록하는 데 맞습니다.</td>
+            </tr>
+            <tr>
+              <td>새 세션마다 같은 컨텍스트를 주입해야 함</td>
+              <td>SessionStart</td>
+              <td>프로젝트 운영 메모나 최근 결정 사항을 자동으로 올릴 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td>subagent 결과가 특정 형식을 지켜야 함</td>
+              <td>SubagentStop</td>
+              <td>병렬 agent 결과를 통합하기 전에 형식과 누락을 점검합니다.</td>
+            </tr>
+            <tr>
+              <td>한 번만 하는 판단, 제품 방향 결정</td>
+              <td>Hook 비추천</td>
+              <td>체크리스트나 문서 기준이 더 투명합니다.</td>
+            </tr>
+            <tr>
+              <td>복잡한 리팩터링 전체 품질 판정</td>
+              <td>Hook 단독 비추천</td>
+              <td>테스트, 리뷰 agent, 수동 diff review를 함께 써야 합니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>현재 Codex 기준 핵심</h2>
+      <ul>
+        <li>Hooks는 기본적으로 켜져 있으며, 필요하면 <code>config.toml</code>에서 <code>[features].hooks = false</code>로 끌 수 있습니다.</li>
+        <li>Codex는 <code>hooks.json</code> 또는 <code>config.toml</code> 안의 <code>[hooks]</code> 설정을 읽습니다.</li>
+        <li>대표 위치는 <code>~/.codex/hooks.json</code>, <code>~/.codex/config.toml</code>, <code>&lt;repo&gt;/.codex/hooks.json</code>, <code>&lt;repo&gt;/.codex/config.toml</code>입니다.</li>
+        <li>여러 위치에서 같은 이벤트에 매칭되는 hook이 있으면 모두 실행됩니다.</li>
+        <li>여러 command hook은 동시에 시작될 수 있으므로 한 hook이 다른 hook의 시작을 막는 구조로 설계하면 안 됩니다.</li>
+        <li>현재 실제로 실행되는 handler는 <code>type: "command"</code>입니다. <code>prompt</code>와 <code>agent</code> handler는 파싱되지만 실행되지 않습니다.</li>
+        <li><code>async: true</code> command hook도 아직 실행되지 않습니다.</li>
+        <li>프로젝트 로컬 hook은 프로젝트 <code>.codex/</code> layer가 trusted일 때만 로드됩니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>주요 이벤트</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>이벤트</th>
+              <th>쓰임</th>
+              <th>주의</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>SessionStart</code></td>
+              <td>세션 시작, resume, clear, compact 시 컨텍스트 주입</td>
+              <td>너무 많은 내용을 넣으면 오히려 작업 집중도가 떨어집니다.</td>
+            </tr>
+            <tr>
+              <td><code>UserPromptSubmit</code></td>
+              <td>사용자 입력 전처리, 민감정보 검사</td>
+              <td>개인용 사이트에서는 과도한 자동 차단보다 경고 중심이 낫습니다.</td>
+            </tr>
+            <tr>
+              <td><code>PreToolUse</code></td>
+              <td>Bash, apply_patch, MCP tool 호출 전 검사</td>
+              <td>완전한 enforcement boundary는 아닙니다. 다른 도구 경로로 우회 가능한 경우가 있습니다.</td>
+            </tr>
+            <tr>
+              <td><code>PermissionRequest</code></td>
+              <td>승인이 필요한 작업의 allow/deny 판단 보강</td>
+              <td>승인 흐름을 대체하기보다 위험 신호를 더 잘 드러내는 용도로 씁니다.</td>
+            </tr>
+            <tr>
+              <td><code>PostToolUse</code></td>
+              <td>도구 실행 후 결과 검토, 로그, 추가 컨텍스트</td>
+              <td>이미 실행된 부작용을 되돌릴 수 없습니다.</td>
+            </tr>
+            <tr>
+              <td><code>SubagentStart</code></td>
+              <td>subagent 시작 시 역할별 추가 컨텍스트 주입</td>
+              <td>시작 자체를 막는 이벤트로 보지 않습니다.</td>
+            </tr>
+            <tr>
+              <td><code>SubagentStop</code></td>
+              <td>subagent 결과 형식과 누락 점검</td>
+              <td>병렬 결과를 합치기 전 요약 품질을 확인하는 데 좋습니다.</td>
+            </tr>
+            <tr>
+              <td><code>Stop</code></td>
+              <td>응답 종료 직전 최종 품질 게이트</td>
+              <td>무한 반복을 막기 위해 이미 continuation된 상태를 반드시 고려합니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>최소 설정 예시</h2>
+      <p>프로젝트 로컬 hook은 repo root 기준 경로를 안정적으로 계산하는 편이 좋습니다.</p>
+      <pre><code class="language-json">{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^Bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/check-bash.mjs\"",
+            "timeout": 30,
+            "statusMessage": "Checking Bash command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/final-check.mjs\"",
+            "timeout": 30,
+            "statusMessage": "Checking final response"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+    </section>
+
+    <section class="content-section">
+      <h2>운영 원칙</h2>
+      <ol>
+        <li>먼저 AGENTS.md에 정책을 쓴다.</li>
+        <li>반복해서 어기는 기계적 규칙만 hook 후보로 올린다.</li>
+        <li>hook은 작게 유지하고, 복잡한 판단은 테스트나 reviewer agent로 뺀다.</li>
+        <li>non-managed command hook은 trust review가 필요하다는 점을 전제로 운영한다.</li>
+        <li>팀/개인 환경에서 absolute path, Windows override, timeout을 명시한다.</li>
+        <li>실패 메시지는 Codex가 다음 행동을 알 수 있게 구체적으로 쓴다.</li>
+        <li>민감정보를 외부 HTTP로 보내는 hook은 개인용 playbook에 먼저 남기고 공개 사이트에는 절대 토큰을 쓰지 않는다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>Claude hook 자료 처리</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Claude 원본 내용</th>
+              <th>Codex 문서 반영</th>
+              <th>처리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Hook은 시스템 레벨에서 실행된다</td>
+              <td>유지</td>
+              <td>Codex lifecycle script 관점으로 설명</td>
+            </tr>
+            <tr>
+              <td>PreToolUse, PostToolUse, Stop, SubagentStop</td>
+              <td>유지</td>
+              <td>Codex 이벤트 기준으로 다시 정리</td>
+            </tr>
+            <tr>
+              <td>prompt hook, agent hook</td>
+              <td>주의</td>
+              <td>Codex에서는 현재 실행 handler로 보지 않음</td>
+            </tr>
+            <tr>
+              <td>HTTP hook</td>
+              <td>보류</td>
+              <td>Codex 공식 release behavior에 맞춰 별도 확인 전까지 공개 가이드에서 제외</td>
+            </tr>
+            <tr>
+              <td><code>.claude/settings.json</code> 경로</td>
+              <td>legacy</td>
+              <td>Codex에서는 <code>.codex/hooks.json</code> 또는 <code>config.toml</code> 기준</td>
+            </tr>
+            <tr>
+              <td>test-hook-simulation</td>
+              <td>legacy</td>
+              <td>Claude 실험 기록으로 보관하고 Codex hook 실험과 분리</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>다음 실험 후보</h2>
+      <ul>
+        <li><code>.codex/hooks/check-bash.mjs</code>: 위험한 삭제/배포 명령 경고</li>
+        <li><code>.codex/hooks/final-check.mjs</code>: 변경 후 검증 누락 시 Stop에서 continuation 요청</li>
+        <li><code>.codex/hooks/session-start.mjs</code>: 프로젝트별 최근 결정 메모 주입</li>
+        <li>Codex hook 실험 결과는 Claude의 <code>test-hook-simulation/</code>과 별도 폴더에 저장</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>공식 확인 출처</h2>
+      <ul class="source-list">
+        <li><a href="https://developers.openai.com/codex/hooks">OpenAI Codex Hooks</a> - Codex hook 이벤트, 설정 위치, trust review, release behavior 기준</li>
+        <li><a href="https://developers.openai.com/codex/subagents">OpenAI Codex Subagents</a> - SubagentStart/SubagentStop과 병렬 agent 흐름 확인</li>
+        <li><a href="https://code.claude.com/docs/en/hooks">Claude Code Hooks</a> - legacy hook 원본과 차이점 확인</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

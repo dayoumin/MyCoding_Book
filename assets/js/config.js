@@ -100,6 +100,18 @@ const DocsConfig = {
       tags: ["skills", "automation", "reuse"]
     },
     {
+      id: "codex-hooks",
+      title: "Codex Hooks 운영 기준",
+      shortTitle: "Hooks",
+      file: "codex/hooks.html",
+      icon: "H",
+      category: "codex",
+      description: "Codex hook을 언제 쓰고, 언제 AGENTS.md, 테스트, 리뷰 루프로 충분한지 정리합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 13,
+      tags: ["hooks", "guardrails", "automation", "verification"]
+    },
+    {
       id: "mcp-connectors",
       title: "MCP, Plugins, Connectors",
       shortTitle: "Tools",

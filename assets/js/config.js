@@ -130,10 +130,10 @@ const DocsConfig = {
       file: "codex/skills.html",
       icon: "S",
       category: "codex",
-      description: "반복 작업을 skill, 체크리스트, 자동화 중 어디에 둘지 판단하는 기준입니다.",
+      description: "Codex 공식 skills 구조, 저장 위치, 호출 방식, plugin 배포 기준과 반복 절차 승격 기준입니다.",
       lastUpdated: "2026-05-26",
-      readingTime: 9,
-      tags: ["skills", "automation", "reuse"]
+      readingTime: 15,
+      tags: ["skills", "automation", "reuse", "plugins", "progressive-disclosure"]
     },
     {
       id: "codex-hooks",

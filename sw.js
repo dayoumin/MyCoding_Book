@@ -22,8 +22,7 @@ const urlsToCache = [
   "/assets/js/config.js",
   "/assets/js/main.js",
   "/assets/js/search.js",
-  "/assets/icons/icon-192x192.png",
-  "/assets/icons/icon-512x512.png"
+  "/assets/icons/icon.svg"
 ];
 
 self.addEventListener("install", event => {

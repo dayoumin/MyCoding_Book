@@ -40,6 +40,18 @@ const DocsConfig = {
       tags: ["agent", "goal-mode", "review", "workflow"]
     },
     {
+      id: "agent-design",
+      title: "Agent 설계와 운영 기준",
+      shortTitle: "Agent Design",
+      file: "codex/agent-design.html",
+      icon: "G",
+      category: "codex",
+      description: "Codex subagents, skills, hooks, MCP, RAG를 어떤 기준으로 나누고 운영할지 정리합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 14,
+      tags: ["agent", "subagents", "skills", "hooks", "mcp", "rag"]
+    },
+    {
       id: "agentic-roadmap",
       title: "Agentic Coding Roadmap",
       shortTitle: "Roadmap",

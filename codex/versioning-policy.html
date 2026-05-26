@@ -46,12 +46,12 @@
             <tr>
               <td>Claude Code 전용</td>
               <td>legacy에 보관하고 Codex 문서에서 직접 의존하지 않음</td>
-              <td>Claude hook 세부 JSON, Claude 설정 파일 경로</td>
+              <td>Claude 설정 파일 경로, Claude 전용 hook 입력 필드</td>
             </tr>
             <tr>
-              <td>Codex에서 다른 개념으로 대응</td>
-              <td>번역 문서를 새로 작성</td>
-              <td>Hook에서 approval, automation, AGENTS.md, test loop로 번역</td>
+              <td>Codex에서 직접 지원</td>
+              <td>OpenAI Codex 문서를 기준으로 새 문서 작성</td>
+              <td>Codex subagents, skills, hooks, MCP</td>
             </tr>
             <tr>
               <td>낡았거나 검증 불가</td>
@@ -69,7 +69,7 @@
         Claude Code도 subagents, hooks, MCP가 계속 바뀌고 있습니다.
         공식 Anthropic 문서 기준으로 보면 subagents는 별도 context와 tool permissions를 갖고,
         hooks는 command hook, JSON output, MCP tool matcher, 보안 주의사항까지 포함합니다.
-        따라서 오래된 문서를 단순히 Codex 용어로 바꾸면 위험합니다.
+        또한 Codex도 subagents, skills, hooks 문서가 별도로 생겼으므로 오래된 문서를 단순히 용어만 바꿔 옮기면 위험합니다.
       </p>
       <div class="note-panel">
         <strong>원칙</strong>
@@ -107,6 +107,9 @@
       <ul class="source-list">
         <li><a href="https://developers.openai.com/api/docs/models">OpenAI model docs</a> - 현재 모델과 기능 지원 범위 확인</li>
         <li><a href="https://developers.openai.com/codex/explore/">OpenAI Codex use cases</a> - Codex workflow 확인</li>
+        <li><a href="https://developers.openai.com/codex/subagents">OpenAI Codex subagents</a> - Codex subagent workflow 확인</li>
+        <li><a href="https://developers.openai.com/codex/skills">OpenAI Codex skills</a> - Codex skill 구조 확인</li>
+        <li><a href="https://developers.openai.com/codex/hooks">OpenAI Codex hooks</a> - Codex hook 지원 범위 확인</li>
         <li><a href="https://docs.anthropic.com/en/docs/claude-code/sub-agents">Anthropic Claude Code subagents</a> - Claude subagent 구조 확인</li>
         <li><a href="https://docs.anthropic.com/en/docs/claude-code/hooks">Anthropic Claude Code hooks</a> - Claude hook 현재 구조 확인</li>
         <li><a href="https://docs.anthropic.com/en/docs/claude-code/mcp">Anthropic Claude Code MCP</a> - Claude MCP 연계 확인</li>

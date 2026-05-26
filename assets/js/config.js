@@ -166,10 +166,10 @@ const DocsConfig = {
       file: "codex/browser-computer-use.html",
       icon: "B",
       category: "tools",
-      description: "프론트엔드, 로컬 앱, 원격 컴퓨터 작업을 화면 증거와 함께 검증하는 방식입니다.",
+      description: "Codex 인앱 브라우저, Computer Use, Playwright/Chrome DevTools MCP를 검증 루프로 연결합니다.",
       lastUpdated: "2026-05-26",
-      readingTime: 9,
-      tags: ["browser", "computer-use", "frontend", "verification"]
+      readingTime: 14,
+      tags: ["browser", "computer-use", "playwright", "chrome-devtools", "verification"]
     },
     {
       id: "updates",

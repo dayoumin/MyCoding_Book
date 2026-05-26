@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Browser와 Computer Use 학습 노트">
+  <meta name="description" content="Codex Browser, Computer Use, MCP 기반 화면 검증 루프">
   <title>Browser와 Computer Use - MyCoding Book</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -18,33 +18,193 @@
       </nav>
     </div>
   </header>
+
   <main class="page-shell">
     <header class="page-header">
       <span class="hero-kicker">Visual verification</span>
       <h1>Browser와 Computer Use</h1>
-      <p>AI 코딩은 코드만 맞아서는 부족합니다. 화면에서 실제로 보이는지, 클릭되는지, 사용자가 이해할 수 있는지를 확인해야 합니다.</p>
+      <p>AI 코딩의 검증은 코드와 테스트에서 끝나지 않습니다. 사용자가 실제로 보게 될 화면, 클릭 흐름, 콘솔 오류, 네트워크 실패까지 증거로 남겨야 완성입니다.</p>
+      <div class="metadata">
+        <span>2026-05-26</span>
+        <span>약 14분</span>
+        <span>Codex Browser · Computer Use · MCP</span>
+      </div>
     </header>
 
     <section class="content-section">
-      <h2>브라우저 검증이 필요한 경우</h2>
+      <h2>이번 결론</h2>
+      <p>Browser와 Computer Use는 테스트를 대체하는 기능이 아니라, 테스트가 놓치기 쉬운 사용자 경험을 확인하는 검증 루프입니다. 정적 HTML, 프론트엔드, 대시보드, 문서 사이트처럼 화면 품질이 중요한 작업은 코드 검증 뒤에 최소 한 번은 브라우저 증거를 확인합니다.</p>
       <ul>
-        <li>프론트엔드 화면, 반응형 레이아웃, 접근성 변화</li>
-        <li>로그인, 검색, 폼 제출처럼 실제 상호작용이 있는 기능</li>
-        <li>로컬 앱과 외부 페이지가 함께 동작하는 흐름</li>
-        <li>문서 사이트처럼 사람이 읽는 품질이 중요한 산출물</li>
+        <li>로컬 파일, 개발 서버, 공개 URL은 Codex 인앱 브라우저로 빠르게 확인합니다.</li>
+        <li>로그인 세션, 확장 프로그램, 결제, 계정 설정처럼 사용자 권한이 필요한 흐름은 일반 브라우저나 전용 connector 기준으로 다룹니다.</li>
+        <li>DOM, console, network, screenshot을 구조적으로 확인할 수 있으면 Playwright MCP 또는 Chrome DevTools MCP가 화면 클릭보다 우선입니다.</li>
+        <li>Computer Use는 구조화된 API나 MCP로 처리하기 어려운 실제 데스크톱 앱 작업에 제한적으로 씁니다.</li>
       </ul>
     </section>
 
     <section class="content-section">
-      <h2>기록할 것</h2>
+      <h2>도구 선택 기준</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>상황</th>
+              <th>우선 도구</th>
+              <th>판단 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>정적 HTML, 로컬 파일, 개발 서버, 공개 배포 URL</td>
+              <td>Codex 인앱 브라우저</td>
+              <td>로그인이 필요 없고 화면, 링크, 레이아웃을 빠르게 확인할 때</td>
+            </tr>
+            <tr>
+              <td>로그인된 서비스, 브라우저 확장, 계정별 데이터</td>
+              <td>일반 브라우저 또는 전용 connector</td>
+              <td>인앱 브라우저의 비로그인 상태로는 실제 사용자 흐름을 재현할 수 없을 때</td>
+            </tr>
+            <tr>
+              <td>DOM 상태, console error, network request, screenshot</td>
+              <td>Playwright MCP 또는 Chrome DevTools MCP</td>
+              <td>반복 가능한 브라우저 검증과 디버깅 증거가 필요할 때</td>
+            </tr>
+            <tr>
+              <td>Figma, GitHub, Slack, Sentry, Vercel 같은 외부 도구</td>
+              <td>MCP, connector, plugin</td>
+              <td>화면을 클릭하기보다 구조화된 API와 권한 모델이 더 안전할 때</td>
+            </tr>
+            <tr>
+              <td>macOS 데스크톱 앱의 실제 GUI 조작</td>
+              <td>Computer Use</td>
+              <td>앱 UI를 직접 보고 클릭해야 하고 대체 가능한 API가 없을 때</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>브라우저 검증 루프</h2>
+      <p>프론트엔드 작업 뒤에는 “열어봤다”가 아니라 아래 증거를 남기는 쪽으로 습관을 만듭니다.</p>
+      <ol>
+        <li><strong>URL:</strong> 확인한 로컬 주소, 파일 경로, 배포 URL을 기록합니다.</li>
+        <li><strong>Viewport:</strong> 데스크톱과 모바일 중 어떤 크기로 봤는지 남깁니다.</li>
+        <li><strong>Screenshot 또는 DOM 증거:</strong> 핵심 화면이 비어 있지 않은지, 주요 텍스트와 CTA가 보이는지 확인합니다.</li>
+        <li><strong>Console:</strong> 오류, hydration mismatch, CSP 오류, asset 404를 확인합니다.</li>
+        <li><strong>Network:</strong> API 실패, 이미지 누락, 캐시 문제, 배포 환경의 경로 차이를 확인합니다.</li>
+        <li><strong>Interaction:</strong> 클릭, 검색, 탭 전환, 폼 입력처럼 사용자가 실제로 할 행동을 최소 단위로 검증합니다.</li>
+        <li><strong>Source of truth:</strong> 최종 판단이 테스트, 브라우저 증거, 배포 URL 중 어디에 근거하는지 분명히 합니다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>MCP 검증 루프</h2>
+      <p>브라우저 MCP는 “사람 눈으로 대충 보기”를 줄이고, 반복 가능한 증거를 남기기 위한 도구입니다. Codex MCP는 <code>config.toml</code>에서 STDIO 또는 Streamable HTTP 서버로 연결하며, Playwright와 Chrome DevTools는 브라우저 제어와 검사에 유용한 MCP 후보입니다.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>검증 대상</th>
+              <th>MCP로 확인할 것</th>
+              <th>완료 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>문서 사이트</td>
+              <td>링크 이동, 제목 노출, TOC 생성, 검색 인덱스 반영</td>
+              <td>핵심 페이지가 공개 URL에서 열리고 콘솔 오류가 없음</td>
+            </tr>
+            <tr>
+              <td>대시보드</td>
+              <td>데이터 로딩, 빈 상태, 에러 상태, 필터와 탭 전환</td>
+              <td>주요 상태가 겹침 없이 보이고 네트워크 실패가 설명됨</td>
+            </tr>
+            <tr>
+              <td>폼과 workflow</td>
+              <td>입력, validation, submit, success, failure</td>
+              <td>사용자 행동 뒤 결과가 화면과 데이터에 일관되게 반영됨</td>
+            </tr>
+            <tr>
+              <td>반응형 UI</td>
+              <td>desktop, tablet, mobile screenshot</td>
+              <td>텍스트가 잘리지 않고 버튼, 표, 사이드바가 사용 가능함</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>중요한 점은 MCP 결과도 단독 판정이 아니라는 것입니다. 코드 변경이 있으면 타입 체크, 테스트, lint 같은 좁은 검증과 브라우저 증거를 함께 묶어 완료 보고에 남깁니다.</p>
+    </section>
+
+    <section class="content-section">
+      <h2>프론트엔드 체크리스트</h2>
       <ul>
-        <li>확인한 URL</li>
-        <li>주요 화면 제목과 콘솔 에러 여부</li>
-        <li>클릭 또는 검색 같은 핵심 상호작용 결과</li>
-        <li>남은 위험이나 확인하지 못한 범위</li>
+        <li>첫 화면에서 핵심 목적, 현재 위치, 다음 행동이 보이는가?</li>
+        <li>모바일 폭에서 텍스트, 버튼, 표, 사이드바가 서로 겹치지 않는가?</li>
+        <li>키보드 focus, hover, active, disabled 상태가 깨지지 않는가?</li>
+        <li>loading, empty, error 상태가 사용자에게 설명되는가?</li>
+        <li>console error, network 404, mixed content, CORS, CSP 오류가 없는가?</li>
+        <li>로컬에서는 되지만 배포 URL에서는 깨지는 경로 문제가 없는가?</li>
+        <li>스크린샷만으로 부족한 흐름은 클릭 결과까지 확인했는가?</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>Computer Use 기준</h2>
+      <p>Computer Use는 Codex가 화면을 보고 창, 메뉴, 키보드, 클립보드와 상호작용할 수 있는 강한 기능입니다. 그래서 “가능하면 API나 MCP, shell, 테스트로 먼저 처리하고, GUI가 본질일 때만 쓴다”가 기본 원칙입니다.</p>
+      <ul>
+        <li>한 번에 하나의 앱 또는 하나의 흐름만 맡깁니다.</li>
+        <li>계정, 보안, 결제, 개인 정보, credential 관련 흐름은 사용자가 지켜보며 승인합니다.</li>
+        <li>민감한 앱과 파일은 닫아 두고, 잘못된 창을 조작하면 즉시 중단합니다.</li>
+        <li>Computer Use가 바꾼 파일은 저장되고 git diff에 잡히는지 별도로 확인합니다.</li>
+        <li>macOS 중심 기능으로 이해하고, Windows에서는 사용 가능 범위와 대체 검증 루프를 따로 확인합니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>MyCoding Book 적용</h2>
+      <p>이 사이트는 정적 HTML 문서와 검색 인덱스가 중심이므로, 새 문서를 추가할 때 다음 기준을 사용합니다.</p>
+      <ul>
+        <li>HTML 문법과 검색 설정은 로컬 명령으로 확인합니다.</li>
+        <li>새 문서에는 자동 목차 스크립트가 붙어 있고, 사이드 내비게이션에서 접근 가능해야 합니다.</li>
+        <li>공개 배포 URL에서 새 페이지, reference audit, legacy map이 실제로 열리는지 확인합니다.</li>
+        <li>legacy처럼 좌측 구조가 접근성을 높여 주는 패턴은 새 문서에도 목차와 내부 섹션으로 반영합니다.</li>
+        <li>화면 검증 결과는 완료 보고에 URL, 확인한 키워드, 남은 리스크로 요약합니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>자주 나는 실패</h2>
+      <ul>
+        <li><strong>Stale server:</strong> 오래된 dev server를 보고 최신 변경이라고 착각합니다.</li>
+        <li><strong>Wrong viewport:</strong> 데스크톱만 보고 모바일 overflow를 놓칩니다.</li>
+        <li><strong>Unauthenticated browser:</strong> 로그인 상태가 필요한 화면을 인앱 브라우저에서 판단합니다.</li>
+        <li><strong>Hidden console error:</strong> 화면은 보이지만 console error가 누적됩니다.</li>
+        <li><strong>Deploy mismatch:</strong> 로컬 파일 경로는 맞지만 배포 base path에서 asset이 깨집니다.</li>
+        <li><strong>Screenshot crop:</strong> 캡처 영역 밖의 겹침, sticky header, 하단 CTA 문제를 놓칩니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>다음 작업 후보</h2>
+      <ul>
+        <li>docs-publisher 또는 legacy-auditor skill을 실제 repo skill로 만들지 검토</li>
+        <li>Project Operations 앱에서 GitHub, Vercel, Sentry 같은 운영 connector 후보 분리</li>
+        <li>product-page와 video-animation legacy 문서를 프론트엔드 실습 자료로 재가공</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>공식 확인 출처</h2>
+      <ul>
+        <li><a href="https://developers.openai.com/codex/app/browser">Codex in-app browser</a></li>
+        <li><a href="https://developers.openai.com/codex/app/computer-use">Codex Computer Use</a></li>
+        <li><a href="https://developers.openai.com/codex/mcp">Codex MCP</a></li>
       </ul>
     </section>
   </main>
+
   <script src="../assets/js/doc-toc.js" defer></script>
 </body>
 </html>

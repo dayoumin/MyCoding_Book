@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Claude Code 원본 MD와 공개 HTML 문서의 1:1 매핑표">
+  <title>Legacy 원본 매핑 - MyCoding Book</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="header-logo"><span>MC</span><span>MyCoding Book</span></a>
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a href="../codex/index.html">Codex</a>
+        <a href="../updates/index.html">Updates</a>
+        <a class="active" href="index.html">Reference</a>
+        <a href="../legacy/index.html">Legacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <header class="page-header">
+      <span class="hero-kicker">Legacy map</span>
+      <h1>Legacy 원본 매핑</h1>
+      <p>
+        오래된 Claude Code 원본 MD와 공개 HTML 문서가 어디로 흡수됐는지 추적합니다.
+        이 표는 삭제 목록이 아니라, 새 Codex 기준으로 재작성할 때 무엇을 참고하고 무엇을 분리할지 정하는 지도입니다.
+      </p>
+    </header>
+
+    <section class="content-section">
+      <h2>매핑 원칙</h2>
+      <div class="note-panel">
+        <strong>원본은 보존하고, 공개 학습면은 Codex 기준으로 읽습니다.</strong>
+        <p>
+          Claude 전용 설정 경로, 명령, hook 입력 형식은 legacy로 남깁니다.
+          반대로 agent 분리, 검증 루프, MCP 권한 모델처럼 Codex에도 필요한 개념은 새 HTML 문서에 흡수합니다.
+        </p>
+      </div>
+      <ul>
+        <li><strong>Absorbed:</strong> 핵심 판단이 새 Codex 문서에 이미 반영됨</li>
+        <li><strong>Legacy only:</strong> Claude Code 자료로만 보관하고 새 문서에서 직접 의존하지 않음</li>
+        <li><strong>Rewrite next:</strong> 공식 문서 확인 뒤 새 Codex 문서로 재작성할 후보</li>
+        <li><strong>Practice later:</strong> 학습 예제로 남기되 지금의 Codex core에는 넣지 않음</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>원본 MD 매핑</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>원본 MD</th>
+              <th>현재 공개/보관 위치</th>
+              <th>새 Codex 기준 반영</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>claude_hook_creation_2026.md</code></td>
+              <td><a href="../legacy/index.html">legacy/index.html</a>, <code>test-hook-simulation/</code></td>
+              <td><a href="../codex/hooks.html">codex/hooks.html</a></td>
+              <td>Absorbed. Codex hooks 운영 판단만 반영하고 Claude JSON/경로는 보관</td>
+            </tr>
+            <tr>
+              <td><code>claude_skill_creation_2026.md</code></td>
+              <td><a href="../legacy/index.html">legacy/index.html</a></td>
+              <td><a href="../codex/skills.html">codex/skills.html</a>, <a href="../codex/custom-agents.html">codex/custom-agents.html</a></td>
+              <td>Partial. Codex skill 구조와 progressive disclosure 기준으로 추가 감사 필요</td>
+            </tr>
+            <tr>
+              <td><code>claude_orchestration_guide.md</code></td>
+              <td><a href="../orchestration.html">orchestration.html</a></td>
+              <td><a href="../codex/agent-workflow.html">agent-workflow</a>, <a href="../codex/agent-design.html">agent-design</a>, <a href="../codex/custom-agents.html">custom-agents</a></td>
+              <td>Absorbed. Claude agent frontmatter와 memory 필드는 legacy로 분리</td>
+            </tr>
+            <tr>
+              <td><code>claude_mcp_integration_guide.md</code></td>
+              <td><a href="../mcp-guide.html">mcp-guide.html</a></td>
+              <td><a href="../codex/mcp-connectors.html">codex/mcp-connectors.html</a></td>
+              <td>Rewrite next. Codex MCP, plugins, connectors, app tools 기준으로 재작성 필요</td>
+            </tr>
+            <tr>
+              <td><code>claude_code_2026_update.md</code></td>
+              <td><a href="../update-2026.html">update-2026.html</a></td>
+              <td><a href="../codex/versioning-policy.html">versioning-policy</a>, <a href="../updates/index.html">updates</a></td>
+              <td>Legacy only. Claude 변화 기록으로 보관하고 Codex 업데이트와 직접 합치지 않음</td>
+            </tr>
+            <tr>
+              <td><code>claude_product_page_guide.md</code></td>
+              <td><a href="../product-page.html">product-page.html</a></td>
+              <td><a href="../codex/browser-computer-use.html">browser-computer-use</a> 후보</td>
+              <td>Practice later. 프론트엔드 실습 자료로 보관</td>
+            </tr>
+            <tr>
+              <td><code>claude_video_animation_guide.md</code></td>
+              <td><a href="../video-animation.html">video-animation.html</a></td>
+              <td>아직 없음</td>
+              <td>Practice later. 이미지/영상 모델과 workflow 최신화 뒤 판단</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>기존 HTML 매핑</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>HTML</th>
+              <th>역할</th>
+              <th>새 위치</th>
+              <th>다음 처리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><a href="../codex.html">codex.html</a></td>
+              <td>이전 Codex 단일 페이지</td>
+              <td><a href="../codex/index.html">codex/index.html</a></td>
+              <td>Legacy 진입보다 새 Codex hub를 우선 노출</td>
+            </tr>
+            <tr>
+              <td><a href="../updates.html">updates.html</a></td>
+              <td>이전 업데이트 단일 페이지</td>
+              <td><a href="../updates/index.html">updates/index.html</a></td>
+              <td>새 업데이트 섹션으로 흡수</td>
+            </tr>
+            <tr>
+              <td><a href="../orchestration.html">orchestration.html</a></td>
+              <td>Claude orchestration legacy</td>
+              <td><a href="../codex/agent-design.html">agent-design</a>, <a href="../codex/custom-agents.html">custom-agents</a></td>
+              <td>직접 수정보다 legacy로 유지</td>
+            </tr>
+            <tr>
+              <td><a href="../mcp-guide.html">mcp-guide.html</a></td>
+              <td>Claude MCP legacy</td>
+              <td><a href="../codex/mcp-connectors.html">mcp-connectors</a></td>
+              <td>MCP 문서 재작성 때만 참고</td>
+            </tr>
+            <tr>
+              <td><a href="../update-2026.html">update-2026.html</a></td>
+              <td>Claude 2026 업데이트 기록</td>
+              <td><a href="../codex/versioning-policy.html">versioning-policy</a></td>
+              <td>현재 Codex 기준과 혼동되지 않게 legacy 분리</td>
+            </tr>
+            <tr>
+              <td><a href="../monorepo.html">monorepo.html</a></td>
+              <td>AI coding repo 구조 실습</td>
+              <td>향후 project-operations 또는 repo 운영 문서 후보</td>
+              <td>Practice later</td>
+            </tr>
+            <tr>
+              <td><a href="../product-page.html">product-page.html</a></td>
+              <td>프론트엔드 산출물 실습</td>
+              <td><a href="../codex/browser-computer-use.html">browser-computer-use</a> 후보</td>
+              <td>Practice later</td>
+            </tr>
+            <tr>
+              <td><a href="../video-animation.html">video-animation.html</a></td>
+              <td>창작 workflow 실습</td>
+              <td>아직 없음</td>
+              <td>모델/도구 최신화 뒤 유지 여부 판단</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>다음 작업 순서</h2>
+      <ol>
+        <li><strong>MCP 재작성:</strong> <code>claude_mcp_integration_guide.md</code>와 <code>mcp-guide.html</code>을 Codex MCP, plugin, connector 기준으로 다시 읽습니다.</li>
+        <li><strong>Skills 보강:</strong> <code>claude_skill_creation_2026.md</code>에서 Codex skills에 남길 개념과 버릴 Claude 전용 필드를 나눕니다.</li>
+        <li><strong>Practice 정리:</strong> product, video, monorepo 실습은 core 문서와 분리하고 나중에 최신 workflow로 갱신합니다.</li>
+        <li><strong>Update routine:</strong> 월간 확인 루틴을 HTML로 정리해 모델과 도구 변화에 대응합니다.</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>

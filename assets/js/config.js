@@ -280,6 +280,18 @@ const DocsConfig = {
       tags: ["audit", "legacy", "rewrite", "roadmap"]
     },
     {
+      id: "legacy-map",
+      title: "Legacy 원본 매핑",
+      shortTitle: "Legacy Map",
+      file: "reference/legacy-map.html",
+      icon: "M",
+      category: "reference",
+      description: "Claude Code 원본 MD, 기존 HTML, 새 Codex 문서의 흡수 관계를 1:1로 추적합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 10,
+      tags: ["legacy", "mapping", "claude-code", "audit"]
+    },
+    {
       id: "legacy",
       title: "Claude Code Legacy 자료",
       shortTitle: "Legacy",

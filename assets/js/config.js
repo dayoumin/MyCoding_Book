@@ -88,6 +88,18 @@ const DocsConfig = {
       tags: ["vector-store", "rag", "multi-agent", "evals", "mcp"]
     },
     {
+      id: "agentic-rag",
+      title: "Agentic RAG 운영 기준",
+      shortTitle: "Agentic RAG",
+      file: "codex/agentic-rag.html",
+      icon: "R",
+      category: "codex",
+      description: "repo search, file search, vector store, eval을 agentic coding workflow에 언제 연결할지 정리합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 15,
+      tags: ["rag", "retrieval", "vector-store", "file-search", "evals"]
+    },
+    {
       id: "versioning-policy",
       title: "Claude Legacy와 모델 업데이트 정책",
       shortTitle: "Version Policy",

@@ -73,7 +73,7 @@
         <li>Codex hooks 문서는 작성 완료. 기존 Claude hook 자료를 Codex release behavior 기준으로 재분류했다.</li>
         <li>Custom agent 템플릿 문서를 작성했다. agent 설계 문서와 바로 이어지는 반복 역할 기준이다.</li>
         <li>MCP 문서는 connectors, plugins, app tools까지 포함해 다시 쓴다.</li>
-        <li>RAG와 vector store는 agentic stack의 하위 문서로 분리한다.</li>
+        <li>RAG와 vector store는 agentic stack의 하위 문서로 분리했고, agentic RAG 운영 기준을 추가했다.</li>
         <li>creative/practice 문서는 삭제하지 않고 예제 학습 자료로 유지하되, 나중에 최신화한다.</li>
       </ol>
     </section>
@@ -133,7 +133,12 @@
             <tr>
               <td><a href="../codex/agentic-stack.html">codex/agentic-stack.html</a></td>
               <td>RAG, vector store, multi-agent 개요</td>
-              <td>Rewrite 후보. RAG/vector 세부 문서가 필요</td>
+              <td>Keep. 세부 기준은 agentic-rag 문서로 분리</td>
+            </tr>
+            <tr>
+              <td><a href="../codex/agentic-rag.html">codex/agentic-rag.html</a></td>
+              <td>Agentic RAG와 검색 계층 운영 기준</td>
+              <td>Keep. repo search, file search, vector store, eval 도입 기준</td>
             </tr>
             <tr>
               <td><a href="../codex/versioning-policy.html">codex/versioning-policy.html</a></td>
@@ -264,8 +269,9 @@
       <ul>
         <li><strong>Done:</strong> <code>codex/hooks.html</code> 작성</li>
         <li><strong>Done:</strong> <code>codex/custom-agents.html</code> 작성</li>
-        <li><strong>Next 1:</strong> <code>codex/agentic-rag.html</code> 작성</li>
-        <li><strong>Next 2:</strong> legacy 원본 MD를 공개 HTML 문서와 1:1로 매핑</li>
+        <li><strong>Done:</strong> <code>codex/agentic-rag.html</code> 작성</li>
+        <li><strong>Next 1:</strong> legacy 원본 MD를 공개 HTML 문서와 1:1로 매핑</li>
+        <li><strong>Next 2:</strong> <code>codex/update-routine.html</code> 작성 검토</li>
       </ul>
     </section>
   </main>

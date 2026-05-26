@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Agentic RAG와 vector store를 AI coding workflow에 연결하는 기준">
+  <title>Agentic RAG 운영 기준 - MyCoding Book</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="header-logo"><span>MC</span><span>MyCoding Book</span></a>
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a class="active" href="index.html">Codex</a>
+        <a href="../updates/index.html">Updates</a>
+        <a href="../reference/index.html">Reference</a>
+        <a href="../legacy/index.html">Legacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <header class="page-header">
+      <span class="hero-kicker">Retrieval</span>
+      <h1>Agentic RAG 운영 기준</h1>
+      <p>
+        Agentic coding에서 RAG는 “무조건 vector DB를 붙이는 것”이 아닙니다.
+        agent가 필요한 지식을 찾고, 근거를 남기고, 부족하면 다시 검색하며, 결과를 검증하는 루프를 설계하는 일입니다.
+      </p>
+    </header>
+
+    <section class="content-section">
+      <h2>이번 결론</h2>
+      <div class="note-panel">
+        <strong>검색은 단계적으로 올리고, 답변보다 근거를 먼저 설계합니다.</strong>
+        <p>
+          개인 학습 사이트와 코딩 작업에서는 대부분 <code>rg</code>, 문서 링크, Git history, 공식 문서 확인으로 시작합니다.
+          문서가 많아지고 같은 지식을 반복해서 찾게 될 때 file search나 vector store를 붙이고,
+          여러 agent가 검색 결과를 나눠 쓰기 시작할 때 agentic RAG로 봅니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>용어를 분리하기</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>용어</th>
+              <th>이 사이트에서의 뜻</th>
+              <th>먼저 확인할 것</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Search</td>
+              <td>키워드, 파일명, symbol, Git history로 찾는 기본 검색</td>
+              <td>repo 구조, AGENTS.md, README, 테스트 이름</td>
+            </tr>
+            <tr>
+              <td>Retrieval</td>
+              <td>질문에 필요한 자료 조각을 찾아 agent에게 넣는 과정</td>
+              <td>출처, 최신성, 권한, 중복 자료</td>
+            </tr>
+            <tr>
+              <td>Vector store</td>
+              <td>문서를 semantic search 가능한 색인으로 저장하는 계층</td>
+              <td>chunking, metadata, 갱신 주기, 삭제 정책</td>
+            </tr>
+            <tr>
+              <td>RAG</td>
+              <td>검색 결과를 근거로 모델 응답을 만들고 출처를 남기는 패턴</td>
+              <td>검색 품질, citation, 환각 방지, fallback</td>
+            </tr>
+            <tr>
+              <td>Agentic RAG</td>
+              <td>agent가 검색 계획, 도구 선택, 재검색, 검증을 루프 안에서 수행하는 구조</td>
+              <td>권한, 비용, latency, eval, 관찰 가능성</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>도입 단계</h2>
+      <ol>
+        <li><strong>Local search:</strong> <code>rg</code>, 파일 트리, Git diff, README, AGENTS.md로 충분한지 먼저 확인합니다.</li>
+        <li><strong>Curated reference:</strong> 공식 문서 링크와 학습 HTML을 reference index에 모아 사람이 읽을 수 있게 둡니다.</li>
+        <li><strong>File search:</strong> 문서 묶음이 커지고 키워드 검색으로 놓치는 내용이 많아지면 파일 기반 검색을 붙입니다.</li>
+        <li><strong>Vector store:</strong> 의미 기반 검색, chunk metadata, 문서 freshness 관리가 필요할 때 색인을 둡니다.</li>
+        <li><strong>Agentic RAG:</strong> 검색, 검증, 재시도, 요약, 인용을 agent가 작업 루프 안에서 선택해야 할 때 도입합니다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>Memory는 RAG가 아니다</h2>
+      <p>
+        agent에게 오래 남겨야 할 정보가 모두 vector store로 가는 것은 아닙니다.
+        먼저 가장 작은 기억 계층을 고르고, 반복 검색 문제가 실제로 생길 때 retrieval 계층을 올립니다.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>계층</th>
+              <th>적합한 내용</th>
+              <th>예시</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AGENTS.md</td>
+              <td>작업 규칙, 검증 규칙, 프로젝트 경계</td>
+              <td>커밋 정책, 테스트 명령, 인코딩 주의</td>
+            </tr>
+            <tr>
+              <td>Design docs</td>
+              <td>재사용될 제품/기술 결정</td>
+              <td>아키텍처 결정, 운영 원칙, 공개/비공개 분리</td>
+            </tr>
+            <tr>
+              <td>Skills</td>
+              <td>반복 절차와 참고 자료</td>
+              <td>문서 갱신 루틴, 배포 검증 루틴</td>
+            </tr>
+            <tr>
+              <td>Session summary</td>
+              <td>현재 작업 맥락</td>
+              <td>이번 턴에서 한 변경과 남은 작업</td>
+            </tr>
+            <tr>
+              <td>Vector memory</td>
+              <td>많은 문서에서 의미 기반으로 다시 찾아야 하는 지식</td>
+              <td>학습 노트 묶음, FAQ, 운영 사례</td>
+            </tr>
+            <tr>
+              <td>Structured DB</td>
+              <td>정확한 상태와 관계가 중요한 데이터</td>
+              <td>프로젝트 registry, 배포 상태, 권한, 이벤트 로그</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>무엇을 저장할까</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>자료</th>
+              <th>추천 저장 방식</th>
+              <th>주의</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>공개 학습 HTML</td>
+              <td>site index + file search 후보</td>
+              <td>사람이 읽는 문서가 먼저이고 검색 색인은 보조입니다.</td>
+            </tr>
+            <tr>
+              <td>공식 문서 링크</td>
+              <td>reference page + 갱신 날짜</td>
+              <td>전문 복사보다 URL, 확인일, 핵심 판단만 남깁니다.</td>
+            </tr>
+            <tr>
+              <td>개인 playbook</td>
+              <td>비공개 repo 또는 user-local notes</td>
+              <td>로컬 경로, 계정, 토큰, 실험 로그는 공개 HTML에 넣지 않습니다.</td>
+            </tr>
+            <tr>
+              <td>프로젝트 운영 규칙</td>
+              <td>AGENTS.md, README, design docs</td>
+              <td>agent가 실제 작업할 때 자동으로 읽는 위치를 우선합니다.</td>
+            </tr>
+            <tr>
+              <td>대화/작업 이력</td>
+              <td>요약 문서, changelog, issue</td>
+              <td>원문 전체보다 결정과 근거를 구조화합니다.</td>
+            </tr>
+            <tr>
+              <td>테스트 실패와 복구 기록</td>
+              <td>reference 또는 private postmortem</td>
+              <td>반복 실패 패턴만 검색 대상에 넣습니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Agent workflow에 넣기</h2>
+      <div class="learning-grid">
+        <article class="module-card">
+          <span class="status-pill">Plan</span>
+          <strong>검색 계획</strong>
+          <p>질문을 먼저 쪼갭니다. 코드 구조, 공식 문서, 운영 기록, 사용자 결정 중 어디를 찾아야 하는지 분리합니다.</p>
+        </article>
+        <article class="module-card">
+          <span class="status-pill">Retrieve</span>
+          <strong>근거 수집</strong>
+          <p>검색 결과를 그대로 믿지 않고 파일 위치, 문서 URL, 날짜, version 조건을 함께 가져옵니다.</p>
+        </article>
+        <article class="module-card">
+          <span class="status-pill">Synthesize</span>
+          <strong>작업 판단</strong>
+          <p>agent는 찾은 자료를 바탕으로 선택지를 줄입니다. 모호하면 재검색하거나 사용자 결정이 필요한 지점을 표시합니다.</p>
+        </article>
+        <article class="module-card">
+          <span class="status-pill">Verify</span>
+          <strong>검증 루프</strong>
+          <p>답변이나 구현 뒤에는 테스트, 링크 확인, 브라우저 증거, citation 점검으로 검색 품질을 되돌아봅니다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>코딩 작업에서의 판단표</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>상황</th>
+              <th>추천</th>
+              <th>이유</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>단일 repo의 함수나 컴포넌트를 수정</td>
+              <td><code>rg</code> + targeted read</td>
+              <td>현재 코드가 source of truth라서 색인보다 직접 읽는 편이 정확합니다.</td>
+            </tr>
+            <tr>
+              <td>여러 프로젝트의 운영 규칙을 비교</td>
+              <td>문서 index + structured table</td>
+              <td>반복 참조할 기준을 사람이 읽을 수 있게 정리하는 것이 먼저입니다.</td>
+            </tr>
+            <tr>
+              <td>공식 API가 자주 바뀜</td>
+              <td>공식 문서 실시간 확인</td>
+              <td>오래된 vector 색인은 오히려 위험합니다.</td>
+            </tr>
+            <tr>
+              <td>내 학습 문서가 많아져 찾기 어려움</td>
+              <td>file search 또는 local vector index</td>
+              <td>내가 쓴 설명을 의미 기반으로 다시 찾을 필요가 생깁니다.</td>
+            </tr>
+            <tr>
+              <td>agent가 문서 검색 후 구현까지 반복</td>
+              <td>agentic RAG + eval</td>
+              <td>검색 품질이 구현 품질로 이어지므로 평가 루프가 필요합니다.</td>
+            </tr>
+            <tr>
+              <td>권한이 섞인 private/public 문서</td>
+              <td>분리 저장 + metadata 권한</td>
+              <td>검색 편의보다 유출 방지가 우선입니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Vector store 설계 메모</h2>
+      <ul>
+        <li><strong>Chunking:</strong> 문서 구조를 잃지 않도록 제목, 섹션, 코드 블록 단위의 경계를 보존합니다.</li>
+        <li><strong>Metadata:</strong> source URL, repo, path, updated date, audience, public/private 여부를 넣습니다.</li>
+        <li><strong>Freshness:</strong> 공식 문서는 색인만 믿지 말고 최신 여부를 다시 확인하는 루틴을 둡니다.</li>
+        <li><strong>Permissions:</strong> 공개 사이트, 개인 playbook, 고객 프로젝트, 비밀 값은 같은 색인에 섞지 않습니다.</li>
+        <li><strong>Citations:</strong> agent 답변이 “어디서 왔는지”를 남기게 해야 나중에 고칠 수 있습니다.</li>
+        <li><strong>Deletion:</strong> 잘못된 문서와 오래된 결정을 색인에서 제거하는 절차가 있어야 합니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>Graph와 Hybrid는 언제 보나</h2>
+      <p>
+        GraphRAG나 HybridRAG가 항상 더 좋은 것은 아닙니다.
+        일반적인 문서 검색은 keyword search, semantic search, metadata filtering 조합으로 충분한 경우가 많고,
+        관계 자체가 답의 핵심일 때만 graph 계층을 검토합니다.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>방식</th>
+              <th>쓸 때</th>
+              <th>비용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Keyword/BM25</td>
+              <td>정확한 파일명, API 이름, 오류 메시지를 찾을 때</td>
+              <td>빠르고 예측 가능하지만 표현이 다르면 놓칠 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td>Vector search</td>
+              <td>같은 뜻의 다른 표현, 긴 문서 묶음, 학습 노트를 찾을 때</td>
+              <td>chunk 품질과 freshness 관리가 필요합니다.</td>
+            </tr>
+            <tr>
+              <td>Hybrid search</td>
+              <td>정확한 키워드와 의미 검색을 함께 써야 할 때</td>
+              <td>튜닝과 평가가 없으면 복잡도만 늘 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td>GraphRAG</td>
+              <td>엔티티 관계, 의존성, 규칙 연결망이 답의 핵심일 때</td>
+              <td>스키마, 추출 품질, 업데이트 비용이 큽니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Eval을 같이 둬야 하는 이유</h2>
+      <p>
+        RAG 품질은 “그럴듯한 답변”으로 평가하면 금방 무너집니다.
+        검색 결과가 맞는지, 오래된 자료를 골라오지 않았는지, private 자료를 공개 답변에 섞지 않았는지 확인하는 작은 eval이 필요합니다.
+      </p>
+      <ol>
+        <li>대표 질문 10개를 만든다.</li>
+        <li>기대 출처와 금지 출처를 함께 적는다.</li>
+        <li>검색 결과에 citation이 있는지 확인한다.</li>
+        <li>답변이 최신 공식 문서와 충돌하면 실패로 본다.</li>
+        <li>실패한 질문은 chunking, metadata, prompt, tool 선택 중 무엇이 문제인지 분류한다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>실패 모드</h2>
+      <ul>
+        <li><strong>Stale retrieval:</strong> 오래된 공식 문서나 예전 모델 기준을 최신 답처럼 사용합니다.</li>
+        <li><strong>Bad chunking:</strong> 제목, 조건, 코드 블록이 분리되어 근거가 반쪽만 검색됩니다.</li>
+        <li><strong>Private leakage:</strong> 개인 playbook이나 고객 프로젝트 문서가 공개 답변에 섞입니다.</li>
+        <li><strong>Permission blur:</strong> agent가 읽어도 되는 자료와 쓰면 안 되는 자료의 경계가 흐려집니다.</li>
+        <li><strong>Citation drift:</strong> 답변은 맞아 보이지만 링크나 파일 위치가 실제 근거와 어긋납니다.</li>
+        <li><strong>Retrieval loop:</strong> 충분한 근거가 있는데도 agent가 검색만 반복하고 결정을 미룹니다.</li>
+        <li><strong>Over-indexing:</strong> 작은 프로젝트에 큰 검색 인프라를 붙여 유지보수 비용이 더 커집니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>이 사이트의 다음 적용</h2>
+      <ul>
+        <li><a href="agentic-stack.html">Agentic stack 문서</a>는 전체 구조를 설명하고, 이 문서는 RAG와 검색 계층을 세부화합니다.</li>
+        <li><a href="custom-agents.html">Custom agents 문서</a>의 docs-maintainer 역할에 공식 문서 확인과 public/private 분리를 연결합니다.</li>
+        <li><a href="../reference/content-audit.html">content audit</a>에는 어떤 문서가 검색 후보인지, legacy인지 계속 표시합니다.</li>
+        <li>다음 문서 후보는 <code>codex/update-routine.html</code> 또는 legacy 원본 MD 매핑입니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>공식 확인 출처</h2>
+      <ul class="source-list">
+        <li><a href="https://developers.openai.com/api/docs/guides/retrieval">OpenAI Retrieval guide</a> - semantic search와 vector store 기본 개념</li>
+        <li><a href="https://developers.openai.com/api/docs/guides/tools-file-search">OpenAI File search tool</a> - Responses API에서 file search와 vector store를 쓰는 기준</li>
+        <li><a href="https://developers.openai.com/api/docs/guides/embeddings">OpenAI Embeddings guide</a> - embedding 기반 검색과 분류의 기본 개념</li>
+        <li><a href="https://developers.openai.com/api/docs/guides/evals">OpenAI Evals guide</a> - 검색과 agent workflow 품질을 지속적으로 확인하는 기준</li>
+        <li><a href="https://developers.openai.com/codex/subagents">OpenAI Codex Subagents</a> - 병렬 agent와 custom agent 운영 기준</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

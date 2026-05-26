@@ -52,6 +52,18 @@ const DocsConfig = {
       tags: ["agent", "subagents", "skills", "hooks", "mcp", "rag"]
     },
     {
+      id: "custom-agents",
+      title: "Custom Agents 템플릿",
+      shortTitle: "Custom Agents",
+      file: "codex/custom-agents.html",
+      icon: "W",
+      category: "codex",
+      description: "반복되는 explorer, worker, reviewer, docs-maintainer 역할을 Codex custom agent로 분리하는 기준과 템플릿입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 14,
+      tags: ["custom-agents", "subagents", "explorer", "worker", "reviewer"]
+    },
+    {
       id: "agentic-roadmap",
       title: "Agentic Coding Roadmap",
       shortTitle: "Roadmap",

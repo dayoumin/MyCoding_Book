@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Codex Custom Agents 템플릿과 운영 기준">
+  <title>Custom Agents 템플릿 - MyCoding Book</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="header-logo"><span>MC</span><span>MyCoding Book</span></a>
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a class="active" href="index.html">Codex</a>
+        <a href="../updates/index.html">Updates</a>
+        <a href="../reference/index.html">Reference</a>
+        <a href="../legacy/index.html">Legacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <header class="page-header">
+      <span class="hero-kicker">Subagents</span>
+      <h1>Custom Agents 템플릿</h1>
+      <p>
+        Codex custom agent는 반복되는 역할을 고정된 지침과 권한 범위로 분리하는 장치입니다.
+        agent 이름을 먼저 늘리는 대신, 반복성, 권한, 산출물 형식, 검증 책임이 분명할 때만 템플릿으로 승격합니다.
+      </p>
+    </header>
+
+    <section class="content-section">
+      <h2>이번 결론</h2>
+      <div class="note-panel">
+        <strong>Custom agent는 “자주 쓰는 작업자”가 아니라 “반복 가능한 책임 단위”입니다.</strong>
+        <p>
+          explorer, worker, reviewer, docs-maintainer처럼 역할이 자주 반복되고 출력 형식이 안정되어야 custom agent로 둘 가치가 있습니다.
+          한 번만 필요한 조사나 구현은 기본 subagent 또는 main Codex에게 맡기고, 템플릿은 실제로 반복되는 순간에만 늘립니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>공식 기준 요약</h2>
+      <ul>
+        <li>프로젝트 전용 agent는 <code>.codex/agents/&lt;name&gt;.toml</code>에 둡니다.</li>
+        <li>개인 전역 agent는 <code>~/.codex/agents/&lt;name&gt;.toml</code>에 둡니다.</li>
+        <li>각 TOML 파일은 agent 하나를 정의합니다.</li>
+        <li>필수 필드는 <code>name</code>, <code>description</code>, <code>developer_instructions</code>입니다.</li>
+        <li><code>model</code>, <code>model_reasoning_effort</code>, <code>sandbox_mode</code>, <code>mcp_servers</code>, <code>skills.config</code> 같은 설정은 필요할 때만 명시합니다.</li>
+        <li>파일명과 <code>name</code>을 맞추는 것이 가장 단순하지만, Codex가 agent를 식별하는 기준은 <code>name</code>입니다.</li>
+        <li>subagent는 명시적으로 요청했을 때만 생성되며, 병렬 agent는 토큰과 실행 시간이 더 듭니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>무엇으로 분리할까</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>상황</th>
+              <th>선택</th>
+              <th>판단 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>짧은 수정, 맥락 공유가 중요함</td>
+              <td>Main Codex</td>
+              <td>추가 agent를 띄우는 비용보다 현재 대화 맥락이 더 중요합니다.</td>
+            </tr>
+            <tr>
+              <td>코드베이스의 서로 다른 영역을 조사함</td>
+              <td>Explorer subagent</td>
+              <td>읽기 중심 질문을 병렬로 나눌 때 효과가 큽니다.</td>
+            </tr>
+            <tr>
+              <td>서로 겹치지 않는 파일 범위를 구현함</td>
+              <td>Worker subagent</td>
+              <td>소유 파일과 검증 명령을 명시할 수 있을 때만 적합합니다.</td>
+            </tr>
+            <tr>
+              <td>반복되는 역할과 출력 형식이 있음</td>
+              <td>Custom agent</td>
+              <td>매번 같은 지침을 복사하고 있다면 템플릿으로 승격합니다.</td>
+            </tr>
+            <tr>
+              <td>작업 절차나 참고 자료를 재사용함</td>
+              <td>Skill</td>
+              <td>역할보다 절차, 체크리스트, 스크립트가 핵심이면 skill이 맞습니다.</td>
+            </tr>
+            <tr>
+              <td>도구 실행 전후를 자동 검증함</td>
+              <td>Hook</td>
+              <td>사람이 잊기 쉬운 기계적 검사에만 제한적으로 씁니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>기본 작성 규칙</h2>
+      <ol>
+        <li><code>description</code>에는 “언제 써야 하는지”와 “언제 쓰면 안 되는지”를 함께 적습니다.</li>
+        <li><code>developer_instructions</code>에는 역할, 금지 행동, 산출물 형식, 검증 기준을 넣습니다.</li>
+        <li>읽기 전용 agent는 <code>sandbox_mode = "read-only"</code>를 우선 검토합니다.</li>
+        <li>모델명은 자주 바뀔 수 있으므로 특별한 이유가 없으면 부모 세션 기본값을 상속합니다.</li>
+        <li>project agent는 repo의 작업 규칙과 같이 버전 관리하고, 개인 agent는 공개 저장소에 넣지 않습니다.</li>
+        <li>권한이 큰 agent일수록 출력 계약을 짧고 엄격하게 둡니다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>Explorer 템플릿</h2>
+      <p>읽기 전용 조사 agent입니다. 구현 제안보다 실제 근거와 파일 위치를 모으는 역할에 집중합니다.</p>
+      <pre><code class="language-toml">name = "project_explorer"
+description = "Read-only codebase explorer for answering narrow architecture and behavior questions."
+sandbox_mode = "read-only"
+
+developer_instructions = """
+Stay in exploration mode.
+Answer the assigned question with concrete file and symbol references.
+Prefer rg, targeted file reads, and existing tests over broad scans.
+Do not edit files.
+Do not propose a large redesign unless the parent agent explicitly asks.
+Return: findings, evidence, uncertainty, and suggested next inspection.
+"""</code></pre>
+    </section>
+
+    <section class="content-section">
+      <h2>Worker 템플릿</h2>
+      <p>분리된 파일 범위를 맡아 구현하는 agent입니다. 다른 사람이나 다른 agent의 변경을 되돌리지 않는다는 규칙을 항상 포함합니다.</p>
+      <pre><code class="language-toml">name = "scoped_worker"
+description = "Implementation worker for a clearly bounded, non-overlapping file scope."
+
+developer_instructions = """
+You are not alone in the codebase.
+Own only the files or modules explicitly assigned by the parent agent.
+Do not revert user changes or changes made by other agents.
+Follow existing project patterns and keep edits narrow.
+Run the narrowest relevant validation for your changed surface.
+Return: changed files, behavior change, validation result, and remaining risk.
+"""</code></pre>
+    </section>
+
+    <section class="content-section">
+      <h2>Reviewer 템플릿</h2>
+      <p>구현과 분리된 검토 agent입니다. 스타일 취향보다 버그, 보안, 회귀, 테스트 누락을 먼저 봅니다.</p>
+      <pre><code class="language-toml">name = "risk_reviewer"
+description = "Code reviewer focused on correctness, security, regressions, and missing tests."
+sandbox_mode = "read-only"
+
+developer_instructions = """
+Review like an owner.
+Lead with findings ordered by severity.
+Ground every finding in file and line references when possible.
+Prioritize correctness, security, behavior regressions, data loss, and missing tests.
+Avoid style-only comments unless they hide a real risk.
+Do not edit files.
+Return: findings, open questions, test gaps, and residual risk.
+"""</code></pre>
+    </section>
+
+    <section class="content-section">
+      <h2>Docs Maintainer 템플릿</h2>
+      <p>학습 사이트나 playbook을 갱신할 때 쓰는 문서 agent입니다. 공식 문서 확인과 공개/비공개 분리를 책임으로 둡니다.</p>
+      <pre><code class="language-toml">name = "docs_maintainer"
+description = "Documentation maintainer for learning notes, official-source checks, and public/private separation."
+sandbox_mode = "workspace-write"
+
+developer_instructions = """
+Update documentation from verified sources.
+For OpenAI product behavior, use official OpenAI docs first.
+Keep private playbook notes separate from public learning pages.
+Do not publish secrets, local-only paths, tokens, or personal credentials.
+Prefer HTML pages for public reading surfaces in MyCoding Book.
+Return: pages changed, source links checked, validation result, and next queue item.
+"""</code></pre>
+    </section>
+
+    <section class="content-section">
+      <h2>프롬프트에 같이 줘야 할 것</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>항목</th>
+              <th>예시</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>작업 범위</td>
+              <td><code>src/auth/*</code>만 조사, 또는 <code>codex/*.html</code>만 수정</td>
+            </tr>
+            <tr>
+              <td>권한</td>
+              <td>읽기 전용, 특정 파일만 수정, 테스트 실행만 허용</td>
+            </tr>
+            <tr>
+              <td>산출물</td>
+              <td>발견 사항 5개 이하, 변경 파일 목록, 검증 결과, 남은 위험</td>
+            </tr>
+            <tr>
+              <td>통합 기준</td>
+              <td>main agent가 결과를 병합하고 최종 판단을 유지</td>
+            </tr>
+            <tr>
+              <td>중단 기준</td>
+              <td>권한 상승, 파괴적 명령, 범위 밖 파일 변경 필요 시 멈춤</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>MyCoding Book 적용 기준</h2>
+      <ul>
+        <li><a href="agent-design.html">Agent 설계와 운영 기준</a>은 언제 agent를 나눌지 판단합니다.</li>
+        <li>이 문서는 반복되는 역할을 custom agent 템플릿으로 고정합니다.</li>
+        <li><a href="skills.html">Skills 문서</a>는 절차와 참고 자료를 재사용하는 방식을 다룹니다.</li>
+        <li><a href="hooks.html">Hooks 문서</a>는 생명주기 자동 검증과 guardrail을 다룹니다.</li>
+        <li>다음 단계의 <code>agentic-rag.html</code>에서는 agent가 기억, 검색, vector store를 언제 붙여야 하는지 정리합니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>업데이트 루틴</h2>
+      <ol>
+        <li>월 1회 OpenAI Codex subagents, skills, hooks 문서를 확인합니다.</li>
+        <li>새 필드나 동작이 생기면 템플릿에 바로 넣지 말고 “검토 후보”로 둡니다.</li>
+        <li>실제 작업에서 세 번 이상 반복된 역할만 custom agent로 승격합니다.</li>
+        <li>모델명, 권한, MCP 서버 설정은 공개 문서보다 개인 playbook에서 먼저 시험합니다.</li>
+        <li>검증된 내용만 공개 HTML에 반영하고, 실험 실패 기록은 reference나 legacy로 분리합니다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>공식 확인 출처</h2>
+      <ul class="source-list">
+        <li><a href="https://developers.openai.com/codex/subagents">OpenAI Codex Subagents</a> - custom agent 위치, 필수 필드, optional config 기준</li>
+        <li><a href="https://developers.openai.com/codex/skills">OpenAI Codex Skills</a> - skill의 재사용 단위와 progressive disclosure 기준</li>
+        <li><a href="https://developers.openai.com/codex/hooks">OpenAI Codex Hooks</a> - hook 설정, trust, lifecycle event 기준</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

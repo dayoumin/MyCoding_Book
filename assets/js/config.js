@@ -112,6 +112,18 @@ const DocsConfig = {
       tags: ["claude-code", "model-updates", "versioning", "maintenance"]
     },
     {
+      id: "codex-update-routine",
+      title: "Codex 업데이트 루틴",
+      shortTitle: "Update Routine",
+      file: "codex/update-routine.html",
+      icon: "U",
+      category: "codex",
+      description: "Codex changelog, feature maturity, models, subagents, skills, hooks, MCP를 월간으로 확인하고 반영하는 기준입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 12,
+      tags: ["updates", "maintenance", "changelog", "models", "codex"]
+    },
+    {
       id: "codex-skills",
       title: "Codex Skills와 재사용 루틴",
       shortTitle: "Skills",

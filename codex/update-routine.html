@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Codex와 AI coding 문서를 지속적으로 최신화하는 월간 운영 루틴">
+  <title>Codex 업데이트 루틴 - MyCoding Book</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="header-logo"><span>MC</span><span>MyCoding Book</span></a>
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a class="active" href="index.html">Codex</a>
+        <a href="../updates/index.html">Updates</a>
+        <a href="../reference/index.html">Reference</a>
+        <a href="../legacy/index.html">Legacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <header class="page-header">
+      <span class="hero-kicker">Maintenance</span>
+      <h1>Codex 업데이트 루틴</h1>
+      <p>
+        AI coding 도구는 빠르게 바뀌지만, 모든 변화를 즉시 따라갈 필요는 없습니다.
+        이 문서는 공식 출처를 주기적으로 확인하고, 개인 playbook과 공개 MyCoding Book에 무엇을 반영할지 결정하는 루틴입니다.
+      </p>
+    </header>
+
+    <section class="content-section">
+      <h2>이번 결론</h2>
+      <div class="note-panel">
+        <strong>월 1회 정기 점검, 필요할 때 긴급 점검, 공개 전 검증을 기본값으로 둡니다.</strong>
+        <p>
+          모델명, 기능명, hook event, skill 구조, MCP 연결 방식은 계속 바뀔 수 있습니다.
+          그래서 core 문서는 원칙 중심으로 유지하고, 특정 날짜의 변화는 updates 문서에 기록합니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>점검 주기</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>주기</th>
+              <th>확인 대상</th>
+              <th>결과물</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>필요 시</td>
+              <td>현재 작업을 막는 기능 변화, 오류, 권한 문제</td>
+              <td>작업 메모 또는 작은 수정</td>
+            </tr>
+            <tr>
+              <td>월 1회</td>
+              <td>Codex changelog, feature maturity, models, subagents, skills, hooks, MCP</td>
+              <td>updates 문서와 필요한 core 문서 수정</td>
+            </tr>
+            <tr>
+              <td>분기 1회</td>
+              <td>legacy 문서, practice 문서, 공개/비공개 경계</td>
+              <td>content audit와 legacy map 갱신</td>
+            </tr>
+            <tr>
+              <td>큰 기능 도입 전</td>
+              <td>RAG, browser/computer use, automation, connector, plugin</td>
+              <td>작은 실험, 검증 결과, 도입 판단</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>공식 출처 체크리스트</h2>
+      <ol>
+        <li><strong>Codex changelog:</strong> 앱, CLI, IDE, web, automation, browser 기능 변화를 확인합니다.</li>
+        <li><strong>Feature maturity:</strong> stable, beta, experimental 같은 성숙도 라벨을 확인해 공개 문서 표현 강도를 조절합니다.</li>
+        <li><strong>Models:</strong> 현재 권장 모델과 Codex용 모델 변화를 확인하되 core 문서에는 날짜 없는 단정 표현을 피합니다.</li>
+        <li><strong>Subagents:</strong> 병렬 agent, custom agent, sandbox inheritance, optional config 필드 변화를 확인합니다.</li>
+        <li><strong>Skills:</strong> 저장 위치, progressive disclosure, trigger 방식, plugin 배포 기준을 확인합니다.</li>
+        <li><strong>Hooks:</strong> event, matcher, trust review, supported handler, Windows command override 변화를 확인합니다.</li>
+        <li><strong>MCP/Connectors:</strong> transport, OAuth, tool search, connector 권한 모델 변화를 확인합니다.</li>
+        <li><strong>Retrieval/Evals:</strong> file search, vector store, eval 기준이 agentic RAG 문서와 충돌하지 않는지 봅니다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>반영 등급</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>등급</th>
+              <th>의미</th>
+              <th>처리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Note</td>
+              <td>흥미롭지만 현재 작업 방식에 영향이 작음</td>
+              <td>playbook이나 updates 후보에만 기록</td>
+            </tr>
+            <tr>
+              <td>Watch</td>
+              <td>곧 중요해질 수 있지만 아직 안정성이나 사용성이 불확실함</td>
+              <td>Feature maturity와 다음 달 changelog에서 재확인</td>
+            </tr>
+            <tr>
+              <td>Adopt</td>
+              <td>현재 workflow에 바로 도움이 되고 검증 가능함</td>
+              <td>core HTML 문서에 반영하고 작은 실험 결과를 기록</td>
+            </tr>
+            <tr>
+              <td>Rewrite</td>
+              <td>기존 문서 설명이 공식 동작과 충돌함</td>
+              <td>해당 문서 수정, content audit 갱신, 배포 확인</td>
+            </tr>
+            <tr>
+              <td>Legacy</td>
+              <td>현재 기준과 다르지만 기록 가치가 있음</td>
+              <td>legacy map에 남기고 core 문서에서 직접 의존하지 않음</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>공개 전 검증</h2>
+      <ul>
+        <li>공식 출처 URL과 확인 날짜를 남깁니다.</li>
+        <li>모델명과 기능명은 현재 시점 기준임을 분명히 합니다.</li>
+        <li>private playbook 경로, 계정 정보, 토큰, 고객/프로젝트 세부사항은 공개 HTML에 넣지 않습니다.</li>
+        <li>OpenAI와 Anthropic 문서가 서로 다르면 제품별로 분리하고 한쪽 용어를 다른 쪽에 덮어쓰지 않습니다.</li>
+        <li>기능이 experimental 또는 beta라면 “운영 기본값”처럼 쓰지 않습니다.</li>
+        <li>링크, JS 문법, 배포 URL을 확인한 뒤 완료로 표시합니다.</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>월간 기록 템플릿</h2>
+      <pre><code class="language-html">&lt;section class="content-section"&gt;
+  &lt;h2&gt;YYYY-MM Codex 업데이트 확인&lt;/h2&gt;
+  &lt;ul&gt;
+    &lt;li&gt;확인일: YYYY-MM-DD&lt;/li&gt;
+    &lt;li&gt;확인 출처: Codex changelog, feature maturity, models, subagents, skills, hooks, MCP&lt;/li&gt;
+    &lt;li&gt;내 작업에 영향: Note / Watch / Adopt / Rewrite / Legacy&lt;/li&gt;
+    &lt;li&gt;반영 문서: codex/... 또는 reference/...&lt;/li&gt;
+    &lt;li&gt;검증: 링크 검사, JS check, 배포 확인&lt;/li&gt;
+    &lt;li&gt;다음 확인: YYYY-MM&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/section&gt;</code></pre>
+    </section>
+
+    <section class="content-section">
+      <h2>이 사이트의 적용 흐름</h2>
+      <ol>
+        <li>공식 출처를 확인하고 변경 후보를 적습니다.</li>
+        <li>개인 실험이나 민감한 메모는 private playbook에 먼저 둡니다.</li>
+        <li>공개 가능한 핵심 판단만 MyCoding Book HTML로 승격합니다.</li>
+        <li><a href="../reference/content-audit.html">content audit</a>와 <a href="../reference/legacy-map.html">legacy map</a>을 갱신합니다.</li>
+        <li>GitHub push 뒤 Vercel 배포와 공개 URL을 확인합니다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>다음 작업 후보</h2>
+      <ul>
+        <li>MCP 문서를 Codex MCP, plugin, connector, app tool 기준으로 재작성</li>
+        <li>Skills 문서를 공식 Codex skills 구조에 맞춰 보강</li>
+        <li>월간 업데이트 문서에 이 루틴을 실제 체크리스트로 적용</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>공식 확인 출처</h2>
+      <ul class="source-list">
+        <li><a href="https://developers.openai.com/codex/changelog">OpenAI Codex changelog</a> - Codex 기능과 앱/CLI 변화 확인</li>
+        <li><a href="https://developers.openai.com/codex/feature-maturity">OpenAI Codex feature maturity</a> - 기능 성숙도 라벨 해석 기준</li>
+        <li><a href="https://developers.openai.com/api/docs/models">OpenAI model docs</a> - 모델 지원 범위와 권장 기준 확인</li>
+        <li><a href="https://developers.openai.com/codex/subagents">OpenAI Codex subagents</a> - 병렬 agent와 custom agent 기준</li>
+        <li><a href="https://developers.openai.com/codex/skills">OpenAI Codex skills</a> - skill 구조와 progressive disclosure 기준</li>
+        <li><a href="https://developers.openai.com/codex/hooks">OpenAI Codex hooks</a> - hook 설정, trust review, lifecycle 기준</li>
+        <li><a href="https://developers.openai.com/codex/mcp">OpenAI Codex MCP</a> - Codex MCP 설정과 연결 기준</li>
+        <li><a href="https://developers.openai.com/api/docs/guides/retrieval">OpenAI Retrieval guide</a> - retrieval과 vector store 기준</li>
+        <li><a href="https://developers.openai.com/api/docs/guides/evals">OpenAI Evals guide</a> - 변경 후 품질 확인 루프 기준</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

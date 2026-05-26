@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MCP, Plugins, Connectors 학습 노트">
+  <meta name="description" content="Codex 기준 MCP, plugins, connectors, app tools 운영 기준">
   <title>MCP, Plugins, Connectors - MyCoding Book</title>
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
@@ -15,40 +15,319 @@
         <a class="active" href="index.html">Codex</a>
         <a href="../updates/index.html">Updates</a>
         <a href="../reference/index.html">Reference</a>
+        <a href="../legacy/index.html">Legacy</a>
       </nav>
     </div>
   </header>
+
   <main class="page-shell">
     <header class="page-header">
       <span class="hero-kicker">Tools</span>
       <h1>MCP, Plugins, Connectors</h1>
-      <p>외부 도구 연결은 생산성을 크게 올리지만 권한과 검증 비용도 함께 커집니다. 이 문서는 연결을 판단하는 기준입니다.</p>
+      <p>
+        외부 도구 연결은 agentic coding의 힘을 크게 올리지만, 권한과 검증 비용도 같이 커집니다.
+        이 문서는 Codex 기준으로 MCP, plugin, connector, app tool을 구분하고 언제 무엇을 쓸지 판단하는 기준입니다.
+      </p>
     </header>
 
     <section class="content-section">
-      <h2>연결 전 질문</h2>
+      <h2>이번 결론</h2>
+      <div class="note-panel">
+        <strong>먼저 읽기 전용 연결부터 시작하고, 쓰기 권한은 검증 루프가 있을 때만 엽니다.</strong>
+        <p>
+          MCP는 모델에게 외부 도구와 context를 연결하는 표준 통로입니다.
+          Codex에서는 CLI와 IDE extension이 MCP 설정을 공유하고, project-local 설정은 trusted project에서만 다룹니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>용어 분리</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>구분</th>
+              <th>이 사이트에서의 의미</th>
+              <th>주요 질문</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>MCP server</td>
+              <td>Codex가 외부 도구와 context를 호출할 수 있게 하는 표준 서버</td>
+              <td>어떤 도구가 열리고, 읽기/쓰기 권한은 어디까지인가?</td>
+            </tr>
+            <tr>
+              <td>Plugin</td>
+              <td>skills, MCP servers, apps 등을 묶어 배포하는 Codex 확장 단위</td>
+              <td>설치된 plugin이 어떤 MCP 서버와 skill을 같이 가져오는가?</td>
+            </tr>
+            <tr>
+              <td>Connector</td>
+              <td>GitHub, Slack, Linear처럼 계정 기반 서비스와 연결되는 통합</td>
+              <td>계정 데이터 접근 범위와 승인 흐름이 명확한가?</td>
+            </tr>
+            <tr>
+              <td>App tool</td>
+              <td>현재 Codex 앱이 제공하는 특정 UI/서비스 도구</td>
+              <td>도구 호출 결과를 어떻게 검증하고 되돌릴 수 있는가?</td>
+            </tr>
+            <tr>
+              <td>Local shell</td>
+              <td>현재 workspace에서 직접 명령을 실행하는 도구</td>
+              <td>MCP보다 단순한 로컬 명령으로 충분하지 않은가?</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>선택 기준</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>상황</th>
+              <th>추천</th>
+              <th>이유</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>현재 repo 파일을 읽고 수정</td>
+              <td>Local shell + apply_patch</td>
+              <td>source of truth가 로컬 파일이면 MCP보다 직접 검사와 diff가 정확합니다.</td>
+            </tr>
+            <tr>
+              <td>공식 문서나 외부 지식 검색</td>
+              <td>읽기 전용 MCP</td>
+              <td>최신 문서를 구조적으로 찾고 citation을 남기기 좋습니다.</td>
+            </tr>
+            <tr>
+              <td>Figma, browser, Sentry처럼 전용 도구가 필요</td>
+              <td>MCP 또는 plugin-provided MCP</td>
+              <td>도구별 API와 상태를 표준 tool 호출로 다룰 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td>GitHub PR, issue, Slack, Linear 같은 계정 데이터</td>
+              <td>Connector 또는 관리형 MCP</td>
+              <td>OAuth, 계정 권한, audit trail을 같이 봐야 합니다.</td>
+            </tr>
+            <tr>
+              <td>반복 workflow와 도구 묶음을 팀/개인에게 배포</td>
+              <td>Plugin</td>
+              <td>skill, MCP, 설정을 하나의 확장 단위로 묶을 수 있습니다.</td>
+            </tr>
+            <tr>
+              <td>쓰기, 삭제, 배포, 결제, 고객 데이터 접근</td>
+              <td>승인 모드 + 제한된 tool allowlist</td>
+              <td>자동화보다 복구 가능성과 검증이 먼저입니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Codex MCP 설정 기준</h2>
       <ul>
-        <li>읽기 전용으로 충분한가?</li>
-        <li>쓰기 권한이 필요하다면 영향 범위가 어디까지인가?</li>
-        <li>실패했을 때 수동으로 되돌릴 수 있는가?</li>
-        <li>결과를 어떤 API, diff, 화면으로 검증할 것인가?</li>
+        <li>Codex MCP 설정은 다른 Codex 설정과 함께 <code>config.toml</code>에 둡니다.</li>
+        <li>기본 전역 위치는 <code>~/.codex/config.toml</code>입니다.</li>
+        <li>프로젝트 범위 설정은 trusted project에서 <code>.codex/config.toml</code>로 둘 수 있습니다.</li>
+        <li>Codex CLI와 IDE extension은 같은 MCP 설정을 공유합니다.</li>
+        <li>설정은 <code>codex mcp</code> CLI로 관리하거나 <code>config.toml</code>을 직접 편집할 수 있습니다.</li>
+        <li>Codex TUI에서는 <code>/mcp</code>로 활성 MCP 서버를 확인합니다.</li>
       </ul>
     </section>
 
     <section class="content-section">
-      <h2>분류</h2>
+      <h2>Transport와 인증</h2>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>종류</th><th>주 용도</th><th>주의점</th></tr>
+            <tr>
+              <th>방식</th>
+              <th>언제 쓰나</th>
+              <th>주의</th>
+            </tr>
           </thead>
           <tbody>
-            <tr><td>MCP</td><td>도구와 데이터를 모델이 호출할 수 있게 연결</td><td>서버별 권한과 입력 검증 확인</td></tr>
-            <tr><td>Plugin</td><td>Codex 안에서 특정 제품 워크플로우 지원</td><td>설치 범위와 자동 노출 도구 확인</td></tr>
-            <tr><td>Connector</td><td>Gmail, Drive, Slack 같은 계정 데이터 연결</td><td>개인 데이터 접근 범위 확인</td></tr>
+            <tr>
+              <td>STDIO</td>
+              <td>로컬 프로세스로 MCP 서버를 시작할 때</td>
+              <td><code>command</code>, <code>args</code>, <code>cwd</code>, 환경 변수 전달 범위를 명확히 합니다.</td>
+            </tr>
+            <tr>
+              <td>Streamable HTTP</td>
+              <td>주소가 있는 원격 또는 로컬 HTTP MCP 서버에 연결할 때</td>
+              <td>bearer token, static header, env-based header 관리가 필요합니다.</td>
+            </tr>
+            <tr>
+              <td>OAuth</td>
+              <td>서버가 OAuth를 지원하고 계정 권한이 필요한 경우</td>
+              <td><code>codex mcp login &lt;server-name&gt;</code> 흐름과 callback URL/port를 확인합니다.</td>
+            </tr>
+            <tr>
+              <td>Plugin-provided MCP</td>
+              <td>설치한 plugin이 MCP 서버를 함께 제공할 때</td>
+              <td>transport command는 plugin manifest 쪽에 있고, 사용자 설정은 on/off와 tool policy에 집중합니다.</td>
+            </tr>
           </tbody>
         </table>
       </div>
+    </section>
+
+    <section class="content-section">
+      <h2>최소 설정 예시</h2>
+      <p>공개 문서에는 실제 개인 token이나 내부 URL을 넣지 않습니다. 아래는 구조를 보여주는 예시입니다.</p>
+      <pre><code class="language-toml">[mcp_servers.docs]
+command = "npx"
+args = ["-y", "example-docs-mcp"]
+env_vars = ["DOCS_READ_TOKEN"]
+
+[mcp_servers.design]
+url = "https://mcp.example.com/mcp"
+bearer_token_env_var = "DESIGN_MCP_TOKEN"
+enabled_tools = ["read_file", "search"]
+default_tools_approval_mode = "prompt"
+
+[mcp_servers.design.tools.read_file]
+approval_mode = "approve"</code></pre>
+    </section>
+
+    <section class="content-section">
+      <h2>권한 모델</h2>
+      <ol>
+        <li><strong>서버 단위:</strong> 먼저 서버를 켤지 끌지 결정합니다. 임시 보류는 삭제보다 <code>enabled = false</code>가 낫습니다.</li>
+        <li><strong>도구 목록:</strong> <code>enabled_tools</code>로 allowlist를 만들고, 위험한 도구는 <code>disabled_tools</code>로 다시 막습니다.</li>
+        <li><strong>승인 모드:</strong> 기본은 prompt로 시작하고, 충분히 안전한 읽기 도구만 approve로 올립니다.</li>
+        <li><strong>도구별 override:</strong> 같은 서버 안에서도 읽기, 쓰기, 삭제, 배포 도구의 승인 모드를 다르게 둡니다.</li>
+        <li><strong>timeout:</strong> 느린 서버는 <code>startup_timeout_sec</code>, <code>tool_timeout_sec</code>를 명시해 실패 모드를 예측 가능하게 만듭니다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>도입 전 질문</h2>
+      <ul>
+        <li>이 연결이 단순 파일 검색이나 shell 명령보다 나은 이유가 있는가?</li>
+        <li>읽기 전용으로 충분한가, 쓰기 권한이 꼭 필요한가?</li>
+        <li>도구 결과를 어떤 테스트, diff, 화면, API 응답으로 검증할 것인가?</li>
+        <li>실패했을 때 수동 복구가 가능한가?</li>
+        <li>개인 계정, 고객 데이터, 내부 URL이 공개 문서나 로그에 섞이지 않는가?</li>
+        <li>서버가 느리거나 죽었을 때 agent가 멈춰야 하는가, fallback을 써야 하는가?</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>추천 MCP 후보</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>종류</th>
+              <th>용도</th>
+              <th>개인 학습 사이트 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>OpenAI Docs MCP</td>
+              <td>OpenAI 공식 문서 검색과 확인</td>
+              <td>Codex, models, retrieval, evals 문서 확인에 우선 사용</td>
+            </tr>
+            <tr>
+              <td>Context7</td>
+              <td>개발 문서 최신 검색</td>
+              <td>라이브러리 문서 확인용. 공식 문서와 충돌하면 공식 문서를 우선</td>
+            </tr>
+            <tr>
+              <td>Figma</td>
+              <td>디자인 파일과 UI 구현 연결</td>
+              <td>프론트엔드 작업에서만 켜고, 쓰기/수정 도구는 별도 승인</td>
+            </tr>
+            <tr>
+              <td>Playwright / Chrome DevTools</td>
+              <td>브라우저 검증과 화면 상태 확인</td>
+              <td>UI regression, 접근성, 배포 확인에 유용</td>
+            </tr>
+            <tr>
+              <td>Sentry</td>
+              <td>운영 오류 로그 확인</td>
+              <td>개인 프로젝트 운영 관제에 연결 가능하지만 고객 데이터 노출 주의</td>
+            </tr>
+            <tr>
+              <td>GitHub</td>
+              <td>PR, issue, repo metadata 작업</td>
+              <td>권한이 크므로 delete, admin, secret 관련 도구는 강한 승인 필요</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Claude MCP 자료 처리</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>기존 자료</th>
+              <th>Codex 문서 반영</th>
+              <th>처리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>claude_mcp_integration_guide.md</code></td>
+              <td>MCP 권한 분리, transport, 인증, tool policy 관점은 유지</td>
+              <td>Claude 전용 설정 파일명과 명령은 legacy로 보관</td>
+            </tr>
+            <tr>
+              <td><a href="../mcp-guide.html">mcp-guide.html</a></td>
+              <td>기존 긴 설명은 참고 자료로 유지</td>
+              <td>새 학습 흐름에서는 이 문서를 Codex 기준 진입점으로 사용</td>
+            </tr>
+            <tr>
+              <td>Claude MCP tool matcher, slash command 설명</td>
+              <td>직접 반영하지 않음</td>
+              <td>Codex hooks, skills, MCP 공식 문서와 혼동하지 않게 legacy 분리</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>운영 원칙</h2>
+      <ol>
+        <li>새 MCP는 읽기 전용, prompt 승인, 좁은 tool allowlist로 시작합니다.</li>
+        <li>쓰기 도구는 자동화하지 말고 diff, 로그, 배포 결과를 확인할 수 있을 때만 엽니다.</li>
+        <li>개인 playbook의 실제 서버명, token 이름, 내부 URL은 공개 HTML에 넣지 않습니다.</li>
+        <li>plugin이 제공하는 MCP도 “plugin이 설치됐으니 안전하다”고 보지 말고 tool policy를 별도로 확인합니다.</li>
+        <li>외부 서비스 결과는 agent 답변만 믿지 않고 공식 링크, API 응답, 화면 캡처, 테스트로 검증합니다.</li>
+      </ol>
+    </section>
+
+    <section class="content-section">
+      <h2>다음 작업 후보</h2>
+      <ul>
+        <li>Codex skills 문서를 공식 skills 구조 기준으로 보강</li>
+        <li>브라우저/Computer Use 문서에 Playwright 또는 Chrome DevTools MCP 검증 루프 연결</li>
+        <li>Project Operations 앱에서 GitHub, Vercel, Sentry 같은 운영 connector 후보 분리</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>공식 확인 출처</h2>
+      <ul class="source-list">
+        <li><a href="https://developers.openai.com/codex/mcp">OpenAI Codex MCP</a> - Codex MCP transport, config.toml, OAuth, tool policy 기준</li>
+        <li><a href="https://developers.openai.com/codex/plugins">OpenAI Codex Plugins</a> - plugin과 plugin-provided MCP 서버 기준</li>
+        <li><a href="https://developers.openai.com/codex/permissions">OpenAI Codex Permissions</a> - 도구 승인과 권한 모델 확인</li>
+        <li><a href="https://developers.openai.com/codex/feature-maturity">OpenAI Codex Feature Maturity</a> - 기능 안정성 판단 기준</li>
+        <li><a href="https://modelcontextprotocol.io/docs">Model Context Protocol docs</a> - MCP 표준 자체의 개념 확인</li>
+      </ul>
     </section>
   </main>
   <script src="../assets/js/doc-toc.js" defer></script>

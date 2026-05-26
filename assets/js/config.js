@@ -154,10 +154,10 @@ const DocsConfig = {
       file: "codex/mcp-connectors.html",
       icon: "T",
       category: "tools",
-      description: "외부 도구 연결을 기능보다 권한, 검증, 실패 복구 관점에서 정리합니다.",
+      description: "Codex 기준으로 MCP, plugin, connector, app tool을 구분하고 권한, 인증, approval 정책을 정리합니다.",
       lastUpdated: "2026-05-26",
-      readingTime: 11,
-      tags: ["mcp", "plugins", "connectors", "security"]
+      readingTime: 14,
+      tags: ["mcp", "plugins", "connectors", "permissions", "approval"]
     },
     {
       id: "browser-computer-use",

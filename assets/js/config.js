@@ -232,6 +232,18 @@ const DocsConfig = {
       tags: ["sources", "glossary", "reference"]
     },
     {
+      id: "content-audit",
+      title: "기존 자료 감사표",
+      shortTitle: "Content Audit",
+      file: "reference/content-audit.html",
+      icon: "A",
+      category: "reference",
+      description: "기존 Claude Code 원본과 공개 HTML 문서를 keep, rewrite, legacy, later로 분류한 작업 지도입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 12,
+      tags: ["audit", "legacy", "rewrite", "roadmap"]
+    },
+    {
       id: "legacy",
       title: "Claude Code Legacy 자료",
       shortTitle: "Legacy",

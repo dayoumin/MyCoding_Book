@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Claude Code legacy 자료">
+  <title>Claude Code Legacy 자료 - MyCoding Book</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="header-logo"><span>MC</span><span>MyCoding Book</span></a>
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a href="../codex/index.html">Codex</a>
+        <a href="../updates/index.html">Updates</a>
+        <a href="../reference/index.html">Reference</a>
+        <a class="active" href="index.html">Legacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <header class="page-header">
+      <span class="hero-kicker">Archive</span>
+      <h1>Claude Code Legacy 자료</h1>
+      <p>기존 문서는 버리지 않습니다. 다만 현재 학습 기준인 Codex와 혼동하지 않도록 이곳에 따로 보관합니다.</p>
+    </header>
+
+    <section class="content-section">
+      <h2>보관 문서</h2>
+      <div class="learning-grid">
+        <a class="module-card" href="../orchestration.html">
+          <strong>Claude Code 오케스트레이션 가이드</strong>
+          <p>Skill, Agent, Hook 조합 패턴을 정리한 기존 문서입니다.</p>
+        </a>
+        <a class="module-card" href="../mcp-guide.html">
+          <strong>Claude Code MCP 연계 가이드</strong>
+          <p>MCP 서버와 agent 연계 패턴을 정리한 기존 문서입니다.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>아직 재분류가 필요한 원본</h2>
+      <p>
+        아래 파일은 아직 HTML legacy 페이지로 옮긴 것이 아니라, 루트에 원본 형태로 남아 있습니다.
+        삭제 대상이 아니라 Codex 기준으로 다시 읽고 필요한 부분만 새 문서로 승격할 후보입니다.
+      </p>
+      <ul>
+        <li><code>claude_skill_creation_2026.md</code> - Codex skills 문서로 일부 흡수 예정</li>
+        <li><code>claude_hook_creation_2026.md</code> - Codex verification/automation 문서로 재해석 예정</li>
+        <li><code>claude_mcp_integration_guide.md</code> - MCP, plugins, connectors 문서로 재분류 예정</li>
+        <li><code>claude_orchestration_guide.md</code> - agent workflow와 roadmap으로 일부 흡수 예정</li>
+        <li><code>test-hook-simulation/</code> - Claude hook 검증 기록으로 archive 유지</li>
+      </ul>
+      <p>
+        재작성은 한 번에 하지 않습니다. 공식 Claude Code 문서 기준으로 여전히 유효한 부분,
+        Codex로 번역할 부분, 더 이상 공개 학습 사이트에 둘 필요가 없는 부분을 나눈 뒤 이동합니다.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <h2>Codex로 옮길 때의 기준</h2>
+      <ul>
+        <li>Hook 설명은 Codex의 검증 루프, automation, approval 흐름으로 번역합니다.</li>
+        <li>MCP 설명은 plugin, connector, app tool까지 포함해서 다시 분류합니다.</li>
+        <li>Agent orchestration은 goal mode, browser workflow, parallel work 관점으로 다시 씁니다.</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

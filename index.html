@@ -3,247 +3,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <meta name="description" content="Claude Code 개발 가이드 모음 - 멀티 에이전트 오케스트레이션, MCP 연계, 영상/애니메이션, 제품 상세페이지, AI 시대 모노레포, 2026 신규 기능 가이드">
-  <meta name="keywords" content="Claude, Claude Code, AI, Agent, MCP, Skill, Hook, Monorepo, pnpm, Turborepo, Plugins, Agent Teams, 개발 가이드">
+  <meta name="description" content="Codex와 Agent AI Coding 시대를 공부하고 정리하기 위한 개인 학습 허브">
+  <meta name="keywords" content="Codex, Agent AI Coding, OpenAI, MCP, Skills, Browser, Claude Code, 학습 노트">
   <meta name="author" content="MyCoding">
   <meta name="theme-color" content="#6366f1">
+  <title>MyCoding Book - Agent AI Coding Learning Hub</title>
 
-  <!-- PWA 지원 -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="MyCoding Book">
-
-  <title>MyCoding Book - Claude Code 개발 가이드</title>
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
-
-  <!-- Styles -->
   <link rel="stylesheet" href="assets/css/style.css">
-
-  <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
-
-  <!-- Icons -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/icons/icon-512x512.png">
-  <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
 </head>
 <body>
-  <!-- Skip Link -->
   <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
 
-  <!-- Header -->
   <header class="header">
     <div class="header-content">
       <a href="index.html" class="header-logo">
-        <span>📚</span>
+        <span>MC</span>
         <span>MyCoding Book</span>
       </a>
-
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a href="codex/index.html">Codex</a>
+        <a href="updates/index.html">Updates</a>
+        <a href="reference/index.html">Reference</a>
+        <a href="legacy/index.html">Legacy</a>
+      </nav>
       <div class="header-actions">
-        <!-- Search Button -->
-        <button class="search-btn" aria-label="검색">
+        <button class="search-btn" aria-label="검색 열기">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.35-4.35"></path>
           </svg>
-          <span>검색...</span>
+          <span>검색</span>
           <span class="search-kbd"><kbd>Ctrl</kbd><kbd>K</kbd></span>
         </button>
-
-        <!-- Theme Toggle -->
-        <button class="theme-toggle" aria-label="다크모드 전환">
-          <span class="theme-toggle-thumb">☀️</span>
+        <button class="theme-toggle" aria-label="테마 전환">
+          <span class="theme-toggle-thumb">밝음</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Content -->
   <main id="main-content" style="padding-top: var(--header-height);">
-    <!-- Hero Section -->
     <section class="index-hero">
-      <h1>📚 MyCoding Book</h1>
-      <p>Claude Code를 활용한 개발 가이드 모음입니다.<br>멀티 에이전트 오케스트레이션, MCP 연계, Plugins, Agent Teams 등 실전에서 바로 쓸 수 있는 지식을 담았습니다.</p>
-      <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-top: 0.5rem;">최종 업데이트: 2026년 3월 | Claude Code v2.1.72 기반</p>
+      <span class="hero-kicker">v2.1 HTML learning site</span>
+      <h1>Agent AI Coding 시대의 개인 학습 허브</h1>
+      <p>
+        Codex, agents, skills, MCP, browser workflow처럼 빠르게 바뀌는 AI 코딩 도구를
+        그때그때 정리하고, 실제로 써본 패턴만 남기는 공개 학습 사이트입니다.
+      </p>
     </section>
 
-    <!-- Document Cards -->
     <div class="index-content">
-      <!-- Category: Claude Code 가이드 -->
-      <section class="doc-category">
-        <h2 class="doc-category-title">🤖 Claude Code 가이드</h2>
+      <section class="content-section">
+        <h2>사이트 구조</h2>
+        <div class="learning-grid">
+          <a class="module-card" href="codex/index.html">
+            <span class="status-pill">Core</span>
+            <strong>Codex 학습 지도</strong>
+            <p>현재 기준이 되는 Codex 사용법, 작업 루프, agent workflow를 정리합니다.</p>
+          </a>
+          <a class="module-card" href="updates/index.html">
+            <span class="status-pill">Routine</span>
+            <strong>업데이트 루틴</strong>
+            <p>공식 릴리스와 문서를 월 단위로 확인하고 학습 카드로 남깁니다.</p>
+          </a>
+          <a class="module-card" href="reference/index.html">
+            <span class="status-pill">Source</span>
+            <strong>출처와 용어 지도</strong>
+            <p>공식 문서, 모델 문서, 용어, 확인 주기를 한 곳에서 관리합니다.</p>
+          </a>
+          <a class="module-card" href="legacy/index.html">
+            <span class="status-pill">Archive</span>
+            <strong>Claude Code Legacy</strong>
+            <p>기존 Claude Code 문서를 보관하고 Codex 기준과 분리합니다.</p>
+          </a>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <h2>먼저 읽을 문서</h2>
         <div class="doc-cards">
-          <!-- Orchestration Guide -->
-          <a href="orchestration.html" class="doc-card">
-            <span class="doc-card-icon">🎭</span>
-            <h3 class="doc-card-title">멀티 에이전트 오케스트레이션 가이드</h3>
-            <p class="doc-card-desc">Skill, Agent, Hook을 조합하여 멀티 에이전트 워크플로우를 구축합니다. Agent Teams, Persistent Memory, Worktree 격리 포함.</p>
-            <div class="doc-card-meta">
-              <span>📅 2026-03-11</span>
-              <span>⏱️ 약 20분</span>
-            </div>
+          <a href="codex/index.html" class="doc-card">
+            <span class="doc-card-icon">C</span>
+            <h2 class="doc-card-title">Codex 학습 허브</h2>
+            <p class="doc-card-desc">Codex를 실전 작업 파트너로 쓰기 위한 전체 지도입니다.</p>
             <div class="doc-card-tags">
-              <span class="doc-card-tag">Agent Teams</span>
-              <span class="doc-card-tag">Skill</span>
+              <span class="doc-card-tag">Codex</span>
+              <span class="doc-card-tag">Workflow</span>
+            </div>
+          </a>
+          <a href="codex/agent-workflow.html" class="doc-card">
+            <span class="doc-card-icon">A</span>
+            <h2 class="doc-card-title">Agent AI Coding 작업 흐름</h2>
+            <p class="doc-card-desc">작은 작업, 장기 목표, 리뷰, 검증 루프를 어떻게 나눌지 정리합니다.</p>
+            <div class="doc-card-tags">
               <span class="doc-card-tag">Agent</span>
-              <span class="doc-card-tag">Hook</span>
+              <span class="doc-card-tag">Goal</span>
             </div>
           </a>
-
-          <!-- MCP Guide -->
-          <a href="mcp-guide.html" class="doc-card">
-            <span class="doc-card-icon">🔌</span>
-            <h3 class="doc-card-title">MCP 연계 가이드</h3>
-            <p class="doc-card-desc">Model Context Protocol을 활용하여 GitHub, Database, AWS 등 외부 시스템과 연동하는 방법을 다룹니다. OAuth 2.0, Tool Search, Resources 등 최신 기능 포함.</p>
-            <div class="doc-card-meta">
-              <span>📅 2026-03-11</span>
-              <span>⏱️ 약 25분</span>
-            </div>
+          <a href="codex/roadmap.html" class="doc-card">
+            <span class="doc-card-icon">P</span>
+            <h2 class="doc-card-title">Agentic Coding Roadmap</h2>
+            <p class="doc-card-desc">사이트와 학습 주제를 어떤 순서로 확장할지 정리한 장기 계획입니다.</p>
             <div class="doc-card-tags">
-              <span class="doc-card-tag">MCP</span>
-              <span class="doc-card-tag">OAuth</span>
-              <span class="doc-card-tag">Tool Search</span>
-              <span class="doc-card-tag">Integration</span>
+              <span class="doc-card-tag">Roadmap</span>
+              <span class="doc-card-tag">Plan</span>
             </div>
           </a>
-
-          <!-- 2026 Update Guide -->
-          <a href="update-2026.html" class="doc-card">
-            <span class="doc-card-icon">🆕</span>
-            <h3 class="doc-card-title">2026년 3월 종합 업데이트</h3>
-            <p class="doc-card-desc">Plugins, Plan Mode, Voice Mode, Auto Memory, Output Styles, Effort Levels 등 v2.1.72 신규 기능을 종합 정리합니다.</p>
-            <div class="doc-card-meta">
-              <span>📅 2026-03-11</span>
-              <span>⏱️ 약 15분</span>
-            </div>
+          <a href="codex/agentic-stack.html" class="doc-card">
+            <span class="doc-card-icon">D</span>
+            <h2 class="doc-card-title">Agentic Coding Stack 변화</h2>
+            <p class="doc-card-desc">벡터 저장소, RAG, 멀티 agent, eval이 개발 환경을 바꾸는 흐름입니다.</p>
             <div class="doc-card-tags">
-              <span class="doc-card-tag">Plugins</span>
-              <span class="doc-card-tag">Plan Mode</span>
-              <span class="doc-card-tag">Voice</span>
-              <span class="doc-card-tag">v2.1.72</span>
+              <span class="doc-card-tag">Vector DB</span>
+              <span class="doc-card-tag">Multi Agent</span>
+            </div>
+          </a>
+          <a href="codex/versioning-policy.html" class="doc-card">
+            <span class="doc-card-icon">V</span>
+            <h2 class="doc-card-title">Claude Legacy와 모델 업데이트 정책</h2>
+            <p class="doc-card-desc">Claude Code 자료와 GPT-5.5처럼 바뀌는 모델명을 어떻게 관리할지 정리합니다.</p>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">Maintenance</span>
+              <span class="doc-card-tag">Models</span>
+            </div>
+          </a>
+          <a href="updates/2026-05-codex.html" class="doc-card">
+            <span class="doc-card-icon">M</span>
+            <h2 class="doc-card-title">2026년 5월 Codex 업데이트</h2>
+            <p class="doc-card-desc">Appshots, goal mode, browser annotations 등 최근 변화의 학습 메모입니다.</p>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">Updates</span>
+              <span class="doc-card-tag">2026-05</span>
             </div>
           </a>
         </div>
       </section>
 
-      <!-- Category: 크리에이티브 가이드 -->
-      <section class="doc-category">
-        <h2 class="doc-category-title">🎨 크리에이티브 가이드</h2>
+      <section class="content-section">
+        <h2>기존 공개 자료</h2>
         <div class="doc-cards">
-          <!-- Video/Animation Guide -->
-          <a href="video-animation.html" class="doc-card">
-            <span class="doc-card-icon">🎬</span>
-            <h3 class="doc-card-title">영상/애니메이션 제작 가이드</h3>
-            <p class="doc-card-desc">Remotion, Manim, Blender, FFmpeg를 활용하여 프로그래밍 방식으로 영상과 애니메이션을 제작합니다. 37개 Remotion 룰 파일 카탈로그 포함.</p>
-            <div class="doc-card-meta">
-              <span>📅 2026-03-11</span>
-              <span>⏱️ 약 15분</span>
-            </div>
+          <a href="monorepo.html" class="doc-card">
+            <span class="doc-card-icon">M</span>
+            <h2 class="doc-card-title">AI 시대 모노레포 가이드</h2>
+            <p class="doc-card-desc">원격에 이미 추가되어 있던 개발 환경 가이드입니다.</p>
             <div class="doc-card-tags">
-              <span class="doc-card-tag">Remotion</span>
-              <span class="doc-card-tag">Manim</span>
-              <span class="doc-card-tag">Blender</span>
+              <span class="doc-card-tag">Monorepo</span>
+              <span class="doc-card-tag">Practice</span>
+            </div>
+          </a>
+          <a href="product-page.html" class="doc-card">
+            <span class="doc-card-icon">P</span>
+            <h2 class="doc-card-title">제품 상세페이지 가이드</h2>
+            <p class="doc-card-desc">AI와 함께 제품 페이지를 설계하고 구현하는 자료입니다.</p>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">Design</span>
+              <span class="doc-card-tag">Copy</span>
+            </div>
+          </a>
+          <a href="video-animation.html" class="doc-card">
+            <span class="doc-card-icon">V</span>
+            <h2 class="doc-card-title">영상/애니메이션 가이드</h2>
+            <p class="doc-card-desc">AI 시대의 영상과 애니메이션 제작 흐름을 정리한 자료입니다.</p>
+            <div class="doc-card-tags">
+              <span class="doc-card-tag">Creative</span>
               <span class="doc-card-tag">Video</span>
             </div>
           </a>
-
-          <!-- Product Page Guide -->
-          <a href="product-page.html" class="doc-card">
-            <span class="doc-card-icon">🛍️</span>
-            <h3 class="doc-card-title">제품 상세페이지 제작 가이드</h3>
-            <p class="doc-card-desc">나노바나나 2, Flair.ai, Claude Code Frontend Design Skill을 활용하여 네이버/쿠팡 등 한국 이커머스 제품 상세페이지를 제작합니다.</p>
-            <div class="doc-card-meta">
-              <span>📅 2026-03-11</span>
-              <span>⏱️ 약 20분</span>
-            </div>
-            <div class="doc-card-tags">
-              <span class="doc-card-tag">나노바나나</span>
-              <span class="doc-card-tag">Gemini MCP</span>
-              <span class="doc-card-tag">Frontend Design</span>
-              <span class="doc-card-tag">이커머스</span>
-            </div>
-          </a>
         </div>
       </section>
 
-      <!-- Category: 개발 환경 가이드 -->
-      <section class="doc-category">
-        <h2 class="doc-category-title">🛠️ 개발 환경 가이드</h2>
-        <div class="doc-cards">
-          <!-- Monorepo Guide -->
-          <a href="monorepo.html" class="doc-card">
-            <span class="doc-card-icon">📦</span>
-            <h3 class="doc-card-title">AI 시대 모노레포 가이드</h3>
-            <p class="doc-card-desc">AI 코딩 도구와 함께 효율적으로 개발하기 위한 모노레포 구조를 설명합니다. pnpm, Turborepo 활용법을 다룹니다.</p>
-            <div class="doc-card-meta">
-              <span>📅 2025-01-19</span>
-              <span>⏱️ 약 25분</span>
-            </div>
-            <div class="doc-card-tags">
-              <span class="doc-card-tag">Monorepo</span>
-              <span class="doc-card-tag">pnpm</span>
-              <span class="doc-card-tag">uv</span>
-              <span class="doc-card-tag">Turborepo</span>
-            </div>
-          </a>
+      <section class="content-section">
+        <h2>운영 원칙</h2>
+        <div class="note-panel">
+          <strong>playbook은 원본, MyCoding Book은 발행본입니다.</strong>
+          <p>
+            비공개 판단과 실험 기록은 private playbook에 먼저 남기고,
+            공개해도 되는 내용만 이 사이트의 HTML 문서로 옮깁니다.
+            새 문서는 폴더를 추가하기보다 기존 섹션 아래에 HTML 파일을 하나 더 추가하는 방식으로 관리합니다.
+          </p>
         </div>
       </section>
 
-      <!-- Quick Links -->
-      <section style="margin-top: 3rem;">
-        <h2 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem; color: var(--color-text-primary);">🔗 바로가기</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
-          <a href="orchestration.html#overview" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
-            <strong style="color: var(--color-text-primary);">📋 Skill vs Agent</strong>
-            <p style="font-size: 0.875rem; margin-top: 0.25rem;">기본 개념 이해하기</p>
-          </a>
-          <a href="orchestration.html#hooks" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
-            <strong style="color: var(--color-text-primary);">🪝 Hook 시스템</strong>
-            <p style="font-size: 0.875rem; margin-top: 0.25rem;">워크플로우 제어하기</p>
-          </a>
-          <a href="mcp-guide.html#popular-servers" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
-            <strong style="color: var(--color-text-primary);">⭐ 인기 MCP 서버</strong>
-            <p style="font-size: 0.875rem; margin-top: 0.25rem;">GitHub, DB, AWS 연동</p>
-          </a>
-          <a href="orchestration.html#examples" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
-            <strong style="color: var(--color-text-primary);">💻 실전 예시</strong>
-            <p style="font-size: 0.875rem; margin-top: 0.25rem;">바로 쓸 수 있는 코드</p>
-          </a>
-          <a href="monorepo.html#ai-optimization" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
-            <strong style="color: var(--color-text-primary);">🤖 AI 코딩 최적화</strong>
-            <p style="font-size: 0.875rem; margin-top: 0.25rem;">모노레포 + 타입 체크</p>
-          </a>
-          <a href="monorepo.html#quick-start" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
-            <strong style="color: var(--color-text-primary);">🚀 모노레포 시작</strong>
-            <p style="font-size: 0.875rem; margin-top: 0.25rem;">빠른 시작 가이드</p>
-          </a>
-          <a href="update-2026.html#plugins" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
-            <strong style="color: var(--color-text-primary);">🔌 Plugins 시스템</strong>
-            <p style="font-size: 0.875rem; margin-top: 0.25rem;">마켓플레이스 & 확장</p>
-          </a>
-          <a href="update-2026.html#slash-commands" style="padding: 1rem; background: var(--color-bg-secondary); border-radius: var(--radius-lg); text-decoration: none; color: var(--color-text-secondary); transition: all 0.2s;">
-            <strong style="color: var(--color-text-primary);">⌨️ 40+ 명령어</strong>
-            <p style="font-size: 0.875rem; margin-top: 0.25rem;">전체 슬래시 명령어</p>
-          </a>
-        </div>
-      </section>
-
-      <!-- Footer -->
       <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-border); text-align: center; color: var(--color-text-muted); font-size: 0.875rem;">
-        <p>© 2025-2026 MyCoding Book. Claude Code 개발 가이드 모음.</p>
-        <p style="margin-top: 0.5rem;">
-          이 문서는 학습 목적으로 작성되었습니다.
-        </p>
+        <p>MyCoding Book. Codex와 Agent AI Coding을 꾸준히 정리하는 개인 학습 사이트.</p>
       </footer>
     </div>
   </main>
 
-  <!-- Search Modal -->
   <div class="search-modal" role="dialog" aria-modal="true" aria-label="검색">
     <div class="search-modal-content">
       <div class="search-input-wrapper">
@@ -262,22 +213,15 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script src="assets/js/config.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/search.js"></script>
-
-  <!-- PWA Service Worker Registration -->
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then((registration) => {
-            console.log('Service Worker 등록 성공:', registration.scope);
-          })
-          .catch((error) => {
-            console.log('Service Worker 등록 실패:', error);
-          });
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch((error) => {
+          console.log("Service Worker registration failed:", error);
+        });
       });
     }
   </script>

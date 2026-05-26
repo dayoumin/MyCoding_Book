@@ -1,101 +1,249 @@
 /**
- * MyCoding Book - Document Configuration
- * 새 문서 추가 시 이 파일만 수정하면 됩니다.
+ * MyCoding Book - public site catalog.
+ *
+ * HTML pages are the source of truth for reading.
+ * Keep this file as the lightweight index for cards, search, and navigation.
  */
 
 const DocsConfig = {
-  // 사이트 정보
   site: {
     title: "MyCoding Book",
-    description: "Claude Code 개발 가이드 모음",
+    description: "Codex 중심 Agent AI Coding 학습 노트",
     author: "MyCoding",
-    version: "1.1.0",
-    lastUpdated: "2025-01-19"
+    version: "2.1.0",
+    lastUpdated: "2026-05-26"
   },
 
-  // 문서 목록
   documents: [
     {
-      id: "orchestration",
-      title: "멀티 에이전트 오케스트레이션 가이드",
-      shortTitle: "오케스트레이션",
-      file: "orchestration.html",
-      icon: "🎭",
-      category: "claude-code",
-      description: "Skill, Agent, Hook을 조합하여 신뢰할 수 있는 멀티 에이전트 워크플로우 구축",
-      lastUpdated: "2025-01-02",
-      readingTime: 20,
-      tags: ["skill", "agent", "hook", "workflow", "pipeline"],
-      sections: [
-        { id: "overview", title: "개요", icon: "📋" },
-        { id: "architecture", title: "핵심 아키텍처", icon: "🏗️" },
-        { id: "patterns", title: "조합 패턴", icon: "🧩" },
-        { id: "hooks", title: "Hook 시스템", icon: "🪝" },
-        { id: "advanced", title: "고급 워크플로우", icon: "⚡" },
-        { id: "examples", title: "실전 예시", icon: "💻" },
-        { id: "limitations", title: "한계점 및 확장", icon: "🚀" }
-      ]
+      id: "codex-overview",
+      title: "Codex 학습 허브",
+      shortTitle: "Codex Hub",
+      file: "codex/index.html",
+      icon: "C",
+      category: "codex",
+      description: "Codex를 개인 개발, 문서화, 검증, 자동화에 쓰기 위한 전체 학습 지도입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 10,
+      tags: ["codex", "agent-ai-coding", "workflow", "study"]
     },
     {
-      id: "mcp",
-      title: "MCP 연계 가이드",
-      shortTitle: "MCP 연계",
-      file: "mcp-guide.html",
-      icon: "🔌",
-      category: "claude-code",
-      description: "Model Context Protocol을 활용하여 외부 시스템과 연동하는 방법",
-      lastUpdated: "2025-01-02",
-      readingTime: 25,
-      tags: ["mcp", "github", "database", "api", "integration"],
-      sections: [
-        { id: "mcp-overview", title: "MCP 개요", icon: "📋" },
-        { id: "mcp-setup", title: "MCP 설정", icon: "⚙️" },
-        { id: "skill-mcp", title: "Skill + MCP", icon: "🎭" },
-        { id: "agent-mcp", title: "Agent + MCP", icon: "🤖" },
-        { id: "orchestration-mcp", title: "오케스트레이션 + MCP", icon: "🎼" },
-        { id: "popular-servers", title: "인기 MCP 서버", icon: "⭐" },
-        { id: "security", title: "보안 Best Practices", icon: "🔒" },
-        { id: "hook-mcp", title: "Hook + MCP 연계", icon: "🪝" },
-        { id: "workflows", title: "실전 워크플로우", icon: "💻" }
-      ]
+      id: "agent-workflow",
+      title: "Agent AI Coding 작업 흐름",
+      shortTitle: "Agent Workflow",
+      file: "codex/agent-workflow.html",
+      icon: "A",
+      category: "codex",
+      description: "작은 작업, 장기 목표, 병렬 에이전트, 리뷰 루프를 언제 어떻게 나눌지 정리합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 12,
+      tags: ["agent", "goal-mode", "review", "workflow"]
+    },
+    {
+      id: "agentic-roadmap",
+      title: "Agentic Coding Roadmap",
+      shortTitle: "Roadmap",
+      file: "codex/roadmap.html",
+      icon: "P",
+      category: "codex",
+      description: "AI 코딩 학습 사이트를 어떤 순서로 확장할지 정리한 장기 계획입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 10,
+      tags: ["roadmap", "agentic-coding", "planning"]
+    },
+    {
+      id: "agentic-stack",
+      title: "Agentic Coding Stack 변화",
+      shortTitle: "Agentic Stack",
+      file: "codex/agentic-stack.html",
+      icon: "D",
+      category: "codex",
+      description: "벡터 저장소, RAG, 멀티 agent, eval, MCP가 코딩 환경을 어떻게 바꾸는지 정리합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 12,
+      tags: ["vector-store", "rag", "multi-agent", "evals", "mcp"]
+    },
+    {
+      id: "versioning-policy",
+      title: "Claude Legacy와 모델 업데이트 정책",
+      shortTitle: "Version Policy",
+      file: "codex/versioning-policy.html",
+      icon: "V",
+      category: "reference",
+      description: "Claude Code 자료를 어떻게 재작성하고, GPT-5.5처럼 계속 바뀌는 모델 기준을 어떻게 관리할지 정리합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 9,
+      tags: ["claude-code", "model-updates", "versioning", "maintenance"]
+    },
+    {
+      id: "codex-skills",
+      title: "Codex Skills와 재사용 루틴",
+      shortTitle: "Skills",
+      file: "codex/skills.html",
+      icon: "S",
+      category: "codex",
+      description: "반복 작업을 skill, 체크리스트, 자동화 중 어디에 둘지 판단하는 기준입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 9,
+      tags: ["skills", "automation", "reuse"]
+    },
+    {
+      id: "mcp-connectors",
+      title: "MCP, Plugins, Connectors",
+      shortTitle: "Tools",
+      file: "codex/mcp-connectors.html",
+      icon: "T",
+      category: "tools",
+      description: "외부 도구 연결을 기능보다 권한, 검증, 실패 복구 관점에서 정리합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 11,
+      tags: ["mcp", "plugins", "connectors", "security"]
+    },
+    {
+      id: "browser-computer-use",
+      title: "Browser와 Computer Use",
+      shortTitle: "Browser",
+      file: "codex/browser-computer-use.html",
+      icon: "B",
+      category: "tools",
+      description: "프론트엔드, 로컬 앱, 원격 컴퓨터 작업을 화면 증거와 함께 검증하는 방식입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 9,
+      tags: ["browser", "computer-use", "frontend", "verification"]
+    },
+    {
+      id: "updates",
+      title: "업데이트 루틴",
+      shortTitle: "Updates",
+      file: "updates/index.html",
+      icon: "U",
+      category: "updates",
+      description: "빠르게 변하는 AI 코딩 도구를 월간 루틴으로 확인하고 발행하는 방식입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 8,
+      tags: ["updates", "release-notes", "routine"]
+    },
+    {
+      id: "codex-2026-05",
+      title: "2026년 5월 Codex 업데이트 메모",
+      shortTitle: "2026-05",
+      file: "updates/2026-05-codex.html",
+      icon: "M",
+      category: "updates",
+      description: "Appshots, goal mode, browser annotations, remote access 등 2026년 5월 변화 정리입니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 7,
+      tags: ["codex", "release-notes", "goal-mode", "appshots"]
+    },
+    {
+      id: "update-2026",
+      title: "Claude Code 2026 종합 업데이트",
+      shortTitle: "2026 Update",
+      file: "update-2026.html",
+      icon: "U",
+      category: "legacy",
+      description: "원격에 추가되어 있던 Claude Code 2026 업데이트 HTML 문서입니다.",
+      lastUpdated: "2026-03-01",
+      readingTime: 18,
+      tags: ["claude-code", "legacy", "update"]
     },
     {
       id: "monorepo",
       title: "AI 시대 모노레포 가이드",
-      shortTitle: "모노레포",
+      shortTitle: "Monorepo",
       file: "monorepo.html",
-      icon: "📦",
-      category: "dev-env",
-      description: "AI 코딩 도구와 함께 효율적으로 개발하기 위한 모노레포 구조",
-      lastUpdated: "2025-01-19",
+      icon: "M",
+      category: "practice",
+      description: "AI 코딩 도구와 함께 효율적으로 개발하기 위한 모노레포 구조 가이드입니다.",
+      lastUpdated: "2026-03-01",
       readingTime: 25,
-      tags: ["monorepo", "pnpm", "uv", "turborepo", "typescript", "ai-coding"],
-      sections: [
-        { id: "intro", title: "모노레포란?", icon: "📋" },
-        { id: "structure", title: "기본 구조", icon: "🏗️" },
-        { id: "config", title: "핵심 설정", icon: "⚙️" },
-        { id: "dependencies", title: "패키지 의존성", icon: "🔗" },
-        { id: "shared", title: "공유 패키지", icon: "📦" },
-        { id: "ai-optimization", title: "AI 코딩 최적화", icon: "🤖" },
-        { id: "commands", title: "주요 명령어", icon: "💻" },
-        { id: "practice", title: "실전", icon: "🔧" },
-        { id: "reference", title: "참고", icon: "📚" },
-        { id: "package-managers-ai", title: "AI용 패키지 매니저", icon: "⚡" }
-      ]
+      tags: ["monorepo", "pnpm", "turborepo", "typescript", "ai-coding"]
+    },
+    {
+      id: "product-page",
+      title: "제품 상세페이지 가이드",
+      shortTitle: "Product Page",
+      file: "product-page.html",
+      icon: "P",
+      category: "practice",
+      description: "AI와 함께 제품 상세페이지를 설계하고 구현하는 공개 학습 자료입니다.",
+      lastUpdated: "2026-03-01",
+      readingTime: 20,
+      tags: ["product-page", "design", "copywriting"]
+    },
+    {
+      id: "video-animation",
+      title: "영상/애니메이션 가이드",
+      shortTitle: "Video",
+      file: "video-animation.html",
+      icon: "V",
+      category: "practice",
+      description: "AI 시대의 영상과 애니메이션 제작 흐름을 정리한 자료입니다.",
+      lastUpdated: "2026-03-01",
+      readingTime: 20,
+      tags: ["video", "animation", "creative"]
+    },
+    {
+      id: "orchestration",
+      title: "Claude Code 오케스트레이션 가이드",
+      shortTitle: "Claude Legacy",
+      file: "orchestration.html",
+      icon: "L",
+      category: "legacy",
+      description: "Claude Code 기준으로 작성된 Skill, Agent, Hook 조합 자료입니다. Codex 기준으로 재해석할 참고 자료로 보관합니다.",
+      lastUpdated: "2026-01-09",
+      readingTime: 20,
+      tags: ["claude-code", "legacy", "agent", "hook", "workflow"]
+    },
+    {
+      id: "mcp",
+      title: "Claude Code MCP 연계 가이드",
+      shortTitle: "MCP Legacy",
+      file: "mcp-guide.html",
+      icon: "M",
+      category: "legacy",
+      description: "Claude Code 기준 MCP 연계 자료입니다. Codex의 MCP, plugin, connector 설명으로 점진적으로 옮깁니다.",
+      lastUpdated: "2026-01-09",
+      readingTime: 25,
+      tags: ["mcp", "claude-code", "legacy", "integration"]
+    },
+    {
+      id: "reference",
+      title: "출처와 용어 지도",
+      shortTitle: "Reference",
+      file: "reference/index.html",
+      icon: "R",
+      category: "reference",
+      description: "공식 출처, 확인 주기, 용어를 한 곳에 모아 최신성을 관리합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 6,
+      tags: ["sources", "glossary", "reference"]
+    },
+    {
+      id: "legacy",
+      title: "Claude Code Legacy 자료",
+      shortTitle: "Legacy",
+      file: "legacy/index.html",
+      icon: "L",
+      category: "legacy",
+      description: "기존 Claude Code 문서를 Codex 기준과 혼동하지 않도록 보관합니다.",
+      lastUpdated: "2026-05-26",
+      readingTime: 5,
+      tags: ["legacy", "claude-code", "archive"]
     }
   ],
 
-  // 카테고리 정의
   categories: {
-    "claude-code": { name: "Claude Code 가이드", icon: "🤖", color: "indigo" },
-    "dev-env": { name: "개발 환경 가이드", icon: "🛠️", color: "emerald" },
-    reference: { name: "레퍼런스", icon: "📚", color: "amber" },
-    tutorial: { name: "튜토리얼", icon: "📝", color: "rose" }
+    codex: { name: "Codex Core", color: "indigo" },
+    tools: { name: "Tools and Context", color: "emerald" },
+    updates: { name: "Updates", color: "amber" },
+    practice: { name: "Practice Guides", color: "rose" },
+    reference: { name: "Reference", color: "cyan" },
+    legacy: { name: "Legacy", color: "slate" }
   },
 
-  // 테마 설정
   theme: {
-    defaultMode: "light", // "light" | "dark" | "system"
+    defaultMode: "light",
     colors: {
       primary: "#6366f1",
       secondary: "#8b5cf6",
@@ -103,7 +251,6 @@ const DocsConfig = {
     }
   },
 
-  // 기능 플래그
   features: {
     search: true,
     darkMode: true,
@@ -118,20 +265,17 @@ const DocsConfig = {
   }
 };
 
-// 유틸리티 함수
 const DocsUtils = {
-  // 문서 ID로 문서 찾기
   getDocById(id) {
     return DocsConfig.documents.find(doc => doc.id === id);
   },
 
-  // 현재 페이지의 문서 정보 가져오기
   getCurrentDoc() {
-    const filename = window.location.pathname.split('/').pop() || 'index.html';
-    return DocsConfig.documents.find(doc => doc.file === filename);
+    const path = window.location.pathname.replace(/^\/+/, "");
+    const filename = path || "index.html";
+    return DocsConfig.documents.find(doc => doc.file === filename || doc.file.endsWith(filename));
   },
 
-  // 카테고리별 문서 그룹화
   getDocsByCategory() {
     const grouped = {};
     DocsConfig.documents.forEach(doc => {
@@ -143,12 +287,10 @@ const DocsUtils = {
     return grouped;
   },
 
-  // 태그로 문서 검색
   getDocsByTag(tag) {
     return DocsConfig.documents.filter(doc => doc.tags.includes(tag));
   },
 
-  // 모든 태그 가져오기
   getAllTags() {
     const tags = new Set();
     DocsConfig.documents.forEach(doc => {
@@ -157,22 +299,19 @@ const DocsUtils = {
     return Array.from(tags).sort();
   },
 
-  // 읽기 시간 포맷
   formatReadingTime(minutes) {
     return `약 ${minutes}분`;
   },
 
-  // 날짜 포맷
   formatDate(dateStr) {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    return date.toLocaleDateString("ko-KR", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
     });
   }
 };
 
-// 전역으로 내보내기
 window.DocsConfig = DocsConfig;
 window.DocsUtils = DocsUtils;

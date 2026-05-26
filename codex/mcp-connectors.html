@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MCP, Plugins, Connectors 학습 노트">
+  <title>MCP, Plugins, Connectors - MyCoding Book</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="header-logo"><span>MC</span><span>MyCoding Book</span></a>
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a class="active" href="index.html">Codex</a>
+        <a href="../updates/index.html">Updates</a>
+        <a href="../reference/index.html">Reference</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page-shell">
+    <header class="page-header">
+      <span class="hero-kicker">Tools</span>
+      <h1>MCP, Plugins, Connectors</h1>
+      <p>외부 도구 연결은 생산성을 크게 올리지만 권한과 검증 비용도 함께 커집니다. 이 문서는 연결을 판단하는 기준입니다.</p>
+    </header>
+
+    <section class="content-section">
+      <h2>연결 전 질문</h2>
+      <ul>
+        <li>읽기 전용으로 충분한가?</li>
+        <li>쓰기 권한이 필요하다면 영향 범위가 어디까지인가?</li>
+        <li>실패했을 때 수동으로 되돌릴 수 있는가?</li>
+        <li>결과를 어떤 API, diff, 화면으로 검증할 것인가?</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>분류</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>종류</th><th>주 용도</th><th>주의점</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>MCP</td><td>도구와 데이터를 모델이 호출할 수 있게 연결</td><td>서버별 권한과 입력 검증 확인</td></tr>
+            <tr><td>Plugin</td><td>Codex 안에서 특정 제품 워크플로우 지원</td><td>설치 범위와 자동 노출 도구 확인</td></tr>
+            <tr><td>Connector</td><td>Gmail, Drive, Slack 같은 계정 데이터 연결</td><td>개인 데이터 접근 범위 확인</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
-  "name": "MyCoding Book - Claude Code 개발 가이드",
+  "name": "MyCoding Book - Codex AI Coding Hub",
   "short_name": "MyCoding Book",
-  "description": "Claude Code를 활용한 개발 가이드 모음 - 멀티 에이전트 오케스트레이션, MCP 연계 가이드",
+  "description": "Codex와 AI 코딩 도구를 꾸준히 공부하고 정리하기 위한 개인 학습 허브",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

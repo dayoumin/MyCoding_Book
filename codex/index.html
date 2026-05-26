@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Codex 중심 AI 코딩 학습 지도">
+  <title>Codex 학습 허브 - MyCoding Book</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="../index.html" class="header-logo"><span>MC</span><span>MyCoding Book</span></a>
+      <nav class="top-nav" aria-label="주요 섹션">
+        <a class="active" href="index.html">Codex</a>
+        <a href="../updates/index.html">Updates</a>
+        <a href="../reference/index.html">Reference</a>
+        <a href="../legacy/index.html">Legacy</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-shell">
+    <header class="page-header">
+      <span class="hero-kicker">Core map</span>
+      <h1>Codex 학습 허브</h1>
+      <p>
+        Codex를 단순 코드 생성기가 아니라 작업 파트너로 쓰기 위한 학습 지도입니다.
+        이 섹션은 실전 작업 흐름, skill 재사용, 도구 연결, 브라우저 검증을 중심으로 확장합니다.
+      </p>
+    </header>
+
+    <section class="content-section">
+      <h2>학습 순서</h2>
+      <div class="learning-grid">
+        <a class="module-card" href="agent-workflow.html">
+          <span class="status-pill">Step 1</span>
+          <strong>Agent AI Coding 작업 흐름</strong>
+          <p>작업을 직접 처리할지, 장기 목표로 맡길지, 병렬 agent로 나눌지 판단합니다.</p>
+        </a>
+        <a class="module-card" href="skills.html">
+          <span class="status-pill">Step 2</span>
+          <strong>Skills와 재사용 루틴</strong>
+          <p>반복되는 일을 skill, 체크리스트, automation 중 어디에 남길지 정합니다.</p>
+        </a>
+        <a class="module-card" href="mcp-connectors.html">
+          <span class="status-pill">Step 3</span>
+          <strong>MCP, Plugins, Connectors</strong>
+          <p>외부 도구 연결을 권한 범위와 검증 루프 관점에서 정리합니다.</p>
+        </a>
+        <a class="module-card" href="browser-computer-use.html">
+          <span class="status-pill">Step 4</span>
+          <strong>Browser와 Computer Use</strong>
+          <p>화면 기반 작업을 실제 증거와 함께 검증하는 방법을 정리합니다.</p>
+        </a>
+        <a class="module-card" href="roadmap.html">
+          <span class="status-pill">Plan</span>
+          <strong>Agentic Coding Roadmap</strong>
+          <p>사이트와 학습 주제를 어떤 순서로 확장할지 결정합니다.</p>
+        </a>
+        <a class="module-card" href="agentic-stack.html">
+          <span class="status-pill">Stack</span>
+          <strong>Agentic Coding Stack 변화</strong>
+          <p>벡터 저장소, RAG, multi-agent, eval이 코딩 환경을 어떻게 바꾸는지 봅니다.</p>
+        </a>
+        <a class="module-card" href="versioning-policy.html">
+          <span class="status-pill">Policy</span>
+          <strong>Claude Legacy와 모델 업데이트 정책</strong>
+          <p>Claude Code 문서와 계속 바뀌는 GPT 모델명을 어떻게 관리할지 정합니다.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Codex 기준으로 바꾸는 이유</h2>
+      <p>
+        이전 MyCoding Book은 Claude Code의 skill, hook, MCP, orchestration을 중심으로 만들어졌습니다.
+        앞으로는 Codex 앱, CLI, browser workflow, goal mode, connectors, skills를 중심으로 재정리합니다.
+        Claude Code 자료는 삭제하지 않고 legacy로 보관합니다.
+      </p>
+      <div class="note-panel">
+        <strong>학습 기준</strong>
+        <p>새 기능은 공식 문서 확인, 작은 실험, playbook 원본 기록, 공개 HTML 발행 순서로만 반영합니다.</p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>앞으로 추가할 문서 후보</h2>
+      <ul>
+        <li>Codex CLI와 desktop app의 역할 분리</li>
+        <li>AGENTS.md 운영 패턴</li>
+        <li>Goal mode로 맡기기 좋은 작업과 아닌 작업</li>
+        <li>PR 리뷰, UI 구현, 문서 최신화의 표준 루프</li>
+        <li>모델 변경과 prompt 업데이트 기록</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

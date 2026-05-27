@@ -1,0 +1,7 @@
+interface:
+  display_name: "Docs Publisher"
+  short_description: "Update public MyCoding Book HTML docs from verified sources."
+  default_prompt: "Update the relevant MyCoding Book HTML page, refresh metadata/audit links, validate the changed surface, and report the next queue item."
+
+policy:
+  allow_implicit_invocation: false

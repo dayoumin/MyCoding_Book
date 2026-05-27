@@ -11,7 +11,7 @@ const DocsConfig = {
     description: "Codex 중심 Agent AI Coding 학습 노트",
     author: "MyCoding",
     version: "2.1.0",
-    lastUpdated: "2026-05-26"
+    lastUpdated: "2026-05-27"
   },
 
   documents: [
@@ -119,7 +119,7 @@ const DocsConfig = {
       icon: "U",
       category: "codex",
       description: "Codex changelog, feature maturity, models, subagents, skills, hooks, MCP를 월간으로 확인하고 반영하는 기준입니다.",
-      lastUpdated: "2026-05-26",
+      lastUpdated: "2026-05-27",
       readingTime: 12,
       tags: ["updates", "maintenance", "changelog", "models", "codex"]
     },
@@ -131,7 +131,7 @@ const DocsConfig = {
       icon: "S",
       category: "codex",
       description: "Codex 공식 skills 구조, 저장 위치, 호출 방식, plugin 배포 기준과 반복 절차 승격 기준입니다.",
-      lastUpdated: "2026-05-26",
+      lastUpdated: "2026-05-27",
       readingTime: 15,
       tags: ["skills", "automation", "reuse", "plugins", "progressive-disclosure"]
     },
@@ -155,7 +155,7 @@ const DocsConfig = {
       icon: "T",
       category: "tools",
       description: "Codex 기준으로 MCP, plugin, connector, app tool을 구분하고 권한, 인증, approval 정책을 정리합니다.",
-      lastUpdated: "2026-05-26",
+      lastUpdated: "2026-05-27",
       readingTime: 14,
       tags: ["mcp", "plugins", "connectors", "permissions", "approval"]
     },
@@ -287,7 +287,7 @@ const DocsConfig = {
       icon: "A",
       category: "reference",
       description: "기존 Claude Code 원본과 공개 HTML 문서를 keep, rewrite, legacy, later로 분류한 작업 지도입니다.",
-      lastUpdated: "2026-05-26",
+      lastUpdated: "2026-05-27",
       readingTime: 12,
       tags: ["audit", "legacy", "rewrite", "roadmap"]
     },
@@ -299,7 +299,7 @@ const DocsConfig = {
       icon: "M",
       category: "reference",
       description: "Claude Code 원본 MD, 기존 HTML, 새 Codex 문서의 흡수 관계를 1:1로 추적합니다.",
-      lastUpdated: "2026-05-26",
+      lastUpdated: "2026-05-27",
       readingTime: 10,
       tags: ["legacy", "mapping", "claude-code", "audit"]
     },
